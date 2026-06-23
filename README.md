@@ -22,6 +22,22 @@ Project documentation will be stored under `docs/`.
 - `docs/sprints/`: sprint planning and review records
 - `docs/diagrams/`: architecture diagrams and ERD files
 
+## Project Structure
+
+```text
+backend/    Spring Boot REST API and AI recommendation module
+frontend/   Vue 3 user interface
+docs/       Requirements, system design, user stories, and sprint records
+```
+
+## Planned Tech Stack
+
+- Backend: Java, Spring Boot, Spring Web, Spring Data JPA, Spring Security
+- Frontend: Vue 3, Vite, Vue Router, Axios
+- Database: MySQL
+- API Documentation: Swagger / OpenAPI
+- Testing: JUnit, Spring Boot Test, Postman
+
 ## Development
 
 Implementation details, setup instructions, and API documentation will be added as the backend and related modules are developed.
