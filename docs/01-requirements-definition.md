@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-ASTIS is an AI-enhanced study task management system designed to help students manage academic tasks, track study behaviour, and receive intelligent task prioritisation recommendations.
+ASTIS is an AI-powered study and task intelligence system designed to help students manage academic tasks, track study behaviour, and receive intelligent task prioritisation recommendations.
 
-The project aims to transform a traditional task list into a data-driven productivity assistant by combining task management, behaviour logging, and an explainable recommendation model.
+The project aims to transform a traditional task list into a data-driven productivity assistant by combining task management, behaviour logging, feature extraction, and an explainable AI recommendation model.
 
 ## Target Users
 
@@ -22,7 +22,7 @@ Students often struggle to manage academic workload because they need to handle 
 
 Traditional to-do list tools can record tasks, but they usually do not learn from user behaviour or provide personalised guidance. As a result, students may still find it difficult to decide which task should be completed first.
 
-ASTIS aims to solve this problem by building a system that records tasks, tracks user behaviour, and generates task priority recommendations based on urgency, user-defined priority, and historical completion patterns.
+ASTIS aims to solve this problem by building a system that records tasks, tracks user behaviour, extracts behavioural features, predicts delay risk, and generates task priority recommendations based on urgency, user-defined priority, and historical completion patterns.
 
 ## Core Problems
 
@@ -36,17 +36,21 @@ ASTIS aims to solve this problem by building a system that records tasks, tracks
 ### Core Features
 
 - User registration and login
+- User profile management for personalisation
 - Task creation, reading, updating, and deletion
 - Deadline and task status tracking
 - User-defined task priority
 - Behaviour log recording for task actions
-- Basic task recommendation based on priority scoring
+- Feature extraction from tasks and behaviour logs
+- AI-based priority scoring and delay risk prediction
+- Recommended task ordering with score explanations
 
 ### Extended Features
 
 - Dashboard visualisation
 - Completion rate analysis
 - Delay pattern analysis
+- Personalised study schedule generation
 - Advanced machine learning prediction model
 - Cloud deployment
 - Redis caching for performance optimisation
@@ -67,13 +71,15 @@ ASTIS aims to solve this problem by building a system that records tasks, tracks
 ### Scalability
 
 - The backend should use a modular structure.
-- The recommendation logic should be separated from core task management logic.
+- The AI recommendation logic should be separated from core task management logic.
 - The system should allow future extension to a more advanced machine learning model.
 
 ### Maintainability
 
 - The backend should follow layered architecture.
 - Controller, service, repository, and model layers should be clearly separated.
+- DTOs should be used to separate API contracts from database entities.
+- Validation and global exception handling should be applied consistently.
 - API documentation should be provided using Swagger or OpenAPI.
 
 ## Success Criteria
@@ -83,18 +89,23 @@ The first version of ASTIS will be considered successful if:
 - A user can register and log in.
 - A user can manage tasks through REST APIs.
 - The system can store task and behaviour data.
-- The system can generate a ranked task recommendation list.
+- The system can extract features such as urgency and historical completion behaviour.
+- The system can generate a ranked task recommendation list with priority score and delay risk information.
 - The project structure supports future extension of analytics and AI modules.
 
 ## Initial Scope Limitation
 
 The MVP will not include a complex deep learning model.
 
-The first version will use an explainable scoring model based on:
+The first version will use an embedded, deterministic AI scoring model inside the backend service layer. It will not rely on a ChatGPT-style suggestion wrapper.
+
+The model will be based on:
 
 - Deadline urgency
 - User-defined priority
 - Historical completion behaviour
 - Delay risk
+- Time decay factor
+- Task type or category behaviour
 
 Advanced machine learning models may be added in later iterations.

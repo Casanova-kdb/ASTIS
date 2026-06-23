@@ -23,6 +23,14 @@ Planned API documentation:
 - Swagger
 - OpenAPI
 
+API design standards:
+
+- Consistent endpoint naming
+- DTOs for request and response payloads
+- Proper HTTP status codes
+- Validation errors with clear messages
+- Global exception handling
+
 ## Database
 
 The project will use a relational database.
@@ -32,6 +40,12 @@ Chosen database:
 - MySQL
 
 The initial design will use normalized tables for users, tasks, and behaviour logs.
+
+Database design standards:
+
+- Normalized schema for core entities
+- Indexes on common query fields such as user ID, task status, deadline, and behaviour timestamp
+- Clear relationships between users, tasks, and behaviour logs
 
 ## Authentication
 
@@ -45,7 +59,7 @@ Users should only be able to access their own tasks and behaviour records.
 
 ## AI Recommendation
 
-The MVP recommendation module will use a Java-based scoring model inside the Spring Boot backend.
+The MVP recommendation module will use a Java-based AI scoring model inside the Spring Boot backend. It must be implemented as an embedded service-layer module rather than a text-generation API wrapper.
 
 Initial scoring factors:
 
@@ -53,6 +67,17 @@ Initial scoring factors:
 - User-defined priority
 - Historical completion rate
 - Delay risk
+- Task type or category behaviour
+- Time decay factor
+- Estimated workload
+
+The AI module will include:
+
+- Feature extraction layer
+- Priority scoring model
+- Delay risk prediction
+- Recommendation ranking
+- Explanation generation for recommendation results
 
 Future versions may introduce:
 
@@ -71,6 +96,17 @@ Planned testing tools:
 - Basic integration tests
 
 Testing will cover core backend behaviour, API responses, validation, and recommendation scoring logic.
+
+## Engineering Standards
+
+The implementation should demonstrate application-level engineering practice:
+
+- Clear separation of controller, service, repository, DTO, entity, and AI service responsibilities
+- Consistent request validation
+- Global exception handling
+- Meaningful Git commits
+- Sprint-based branch workflow
+- Reproducible local setup instructions
 
 ## Engineering Tools
 
