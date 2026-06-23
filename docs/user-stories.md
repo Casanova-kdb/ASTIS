@@ -12,14 +12,16 @@ The goal is to make sure each MVP feature can be traced from user need to accept
 | --- | --- |
 | User registration and login | US-001, US-002 |
 | Authenticated access control | US-003 |
-| Task creation | US-004 |
-| Task list and task detail retrieval | US-005, US-006 |
-| Task update and status tracking | US-007, US-008 |
-| Task deletion | US-009 |
-| Behaviour logging | US-010 |
-| Basic analytics summary | US-011 |
-| AI-based task scoring | US-012 |
-| Recommended task ordering | US-013 |
+| User profile personalisation data | US-004 |
+| Task creation | US-005 |
+| Task list and task detail retrieval | US-006, US-007 |
+| Task update and status tracking | US-008, US-009 |
+| Task deletion | US-010 |
+| Behaviour logging | US-011 |
+| Basic analytics summary | US-012 |
+| AI feature extraction | US-013 |
+| AI-based task scoring and delay risk | US-014 |
+| Recommended task ordering | US-015 |
 
 ## Epic 1: User Management and Security
 
@@ -85,9 +87,30 @@ Development Tasks:
 - Add consistent unauthorized and forbidden responses.
 - Test protected route access and task ownership rules.
 
+### US-004: Manage User Profile
+
+As a student, I want to manage my study profile, so that the system can personalise recommendations based on my habits and preferences.
+
+Acceptance Criteria:
+
+- The user can view their profile.
+- The user can update basic profile fields such as display name.
+- The user can store optional study preference data, such as preferred study time.
+- Profile data is only accessible to the authenticated user.
+- Profile data can be used by the recommendation module when available.
+
+Development Tasks:
+
+- Extend User entity or create UserProfile fields.
+- Implement profile request and response DTOs.
+- Implement `GET /users/me`.
+- Implement `PUT /users/me`.
+- Add ownership protection through authenticated identity.
+- Test profile retrieval and update cases.
+
 ## Epic 2: Task Management
 
-### US-004: Create Academic Task
+### US-005: Create Academic Task
 
 As a student, I want to create academic tasks with deadlines, so that I can manage my study workload.
 
@@ -108,7 +131,7 @@ Development Tasks:
 - Add validation for required fields and allowed values.
 - Test task creation with valid and invalid input.
 
-### US-005: View Task List
+### US-006: View Task List
 
 As a student, I want to view all my tasks, so that I can understand my current academic workload.
 
@@ -127,7 +150,7 @@ Development Tasks:
 - Add optional sorting by deadline or creation time.
 - Test task list retrieval for users with and without tasks.
 
-### US-006: View Task Detail
+### US-007: View Task Detail
 
 As a student, I want to view the details of a task, so that I can review its deadline, priority, and progress information.
 
@@ -145,7 +168,7 @@ Development Tasks:
 - Add not found handling.
 - Test task detail retrieval, not found, and forbidden cases.
 
-### US-007: Update Task Details
+### US-008: Update Task Details
 
 As a student, I want to update task details, so that my task list stays accurate when deadlines or study plans change.
 
@@ -166,7 +189,7 @@ Development Tasks:
 - Record behaviour logs for significant field changes.
 - Test successful update, invalid update, and forbidden update cases.
 
-### US-008: Update Task Status
+### US-009: Update Task Status
 
 As a student, I want to update task status, so that I can track whether a task is pending, in progress, or completed.
 
@@ -186,7 +209,7 @@ Development Tasks:
 - Record status change behaviour logs.
 - Test status transitions and completion timestamp behaviour.
 
-### US-009: Delete Task
+### US-010: Delete Task
 
 As a student, I want to delete tasks that are no longer needed, so that my task list remains clean and relevant.
 
@@ -207,7 +230,7 @@ Development Tasks:
 
 ## Epic 3: Behaviour Tracking and Analytics
 
-### US-010: Record Task Behaviour
+### US-011: Record Task Behaviour
 
 As a system, I want to record important task interactions, so that user behaviour can support future analytics and recommendations.
 
@@ -230,7 +253,7 @@ Development Tasks:
 - Integrate logging with task operations.
 - Test log creation for create, update, complete, and delete actions.
 
-### US-011: View Basic Analytics Summary
+### US-012: View Basic Analytics Summary
 
 As a student, I want to view a basic summary of my study task behaviour, so that I can understand my productivity patterns.
 
@@ -252,9 +275,32 @@ Development Tasks:
 
 ## Epic 4: Intelligent Recommendation
 
-### US-012: Calculate Task Priority Score
+### US-013: Extract Recommendation Features
 
-As a system, I want to calculate a priority score for each active task, so that tasks can be ranked according to urgency and importance.
+As a system, I want to extract features from task, profile, and behaviour data, so that recommendations are based on measurable signals rather than static sorting.
+
+Acceptance Criteria:
+
+- The system can calculate deadline urgency from task deadline.
+- The system can calculate historical completion rate when behaviour data exists.
+- The system can use task type or category as a recommendation feature.
+- The system can use estimated workload when available.
+- The system can use preferred study time or time-of-day data when available.
+- Missing historical data is handled with a documented default value.
+
+Development Tasks:
+
+- Implement FeatureExtractionService.
+- Define feature DTO or internal feature model.
+- Add urgency feature calculation.
+- Add historical completion rate calculation.
+- Add task type behaviour calculation.
+- Add default values for new users with limited data.
+- Add unit tests for feature extraction.
+
+### US-014: Calculate Task Priority Score and Delay Risk
+
+As a system, I want to calculate a priority score and delay risk for each active task, so that tasks can be ranked according to urgency, importance, and completion likelihood.
 
 Acceptance Criteria:
 
@@ -263,18 +309,19 @@ Acceptance Criteria:
 - User-defined priority affects the score.
 - Estimated workload can affect the score if available.
 - Historical completion or delay behaviour can affect the score when data exists.
+- Each task receives a delay risk result, such as low, medium, or high.
 - The scoring logic is explainable and documented.
 
 Development Tasks:
 
 - Define MVP scoring formula.
 - Implement RecommendationService.
-- Add urgency score calculation.
-- Add user priority score calculation.
-- Add delay risk placeholder or behaviour-based calculation.
+- Consume features from FeatureExtractionService.
+- Add weighted priority score calculation.
+- Add deterministic delay risk prediction.
 - Add unit tests for scoring logic.
 
-### US-013: View Recommended Task Order
+### US-015: View Recommended Task Order
 
 As a student, I want to view my tasks ranked by priority score, so that I know which task should be completed first.
 
@@ -284,6 +331,7 @@ Acceptance Criteria:
 - Only the authenticated user's active tasks are included.
 - Tasks are sorted by priority score in descending order.
 - Each recommended task includes score and basic task information.
+- Each recommended task includes delay risk.
 - Each recommended task includes a short reason explaining the recommendation.
 - Completed or deleted tasks are excluded from active recommendations.
 
@@ -293,18 +341,18 @@ Development Tasks:
 - Retrieve active tasks for authenticated user.
 - Apply scoring formula to each task.
 - Sort tasks by score.
-- Add recommendation response DTO with score and reason.
+- Add recommendation response DTO with score, delay risk, and reason.
 - Test recommendation ordering and filtering.
 
 ## MVP Definition of Done
 
 The MVP is complete when:
 
-- All user management stories from US-001 to US-003 are implemented and tested.
-- All task management stories from US-004 to US-009 are implemented and tested.
-- Behaviour tracking in US-010 is implemented for core task actions.
-- Basic analytics in US-011 is available.
-- Priority scoring and recommendation ordering in US-012 and US-013 are implemented.
+- All user management stories from US-001 to US-004 are implemented and tested.
+- All task management stories from US-005 to US-010 are implemented and tested.
+- Behaviour tracking in US-011 is implemented for core task actions.
+- Basic analytics in US-012 is available.
+- Feature extraction, priority scoring, delay risk, and recommendation ordering from US-013 to US-015 are implemented.
 - The main API behaviour is documented and can be tested through Postman or Swagger.
 
 ## Post-MVP User Story Candidates
