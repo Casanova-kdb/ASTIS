@@ -23,6 +23,8 @@ Project documentation will be stored under `docs/`.
 - `docs/diagrams/`: architecture diagrams and ERD files
 - `docs/diagrams/astis-mvp-prototype.pdf`: MVP frontend prototype
 - `docs/diagrams/astis-database-erd.png`: database ERD
+- `docs/database-design.md`: database table design and relationship notes
+- `backend/src/main/resources/db/schema.sql`: executable MySQL schema script
 
 Interactive prototype:
 [ASTIS MVP Prototype on Visily](https://app.visily.ai/projects/3c280140-c6a8-4b9d-b58b-fa5d75d226a2/boards/2648718/presenter?play-mode=All+screens)

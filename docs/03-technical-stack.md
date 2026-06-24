@@ -54,6 +54,12 @@ Chosen database:
 
 The initial design will use normalized tables for users, tasks, and behaviour logs.
 
+The executable schema script is stored at:
+
+```text
+backend/src/main/resources/db/schema.sql
+```
+
 Database design standards:
 
 - Normalized schema for core entities
