@@ -21,6 +21,29 @@ Project documentation will be stored under `docs/`.
 
 - `docs/sprints/`: sprint planning and review records
 - `docs/diagrams/`: architecture diagrams and ERD files
+- `docs/diagrams/astis-mvp-prototype.pdf`: MVP frontend prototype
+- `docs/diagrams/astis-database-erd.png`: database ERD
+- `docs/database-design.md`: database table design and relationship notes
+- `backend/src/main/resources/db/schema.sql`: executable MySQL schema script
+
+Interactive prototype:
+[ASTIS MVP Prototype on Visily](https://app.visily.ai/projects/3c280140-c6a8-4b9d-b58b-fa5d75d226a2/boards/2648718/presenter?play-mode=All+screens)
+
+## Project Structure
+
+```text
+backend/    Spring Boot REST API and AI recommendation module
+frontend/   Vue 3 user interface
+docs/       Requirements, system design, user stories, and sprint records
+```
+
+## Planned Tech Stack
+
+- Backend: Java, Spring Boot, Spring Web, Spring Data JPA, Spring Security
+- Frontend: Vue 3, Vite, Vue Router, Axios
+- Database: MySQL
+- API Documentation: Swagger / OpenAPI
+- Testing: JUnit, Spring Boot Test, Postman
 
 ## Development
 
