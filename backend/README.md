@@ -47,3 +47,18 @@ Run it from the project root with:
 ```bash
 mysql -u root -p < backend/src/main/resources/db/schema.sql
 ```
+
+## Authentication APIs
+
+The first backend authentication endpoints are:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+```
+
+Both endpoints return a bearer token that can be used as:
+
+```text
+Authorization: Bearer <accessToken>
+```
