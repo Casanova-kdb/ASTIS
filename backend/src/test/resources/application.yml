@@ -8,3 +8,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: false
+
+app:
+  security:
+    jwt:
+      secret: astis-test-secret-key-change-before-production-2026
+      expiration-ms: 86400000

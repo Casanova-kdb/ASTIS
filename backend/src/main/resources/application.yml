@@ -22,3 +22,9 @@ server:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+app:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:astis-development-secret-key-change-before-production-2026}
+      expiration-ms: ${JWT_EXPIRATION_MS:86400000}
