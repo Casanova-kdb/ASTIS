@@ -14,6 +14,19 @@ Planned backend technologies:
 - Bean Validation
 - Lombok
 
+## Frontend
+
+The frontend will be implemented with Vue 3.
+
+Planned frontend technologies:
+
+- Vue 3
+- Vite
+- Vue Router
+- Axios
+
+Vue is selected because it supports a clear and maintainable UI structure while keeping the project focus on backend architecture, behaviour tracking, and AI-based recommendation.
+
 ## API Design
 
 The system will expose RESTful APIs for authentication, task management, analytics, and recommendations.

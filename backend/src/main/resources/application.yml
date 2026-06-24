@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: astis-backend
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:astis}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
