@@ -21,6 +21,8 @@ Project documentation will be stored under `docs/`.
 
 - `docs/sprints/`: sprint planning and review records
 - `docs/diagrams/`: architecture diagrams and ERD files
+- `docs/diagrams/astis-mvp-prototype.pdf`: MVP frontend prototype
+- `docs/diagrams/astis-database-erd.png`: database ERD
 
 ## Project Structure
 
