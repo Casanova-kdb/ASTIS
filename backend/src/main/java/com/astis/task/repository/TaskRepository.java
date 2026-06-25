@@ -13,6 +13,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByUserIdAndStatusOrderByDeadlineAsc(Long userId, TaskStatus status);
 
+    List<Task> findByUserIdAndStatusNotOrderByDeadlineAsc(Long userId, TaskStatus status);
+
     Optional<Task> findByIdAndUserId(Long id, Long userId);
 
     long countByUserId(Long userId);
