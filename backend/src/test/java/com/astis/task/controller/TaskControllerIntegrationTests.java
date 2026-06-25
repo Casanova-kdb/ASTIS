@@ -1,5 +1,7 @@
 package com.astis.task.controller;
 
+import com.astis.analytics.entity.BehaviorActionType;
+import com.astis.analytics.repository.BehaviorLogRepository;
 import com.astis.task.repository.TaskRepository;
 import com.astis.user.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.blankOrNullString;
@@ -33,10 +36,14 @@ class TaskControllerIntegrationTests {
     private TaskRepository taskRepository;
 
     @Autowired
+    private BehaviorLogRepository behaviorLogRepository;
+
+    @Autowired
     private AppUserRepository appUserRepository;
 
     @BeforeEach
     void setUp() {
+        behaviorLogRepository.deleteAll();
         taskRepository.deleteAll();
         appUserRepository.deleteAll();
     }
@@ -62,6 +69,9 @@ class TaskControllerIntegrationTests {
                 .andExpect(jsonPath("$.data.title").value("Database Coursework"))
                 .andExpect(jsonPath("$.data.priority").value("HIGH"))
                 .andExpect(jsonPath("$.data.status").value("PENDING"));
+
+        assertThat(behaviorLogRepository.countByActionType(BehaviorActionType.CREATE_TASK))
+                .isEqualTo(1);
     }
 
     @Test
@@ -99,6 +109,13 @@ class TaskControllerIntegrationTests {
                 .andExpect(jsonPath("$.data.title").value("Updated Database Coursework"))
                 .andExpect(jsonPath("$.data.priority").value("MEDIUM"));
 
+        assertThat(behaviorLogRepository.countByActionType(BehaviorActionType.UPDATE_TASK))
+                .isEqualTo(1);
+        assertThat(behaviorLogRepository.countByActionType(BehaviorActionType.UPDATE_DEADLINE))
+                .isEqualTo(1);
+        assertThat(behaviorLogRepository.countByActionType(BehaviorActionType.UPDATE_PRIORITY))
+                .isEqualTo(1);
+
         mockMvc.perform(patch("/tasks/{taskId}/status", taskId)
                         .header("Authorization", bearer(token))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -110,6 +127,11 @@ class TaskControllerIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.status").value("COMPLETED"))
                 .andExpect(jsonPath("$.data.completedAt", not(blankOrNullString())));
+
+        assertThat(behaviorLogRepository.countByActionType(BehaviorActionType.UPDATE_STATUS))
+                .isEqualTo(1);
+        assertThat(behaviorLogRepository.countByActionType(BehaviorActionType.COMPLETE_TASK))
+                .isEqualTo(1);
     }
 
     @Test
@@ -133,6 +155,9 @@ class TaskControllerIntegrationTests {
                         .header("Authorization", bearer(token)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
+
+        assertThat(behaviorLogRepository.countByActionType(BehaviorActionType.DELETE_TASK))
+                .isEqualTo(1);
 
         mockMvc.perform(get("/tasks/{taskId}", taskId)
                         .header("Authorization", bearer(token)))
