@@ -6,6 +6,44 @@ This document defines the MVP user stories for ASTIS.
 
 The goal is to make sure each MVP feature can be traced from user need to acceptance criteria and development tasks. These stories will later be converted into GitHub Issues and implemented through sprint branches.
 
+## Estimation Guide
+
+Each story includes priority, estimate, and size to support sprint planning.
+
+- Priority: P0 means required for the MVP, P1 means important but can be finished after the core flow, and P2 means useful but not blocking.
+- Estimate: Story points based on relative effort.
+- Size: S, M, or L based on expected implementation complexity.
+
+## GitHub Project Board Backlog
+
+This table can be used as the starting backlog for a GitHub Projects Kanban board. Each user story can become one GitHub Issue, and the fields can be added as issue labels or project custom fields.
+
+| ID | Issue Title | Epic | Priority | Estimate | Size | Planned Sprint | Kanban Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| US-001 | User Registration | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
+| US-002 | User Login | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
+| US-003 | Protected Personal Workspace | User Management and Security | P0 | 5 | M | Sprint 2 | Done |
+| US-004 | Manage User Profile | User Management and Security | P1 | 3 | M | Sprint 4 | Backlog |
+| US-005 | Create Academic Task | Task Management | P0 | 3 | M | Sprint 2 | Done |
+| US-006 | View Task List | Task Management | P0 | 2 | S | Sprint 2 | Done |
+| US-007 | View Task Detail | Task Management | P0 | 2 | S | Sprint 2 | Done |
+| US-008 | Update Task Details | Task Management | P0 | 5 | M | Sprint 2 | In Progress |
+| US-009 | Update Task Status | Task Management | P0 | 3 | M | Sprint 2 | In Progress |
+| US-010 | Delete Task | Task Management | P0 | 2 | S | Sprint 2 | In Progress |
+| US-011 | Record Task Behaviour | Behaviour Tracking and Analytics | P0 | 5 | M | Sprint 4 | Backlog |
+| US-012 | View Basic Analytics Summary | Behaviour Tracking and Analytics | P1 | 5 | M | Sprint 4 | Backlog |
+| US-013 | Extract Recommendation Features | Intelligent Recommendation | P0 | 5 | M | Sprint 5 | Backlog |
+| US-014 | Calculate Task Priority Score and Delay Risk | Intelligent Recommendation | P0 | 8 | L | Sprint 5 | Backlog |
+| US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 5 | Backlog |
+
+Suggested GitHub labels:
+
+- `priority: P0`, `priority: P1`, `priority: P2`
+- `size: S`, `size: M`, `size: L`
+- `type: user-story`
+- `epic: user-management`, `epic: task-management`, `epic: analytics`, `epic: recommendation`
+- `sprint-2`, `sprint-4`, `sprint-5`
+
 ## MVP Coverage Map
 
 | MVP Capability | Covered By |
@@ -26,6 +64,10 @@ The goal is to make sure each MVP feature can be traced from user need to accept
 ## Epic 1: User Management and Security
 
 ### US-001: User Registration
+
+Priority: P0
+Estimate: 3 story points
+Size: M
 
 As a student, I want to create an account, so that my academic tasks and study behaviour can be stored securely.
 
@@ -49,6 +91,10 @@ Development Tasks:
 
 ### US-002: User Login
 
+Priority: P0
+Estimate: 3 story points
+Size: M
+
 As a student, I want to log in to the system, so that I can access my personal task workspace.
 
 Acceptance Criteria:
@@ -69,6 +115,10 @@ Development Tasks:
 
 ### US-003: Protected Personal Workspace
 
+Priority: P0
+Estimate: 5 story points
+Size: M
+
 As a student, I want my task data to be private, so that other users cannot access or modify my study records.
 
 Acceptance Criteria:
@@ -88,6 +138,10 @@ Development Tasks:
 - Test protected route access and task ownership rules.
 
 ### US-004: Manage User Profile
+
+Priority: P1
+Estimate: 3 story points
+Size: M
 
 As a student, I want to manage my study profile, so that the system can personalise recommendations based on my habits and preferences.
 
@@ -112,6 +166,10 @@ Development Tasks:
 
 ### US-005: Create Academic Task
 
+Priority: P0
+Estimate: 3 story points
+Size: M
+
 As a student, I want to create academic tasks with deadlines, so that I can manage my study workload.
 
 Acceptance Criteria:
@@ -133,6 +191,10 @@ Development Tasks:
 
 ### US-006: View Task List
 
+Priority: P0
+Estimate: 2 story points
+Size: S
+
 As a student, I want to view all my tasks, so that I can understand my current academic workload.
 
 Acceptance Criteria:
@@ -152,6 +214,10 @@ Development Tasks:
 
 ### US-007: View Task Detail
 
+Priority: P0
+Estimate: 2 story points
+Size: S
+
 As a student, I want to view the details of a task, so that I can review its deadline, priority, and progress information.
 
 Acceptance Criteria:
@@ -169,6 +235,10 @@ Development Tasks:
 - Test task detail retrieval, not found, and forbidden cases.
 
 ### US-008: Update Task Details
+
+Priority: P0
+Estimate: 5 story points
+Size: M
 
 As a student, I want to update task details, so that my task list stays accurate when deadlines or study plans change.
 
@@ -191,6 +261,10 @@ Development Tasks:
 
 ### US-009: Update Task Status
 
+Priority: P0
+Estimate: 3 story points
+Size: M
+
 As a student, I want to update task status, so that I can track whether a task is pending, in progress, or completed.
 
 Acceptance Criteria:
@@ -210,6 +284,10 @@ Development Tasks:
 - Test status transitions and completion timestamp behaviour.
 
 ### US-010: Delete Task
+
+Priority: P0
+Estimate: 2 story points
+Size: S
 
 As a student, I want to delete tasks that are no longer needed, so that my task list remains clean and relevant.
 
@@ -231,6 +309,10 @@ Development Tasks:
 ## Epic 3: Behaviour Tracking and Analytics
 
 ### US-011: Record Task Behaviour
+
+Priority: P0
+Estimate: 5 story points
+Size: M
 
 As a system, I want to record important task interactions, so that user behaviour can support future analytics and recommendations.
 
@@ -255,6 +337,10 @@ Development Tasks:
 
 ### US-012: View Basic Analytics Summary
 
+Priority: P1
+Estimate: 5 story points
+Size: M
+
 As a student, I want to view a basic summary of my study task behaviour, so that I can understand my productivity patterns.
 
 Acceptance Criteria:
@@ -276,6 +362,10 @@ Development Tasks:
 ## Epic 4: Intelligent Recommendation
 
 ### US-013: Extract Recommendation Features
+
+Priority: P0
+Estimate: 5 story points
+Size: M
 
 As a system, I want to extract features from task, profile, and behaviour data, so that recommendations are based on measurable signals rather than static sorting.
 
@@ -300,6 +390,10 @@ Development Tasks:
 
 ### US-014: Calculate Task Priority Score and Delay Risk
 
+Priority: P0
+Estimate: 8 story points
+Size: L
+
 As a system, I want to calculate a priority score and delay risk for each active task, so that tasks can be ranked according to urgency, importance, and completion likelihood.
 
 Acceptance Criteria:
@@ -322,6 +416,10 @@ Development Tasks:
 - Add unit tests for scoring logic.
 
 ### US-015: View Recommended Task Order
+
+Priority: P0
+Estimate: 5 story points
+Size: M
 
 As a student, I want to view my tasks ranked by priority score, so that I know which task should be completed first.
 
