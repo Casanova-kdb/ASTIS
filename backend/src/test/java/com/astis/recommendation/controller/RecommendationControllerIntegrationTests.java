@@ -56,6 +56,12 @@ class RecommendationControllerIntegrationTests {
     }
 
     @Test
+    void studyAdviceRequiresAuthentication() throws Exception {
+        mockMvc.perform(get("/recommendations/advice"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void userCanViewRankedRecommendedTasks() throws Exception {
         String token = registerAndToken("student", "student@example.com");
         AppUser user = appUserRepository.findByEmail("student@example.com").orElseThrow();
@@ -126,6 +132,33 @@ class RecommendationControllerIntegrationTests {
                         .header("Authorization", bearer(token)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()").value(0));
+    }
+
+    @Test
+    void userCanViewFallbackStudyAdviceWhenDeepSeekIsNotConfigured() throws Exception {
+        String token = registerAndToken("student", "student@example.com");
+        AppUser user = appUserRepository.findByEmail("student@example.com").orElseThrow();
+
+        taskRepository.save(new Task(
+                user,
+                "Finish AI Coursework",
+                "Complete recommendation module",
+                "COURSEWORK",
+                TaskPriority.HIGH,
+                LocalDateTime.now().plusDays(2),
+                BigDecimal.valueOf(6.0)
+        ));
+
+        mockMvc.perform(get("/recommendations/advice")
+                        .header("Authorization", bearer(token)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.provider").value("local-fallback"))
+                .andExpect(jsonPath("$.data.model").value("deepseek-v4-flash"))
+                .andExpect(jsonPath("$.data.fallback").value(true))
+                .andExpect(jsonPath("$.data.advice", not(blankOrNullString())))
+                .andExpect(jsonPath("$.data.basedOnTasks.length()").value(1))
+                .andExpect(jsonPath("$.data.basedOnTasks[0].title").value("Finish AI Coursework"));
     }
 
     private String registerAndToken(String username, String email) throws Exception {
