@@ -22,3 +22,17 @@ server:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+app:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:astis-development-secret-key-change-before-production-2026}
+      expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  ai:
+    deepseek:
+      enabled: ${DEEPSEEK_ENABLED:true}
+      base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
+      api-key: ${DEEPSEEK_API_KEY:}
+      model: ${DEEPSEEK_MODEL:deepseek-v4-flash}
+      temperature: ${DEEPSEEK_TEMPERATURE:0.3}
+      max-tokens: ${DEEPSEEK_MAX_TOKENS:600}
