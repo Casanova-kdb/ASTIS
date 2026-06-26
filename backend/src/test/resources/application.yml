@@ -14,3 +14,11 @@ app:
     jwt:
       secret: astis-test-secret-key-change-before-production-2026
       expiration-ms: 86400000
+  ai:
+    deepseek:
+      enabled: false
+      base-url: https://api.deepseek.com
+      api-key:
+      model: deepseek-v4-flash
+      temperature: 0.3
+      max-tokens: 600
