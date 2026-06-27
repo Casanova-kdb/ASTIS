@@ -22,5 +22,8 @@ frontend/.vite/
 !frontend/.env.example
 !backend/.env.example
 
+# Local demo data
+backend/src/main/resources/db/sample-data.sql
+
 # Logs
 *.log
