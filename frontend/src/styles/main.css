@@ -246,6 +246,40 @@ button {
   grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
 }
 
+.dashboard-grid {
+  align-items: stretch;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.3fr);
+}
+
+.metric-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.metric-card {
+  background: #ffffff;
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+}
+
+.metric-card span {
+  color: #52616f;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.metric-card strong {
+  color: #132238;
+  font-size: 34px;
+  line-height: 1;
+}
+
 .panel {
   background: #ffffff;
   border: 1px solid #dbe3ea;
@@ -276,6 +310,64 @@ button {
 .task-form {
   display: grid;
   gap: 16px;
+}
+
+.progress-panel,
+.focus-panel {
+  min-height: 260px;
+}
+
+.progress-value {
+  color: #132238;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  margin: 28px 0 18px;
+}
+
+.progress-track {
+  background: #e6eef5;
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #2a9d8f;
+  border-radius: inherit;
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.focus-card {
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+}
+
+.focus-card h4 {
+  font-size: 20px;
+  margin: 10px 0 8px;
+}
+
+.focus-card p {
+  color: #52616f;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.rank-badge {
+  background: #132238;
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  padding: 6px 8px;
 }
 
 .form-row {
@@ -477,8 +569,19 @@ h2 {
     width: 100%;
   }
 
+  .dashboard-grid,
   .task-grid,
   .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .metric-grid {
     grid-template-columns: 1fr;
   }
 }
