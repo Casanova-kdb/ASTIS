@@ -8,6 +8,12 @@ const apiClient = axios.create({
   timeout: 10000
 })
 
+let unauthorizedHandler = null
+
+export function setUnauthorizedHandler(handler) {
+  unauthorizedHandler = handler
+}
+
 export function getStoredToken() {
   return localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)
 }
@@ -60,7 +66,17 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => response.data,
-  (error) => Promise.reject(error)
+  (error) => {
+    if (error?.response?.status === 401) {
+      clearStoredAuth()
+
+      if (unauthorizedHandler) {
+        unauthorizedHandler()
+      }
+    }
+
+    return Promise.reject(error)
+  }
 )
 
 export default apiClient
