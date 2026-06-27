@@ -69,12 +69,13 @@
           </div>
 
           <p v-if="formError" class="form-error">{{ formError }}</p>
+          <p v-if="successMessage" class="form-success">{{ successMessage }}</p>
 
           <div class="form-actions">
             <button type="submit" class="primary-button" :disabled="isSaving">
               {{ isSaving ? 'Saving...' : editingTaskId ? 'Save changes' : 'Create task' }}
             </button>
-            <button v-if="editingTaskId" type="button" class="secondary-button" @click="resetForm">
+            <button v-if="editingTaskId" type="button" class="secondary-button" @click="resetForm(true)">
               Cancel
             </button>
           </div>
@@ -169,6 +170,7 @@ const deletingTaskId = ref(null)
 const editingTaskId = ref(null)
 const listError = ref('')
 const formError = ref('')
+const successMessage = ref('')
 
 const form = reactive({
   title: '',
@@ -197,18 +199,21 @@ async function loadTasks() {
 
 async function handleSubmit() {
   formError.value = ''
+  successMessage.value = ''
   isSaving.value = true
 
   try {
     const payload = buildPayload()
+    const isEditing = Boolean(editingTaskId.value)
 
-    if (editingTaskId.value) {
+    if (isEditing) {
       await updateTask(editingTaskId.value, payload)
     } else {
       await createTask(payload)
     }
 
     resetForm()
+    successMessage.value = isEditing ? 'Task updated successfully.' : 'Task created successfully.'
     await loadTasks()
   } catch (error) {
     formError.value = getApiErrorMessage(error)
@@ -224,9 +229,11 @@ async function handleStatusChange(task, status) {
 
   updatingTaskId.value = task.id
   listError.value = ''
+  successMessage.value = ''
 
   try {
     await updateTaskStatus(task.id, status)
+    successMessage.value = 'Task status updated.'
     await loadTasks()
   } catch (error) {
     listError.value = getApiErrorMessage(error)
@@ -244,6 +251,7 @@ async function handleDelete(task) {
 
   deletingTaskId.value = task.id
   listError.value = ''
+  successMessage.value = ''
 
   try {
     await deleteTask(task.id)
@@ -252,6 +260,7 @@ async function handleDelete(task) {
       resetForm()
     }
 
+    successMessage.value = 'Task deleted successfully.'
     await loadTasks()
   } catch (error) {
     listError.value = getApiErrorMessage(error)
@@ -269,9 +278,10 @@ function startEdit(task) {
   form.deadline = toDateTimeInputValue(task.deadline)
   form.estimatedHours = Number(task.estimatedHours ?? 0)
   formError.value = ''
+  successMessage.value = ''
 }
 
-function resetForm() {
+function resetForm(clearSuccess = false) {
   editingTaskId.value = null
   form.title = ''
   form.description = ''
@@ -280,6 +290,9 @@ function resetForm() {
   form.deadline = getDefaultDeadline()
   form.estimatedHours = 1
   formError.value = ''
+  if (clearSuccess) {
+    successMessage.value = ''
+  }
 }
 
 function buildPayload() {
