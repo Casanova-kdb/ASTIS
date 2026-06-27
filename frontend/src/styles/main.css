@@ -359,6 +359,115 @@ button {
   margin: 0;
 }
 
+.advice-panel {
+  background:
+    linear-gradient(135deg, rgba(42, 157, 143, 0.1), transparent 34%),
+    #ffffff;
+}
+
+.advice-content {
+  display: grid;
+  gap: 18px;
+}
+
+.advice-content p {
+  color: #1f2933;
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.advice-meta {
+  color: #52616f;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: 8px;
+}
+
+.advice-meta span,
+.provider-pill {
+  background: #f0f4f8;
+  border-radius: 999px;
+  display: inline-flex;
+  font-weight: 800;
+  line-height: 1;
+  padding: 7px 9px;
+}
+
+.recommendation-list {
+  display: grid;
+  gap: 16px;
+}
+
+.recommendation-item {
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 18px;
+}
+
+.recommendation-rank {
+  align-items: center;
+  background: #132238;
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 900;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.recommendation-body {
+  display: grid;
+  gap: 16px;
+}
+
+.recommendation-body h4 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.recommendation-body p {
+  color: #52616f;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.score-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.score-row div {
+  background: #f7f9fb;
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.score-row span {
+  color: #52616f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.score-row strong {
+  color: #132238;
+  font-size: 16px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
 .rank-badge {
   background: #132238;
   border-radius: 999px;
@@ -577,6 +686,11 @@ h2 {
 
   .metric-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .recommendation-item,
+  .score-row {
+    grid-template-columns: 1fr;
   }
 }
 
