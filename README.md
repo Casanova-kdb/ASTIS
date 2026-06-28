@@ -2,11 +2,11 @@
 
 ASTIS is an AI-enhanced study task management system for academic task planning, behaviour tracking, task prioritisation, and personalised study advice.
 
-The project is built as a full-stack MVP with a Spring Boot backend, MySQL database, Vue frontend, and an AI recommendation/advice module.
+The project is built as a completed full-stack MVP with a Spring Boot backend, MySQL database, Vue frontend, and an AI recommendation/advice module.
 
 ## Current Status
 
-ASTIS is currently at the MVP prototype stage.
+ASTIS MVP v1.0 is completed and documented.
 
 Completed areas:
 
@@ -18,6 +18,8 @@ Completed areas:
 - DeepSeek-based AI study advice with local fallback
 - Vue frontend prototype
 - Manual full-stack test report
+- MVP release summary
+- Post-MVP iteration backlog
 
 ## MVP Features
 
@@ -152,13 +154,18 @@ VITE_API_BASE_URL=http://localhost:8080/api
 - [Technical Stack](docs/03-technical-stack.md)
 - [User Stories](docs/user-stories.md)
 - [Database Design](docs/database-design.md)
+- [MVP Release Summary](docs/mvp-release-summary.md)
+- [Future Iteration Backlog](docs/future-iteration-backlog.md)
 - [Manual Full-stack Test Report](docs/testing/manual-test-report.md)
 
 Sprint records:
 
 - [Sprint 0: Project Planning and Setup](docs/sprints/sprint-0-planning.md)
 - [Sprint 1: Project Structure Initialization](docs/sprints/sprint-1-project-structure.md)
+- [Sprint 2: Backend API and Recommendation MVP](docs/sprints/sprint-2-backend-api-swagger.md)
 - [Sprint 3: Frontend Prototype and MVP UI](docs/sprints/sprint-3-frontend-prototype.md)
+- [Sprint 4: Full-stack Integration Polish](docs/sprints/sprint-4-integration-polish.md)
+- [Sprint 5: MVP Release Closure](docs/sprints/sprint-5-mvp-release-closure.md)
 
 Design assets:
 
@@ -207,4 +214,4 @@ This project follows a lightweight personal Scrum workflow:
 
 Local demo seed data is ignored by Git and is not part of the repository.
 
-The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, and prepare cloud deployment.
+The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add custom recommendation weights, explore AI handbook parsing, add Redis caching, and prepare Docker-based deployment.

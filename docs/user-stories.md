@@ -27,14 +27,14 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-005 | Create Academic Task | Task Management | P0 | 3 | M | Sprint 2 | Done |
 | US-006 | View Task List | Task Management | P0 | 2 | S | Sprint 2 | Done |
 | US-007 | View Task Detail | Task Management | P0 | 2 | S | Sprint 2 | Done |
-| US-008 | Update Task Details | Task Management | P0 | 5 | M | Sprint 2 | In Progress |
-| US-009 | Update Task Status | Task Management | P0 | 3 | M | Sprint 2 | In Progress |
-| US-010 | Delete Task | Task Management | P0 | 2 | S | Sprint 2 | In Progress |
-| US-011 | Record Task Behaviour | Behaviour Tracking and Analytics | P0 | 5 | M | Sprint 4 | Backlog |
-| US-012 | View Basic Analytics Summary | Behaviour Tracking and Analytics | P1 | 5 | M | Sprint 4 | Backlog |
-| US-013 | Extract Recommendation Features | Intelligent Recommendation | P0 | 5 | M | Sprint 5 | Backlog |
-| US-014 | Calculate Task Priority Score and Delay Risk | Intelligent Recommendation | P0 | 8 | L | Sprint 5 | Backlog |
-| US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 5 | Backlog |
+| US-008 | Update Task Details | Task Management | P0 | 5 | M | Sprint 2 | Done |
+| US-009 | Update Task Status | Task Management | P0 | 3 | M | Sprint 2 | Done |
+| US-010 | Delete Task | Task Management | P0 | 2 | S | Sprint 2 | Done |
+| US-011 | Record Task Behaviour | Behaviour Tracking and Analytics | P0 | 5 | M | Sprint 2 | Done |
+| US-012 | View Basic Analytics Summary | Behaviour Tracking and Analytics | P1 | 5 | M | Sprint 2 | Done |
+| US-013 | Extract Recommendation Features | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
+| US-014 | Calculate Task Priority Score and Delay Risk | Intelligent Recommendation | P0 | 8 | L | Sprint 2 | Done |
+| US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
 
 Suggested GitHub labels:
 
@@ -444,14 +444,16 @@ Development Tasks:
 
 ## MVP Definition of Done
 
-The MVP is complete when:
+The MVP v1.0 is complete when:
 
-- All user management stories from US-001 to US-004 are implemented and tested.
+- Core user management stories from US-001 to US-003 are implemented and tested.
 - All task management stories from US-005 to US-010 are implemented and tested.
 - Behaviour tracking in US-011 is implemented for core task actions.
 - Basic analytics in US-012 is available.
 - Feature extraction, priority scoring, delay risk, and recommendation ordering from US-013 to US-015 are implemented.
 - The main API behaviour is documented and can be tested through Postman or Swagger.
+
+US-004 profile management is kept as a P1 post-MVP improvement because the first release can already provide the main authenticated task and recommendation workflow without a profile settings page.
 
 ## Post-MVP User Story Candidates
 
@@ -459,7 +461,12 @@ These stories are intentionally excluded from the MVP and can be added after the
 
 - Generate a personalised daily study schedule.
 - Build a dashboard with charts and visual analytics.
+- Add profile management and study preference editing.
+- Add user-customised recommendation weights.
+- Extract deadlines from uploaded or pasted module handbook content.
+- Add safer AI provider abstraction and optional user-supplied API key support.
 - Integrate a Python machine learning service.
 - Predict task completion likelihood using a trained model.
 - Add calendar integration.
+- Add Redis caching for recommendation results.
 - Deploy the system to a cloud platform.
