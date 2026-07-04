@@ -23,7 +23,7 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-001 | User Registration | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
 | US-002 | User Login | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
 | US-003 | Protected Personal Workspace | User Management and Security | P0 | 5 | M | Sprint 2 | Done |
-| US-004 | Manage User Profile | User Management and Security | P1 | 3 | M | Sprint 8 | Backlog |
+| US-004 | Manage User Profile | User Management and Security | P1 | 3 | M | Sprint 7 | In Progress |
 | US-005 | Create Academic Task | Task Management | P0 | 3 | M | Sprint 2 | Done |
 | US-006 | View Task List | Task Management | P0 | 2 | S | Sprint 2 | Done |
 | US-007 | View Task Detail | Task Management | P0 | 2 | S | Sprint 2 | Done |
@@ -37,7 +37,7 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
 | US-016 | View AI Study Advice | Intelligent Recommendation | P1 | 3 | M | Sprint 2 | Done |
 | US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 7 | Backlog |
-| US-018 | Customise Recommendation Weights | Personalisation | P1 | 8 | L | Sprint 8 | Backlog |
+| US-018 | Configure Task Scoring Criteria | Task Recommendation | P1 | 8 | L | Sprint 7 | In Progress |
 | US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 9 | Backlog |
 | US-020 | Upload or Paste Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 10 | Backlog |
 | US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 10 | Backlog |
@@ -79,7 +79,7 @@ Suggested GitHub labels:
 | --- | --- |
 | User profile and study preference editing | US-004 |
 | Better recommendation explanations | US-017 |
-| User-defined recommendation weights | US-018 |
+| Task-specific scoring criteria | US-018 |
 | Richer analytics and behaviour insight | US-019 |
 | Module handbook upload or paste input | US-020 |
 | AI extraction review before task creation | US-021 |
@@ -536,33 +536,33 @@ Development Tasks:
 - Update frontend recommendation card copy.
 - Check that explanations match the calculated feature values.
 
-### US-018: Customise Recommendation Weights
+### US-018: Configure Task Scoring Criteria
 
 Priority: P1
 Estimate: 8 story points
 Size: L
 
-As a student, I want to adjust how much urgency, priority, workload, and history affect recommendation scores, so that the ranking matches my own study style.
+As a student, I want each task to have its own scoring criteria, so that ASTIS can rank different types of academic work more accurately.
 
 Acceptance Criteria:
 
-- The user can view current recommendation weights.
-- The user can update weights within a safe numeric range.
-- New users receive default weights.
-- Weight settings belong only to the authenticated user.
-- Recommendation scores change when weight settings change.
-- Invalid weight values return validation errors.
-- The system can reset weights to default values.
+- Each task can store task-specific scoring criteria.
+- New tasks receive default scoring criteria values.
+- The user can adjust criteria such as grade impact, difficulty, deadline flexibility, and personal importance.
+- Criteria values are validated within a safe range.
+- Recommendation scoring uses each task's own criteria.
+- User profile data remains separate from task scoring criteria.
+- Recommendation score remains normalised between 0 and 100.
 
 Development Tasks:
 
-- Design recommendation weight entity or user setting fields.
+- Add task scoring criteria fields to the Task entity.
 - Add request and response DTOs.
-- Implement `GET /recommendations/settings`.
-- Implement `PUT /recommendations/settings`.
-- Update scoring service to use user-specific weights.
-- Add backend tests for default, custom, invalid, and reset cases.
-- Add frontend controls for weight editing.
+- Update task create and update APIs.
+- Update feature extraction to include task criteria.
+- Update scoring service to use task-specific criteria.
+- Add frontend controls inside the task form.
+- Add backend tests for scoring and criteria validation.
 
 ### US-019: View Enhanced Analytics
 

@@ -11,8 +11,8 @@ The MVP has already proved the core workflow: users can manage study tasks, the 
 | Sprint | Theme | Main Outcome |
 | --- | --- | --- |
 | Sprint 6 | User Story Iteration | Refine backlog and acceptance criteria for post-MVP features |
-| Sprint 7 | Recommendation Improvement | Improve recommendation explanations and scoring quality |
-| Sprint 8 | Custom Weights System | Let users adjust recommendation weights |
+| Sprint 7 | User Profile and Task Scoring Criteria | Let users manage study profile settings and task-specific scoring criteria |
+| Sprint 8 | Recommendation Improvement | Improve recommendation explanations and scoring quality |
 | Sprint 9 | Analytics Enhancement | Add richer productivity and delay-pattern analytics |
 | Sprint 10 | AI Handbook Parser | Extract deadlines from uploaded module handbook files |
 | Sprint 11 | Study Plan Generator | Generate a planned study schedule from tasks and recommendations |
@@ -47,7 +47,26 @@ The refined user stories are documented in:
 docs/user-stories.md
 ```
 
-## Sprint 7: Recommendation Improvement
+## Sprint 7: User Profile and Task Scoring Criteria
+
+Goal:
+
+Allow users to manage personal study settings and configure task-specific scoring criteria.
+
+Possible work:
+
+- User profile settings API
+- Task scoring criteria fields
+- Five-point task criteria sliders
+- Normalised scoring formula
+- Frontend Settings page for profile
+- Task form criteria controls
+
+Priority:
+
+P1. This improves personalisation while keeping user profile data and task data clearly separated.
+
+## Sprint 8: Recommendation Improvement
 
 Goal:
 
@@ -60,38 +79,13 @@ Possible work:
 - More use of task type and historical behaviour
 - Backend tests for more scoring edge cases
 
+Expected outcome:
+
+The user can understand why a task is ranked highly.
+
 Priority:
 
 P1. This improves quality, but the MVP already has a working recommendation module.
-
-## Sprint 8: Custom Weights System
-
-Goal:
-
-Allow users to customise how task scores are calculated.
-
-Possible user settings:
-
-- Urgency weight
-- User priority weight
-- Estimated workload weight
-- Completion history weight
-- Overdue risk weight
-
-Expected outcome:
-
-The user can change recommendation behaviour without editing backend code.
-
-Engineering notes:
-
-- Store weight settings per user.
-- Validate that weights stay within a safe range.
-- Keep default weights for new users.
-- Add tests to prove recommendations change when weights change.
-
-Priority:
-
-P1. This is a strong feature because it shows personalisation and system configurability.
 
 ## Sprint 9: Analytics Enhancement
 

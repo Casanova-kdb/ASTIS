@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import TasksView from '../views/TasksView.vue'
 import RecommendationsView from '../views/RecommendationsView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import SettingsView from '../views/SettingsView.vue'
 
 const routes = [
   {
@@ -45,6 +46,14 @@ const routes = [
     path: '/recommendations',
     name: 'recommendations',
     component: RecommendationsView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: SettingsView,
     meta: {
       requiresAuth: true
     }

@@ -156,7 +156,7 @@ Main tested flows:
 - Automated frontend tests have not been added yet.
 - Deployment is not included in the MVP release.
 - Recommendation scoring is rule-based and has not been trained on a large dataset.
-- User-configurable recommendation weights are not included yet.
+- Task-specific scoring criteria are not included yet.
 - User-configurable AI provider/API key support is not included yet.
 - Module handbook parsing is not included yet.
 - Redis caching is not needed yet because recommendation traffic is local and small.

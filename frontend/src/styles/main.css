@@ -18,7 +18,9 @@ a {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
@@ -266,6 +268,17 @@ button {
   grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.3fr);
 }
 
+.settings-grid {
+  align-items: start;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+}
+
+.settings-grid-single {
+  grid-template-columns: minmax(280px, 720px);
+}
+
 .metric-grid {
   display: grid;
   gap: 16px;
@@ -323,6 +336,107 @@ button {
 .task-form {
   display: grid;
   gap: 16px;
+}
+
+.settings-form {
+  display: grid;
+  gap: 18px;
+}
+
+.settings-form label {
+  color: #334e68;
+  display: grid;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 8px;
+  min-width: 0;
+}
+
+.settings-form select {
+  background: #ffffff;
+  border: 1px solid #cbd6e2;
+  border-radius: 6px;
+  color: #1f2933;
+  min-height: 42px;
+  min-width: 0;
+  padding: 9px 10px;
+  width: 100%;
+}
+
+.settings-form select:focus,
+.settings-form input[type="range"]:focus {
+  outline: 3px solid rgba(42, 157, 143, 0.16);
+  outline-offset: 2px;
+}
+
+.weight-control {
+  border-bottom: 1px solid #e6eef5;
+  display: grid;
+  gap: 10px;
+  padding-bottom: 16px;
+}
+
+.criteria-panel {
+  background: #f7f9fb;
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.criteria-panel h4 {
+  color: #132238;
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.criteria-panel p {
+  color: #52616f;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.weight-control:last-of-type {
+  border-bottom: 0;
+}
+
+.weight-heading {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.weight-heading label {
+  color: #334e68;
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.weight-heading strong {
+  color: #132238;
+  font-size: 14px;
+}
+
+.weight-control input[type="range"] {
+  accent-color: #2a9d8f;
+  width: 100%;
+}
+
+.range-copy {
+  color: #52616f;
+  display: grid;
+  font-size: 12px;
+  font-weight: 700;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.range-copy span:last-child {
+  text-align: right;
 }
 
 .progress-panel,
@@ -692,6 +806,7 @@ h2 {
   }
 
   .dashboard-grid,
+  .settings-grid,
   .task-grid,
   .form-row {
     grid-template-columns: 1fr;

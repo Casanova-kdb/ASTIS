@@ -89,6 +89,10 @@ class FeatureExtractionServiceIntegrationTests {
         assertThat(features.urgencyScore()).isEqualTo(0.5);
         assertThat(features.userPriorityScore()).isEqualTo(1.0);
         assertThat(features.workloadScore()).isEqualTo(1.0);
+        assertThat(features.gradeWeightScore()).isEqualTo(0.6);
+        assertThat(features.difficultyScore()).isEqualTo(0.6);
+        assertThat(features.deadlineFlexibilityScore()).isEqualTo(0.6);
+        assertThat(features.personalImportanceScore()).isEqualTo(0.6);
         assertThat(features.completionRateScore()).isCloseTo(1.0 / 3.0, org.assertj.core.data.Offset.offset(0.001));
         assertThat(features.overdueTaskRatio()).isCloseTo(1.0 / 3.0, org.assertj.core.data.Offset.offset(0.001));
         assertThat(features.delayRiskScore()).isCloseTo(0.133, org.assertj.core.data.Offset.offset(0.001));
@@ -121,5 +125,9 @@ class FeatureExtractionServiceIntegrationTests {
         assertThat(features.overdueTaskRatio()).isEqualTo(0.0);
         assertThat(features.taskId()).isNull();
         assertThat(features.userId()).isNull();
+        assertThat(features.gradeWeightScore()).isEqualTo(0.6);
+        assertThat(features.difficultyScore()).isEqualTo(0.6);
+        assertThat(features.deadlineFlexibilityScore()).isEqualTo(0.6);
+        assertThat(features.personalImportanceScore()).isEqualTo(0.6);
     }
 }

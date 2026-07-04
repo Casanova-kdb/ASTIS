@@ -50,6 +50,18 @@ public class Task {
     @Column(name = "estimated_hours", precision = 5, scale = 2)
     private BigDecimal estimatedHours;
 
+    @Column(name = "grade_weight", nullable = false)
+    private int gradeWeight;
+
+    @Column(name = "difficulty_level", nullable = false)
+    private int difficultyLevel;
+
+    @Column(name = "deadline_flexibility", nullable = false)
+    private int deadlineFlexibility;
+
+    @Column(name = "personal_importance", nullable = false)
+    private int personalImportance;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -69,7 +81,11 @@ public class Task {
             String taskType,
             TaskPriority priority,
             LocalDateTime deadline,
-            BigDecimal estimatedHours
+            BigDecimal estimatedHours,
+            Integer gradeWeight,
+            Integer difficultyLevel,
+            Integer deadlineFlexibility,
+            Integer personalImportance
     ) {
         this.user = user;
         this.title = title;
@@ -79,8 +95,24 @@ public class Task {
         this.status = TaskStatus.PENDING;
         this.deadline = deadline;
         this.estimatedHours = estimatedHours;
+        this.gradeWeight = defaultCriteriaValue(gradeWeight);
+        this.difficultyLevel = defaultCriteriaValue(difficultyLevel);
+        this.deadlineFlexibility = defaultCriteriaValue(deadlineFlexibility);
+        this.personalImportance = defaultCriteriaValue(personalImportance);
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
+    }
+
+    public Task(
+            AppUser user,
+            String title,
+            String description,
+            String taskType,
+            TaskPriority priority,
+            LocalDateTime deadline,
+            BigDecimal estimatedHours
+    ) {
+        this(user, title, description, taskType, priority, deadline, estimatedHours, 3, 3, 3, 3);
     }
 
     public void updateDetails(
@@ -89,7 +121,11 @@ public class Task {
             String taskType,
             TaskPriority priority,
             LocalDateTime deadline,
-            BigDecimal estimatedHours
+            BigDecimal estimatedHours,
+            Integer gradeWeight,
+            Integer difficultyLevel,
+            Integer deadlineFlexibility,
+            Integer personalImportance
     ) {
         this.title = title;
         this.description = description;
@@ -97,6 +133,10 @@ public class Task {
         this.priority = priority;
         this.deadline = deadline;
         this.estimatedHours = estimatedHours;
+        this.gradeWeight = defaultCriteriaValue(gradeWeight);
+        this.difficultyLevel = defaultCriteriaValue(difficultyLevel);
+        this.deadlineFlexibility = defaultCriteriaValue(deadlineFlexibility);
+        this.personalImportance = defaultCriteriaValue(personalImportance);
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -142,6 +182,22 @@ public class Task {
         return estimatedHours;
     }
 
+    public int getGradeWeight() {
+        return gradeWeight;
+    }
+
+    public int getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public int getDeadlineFlexibility() {
+        return deadlineFlexibility;
+    }
+
+    public int getPersonalImportance() {
+        return personalImportance;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -152,5 +208,12 @@ public class Task {
 
     public LocalDateTime getCompletedAt() {
         return completedAt;
+    }
+
+    private int defaultCriteriaValue(Integer value) {
+        if (value == null) {
+            return 3;
+        }
+        return Math.max(1, Math.min(5, value));
     }
 }
