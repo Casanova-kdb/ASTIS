@@ -167,6 +167,7 @@ Sprint records:
 - [Sprint 4: Full-stack Integration Polish](docs/sprints/sprint-4-integration-polish.md)
 - [Sprint 5: MVP Release Closure](docs/sprints/sprint-5-mvp-release-closure.md)
 - [Sprint 6: User Story Iteration](docs/sprints/sprint-6-user-story-iteration.md)
+- [Sprint 7: User Profile and Task Scoring Criteria](docs/sprints/sprint-7-task-scoring-criteria-settings.md)
 
 Design assets:
 
@@ -215,4 +216,4 @@ This project follows a lightweight personal Scrum workflow:
 
 Local demo seed data is ignored by Git and is not part of the repository.
 
-The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add custom recommendation weights, explore AI handbook parsing, add Redis caching, and prepare Docker-based deployment.
+The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, refine task-specific scoring criteria, explore AI handbook parsing, add Redis caching, and prepare Docker-based deployment.

@@ -63,6 +63,10 @@ public class FeatureExtractionService {
                 timeDecayScore(daysUntilDeadline),
                 delayRiskScore(task, overdueTaskRatio),
                 workloadScore(estimatedHours),
+                criteriaScore(task.getGradeWeight()),
+                criteriaScore(task.getDifficultyLevel()),
+                deadlineFlexibilityScore(task.getDeadlineFlexibility()),
+                criteriaScore(task.getPersonalImportance()),
                 overdueTaskRatio
         );
     }
@@ -79,6 +83,10 @@ public class FeatureExtractionService {
                 0.0,
                 0.0,
                 0.0,
+                0.6,
+                0.6,
+                0.6,
+                0.6,
                 0.0
         );
     }
@@ -142,5 +150,14 @@ public class FeatureExtractionService {
             return 0.6;
         }
         return 1.0;
+    }
+
+    private double criteriaScore(int value) {
+        return Math.max(1, Math.min(5, value)) / 5.0;
+    }
+
+    private double deadlineFlexibilityScore(int value) {
+        int clampedValue = Math.max(1, Math.min(5, value));
+        return (6 - clampedValue) / 5.0;
     }
 }

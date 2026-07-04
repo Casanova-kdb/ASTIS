@@ -11,6 +11,10 @@ public record RecommendationFeatures(
         double timeDecayScore,
         double delayRiskScore,
         double workloadScore,
+        double gradeWeightScore,
+        double difficultyScore,
+        double deadlineFlexibilityScore,
+        double personalImportanceScore,
         double overdueTaskRatio
 ) {
 }

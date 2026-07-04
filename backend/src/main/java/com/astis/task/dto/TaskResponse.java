@@ -15,6 +15,10 @@ public record TaskResponse(
         TaskStatus status,
         LocalDateTime deadline,
         BigDecimal estimatedHours,
+        int gradeWeight,
+        int difficultyLevel,
+        int deadlineFlexibility,
+        int personalImportance,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         LocalDateTime completedAt
@@ -29,6 +33,10 @@ public record TaskResponse(
                 task.getStatus(),
                 task.getDeadline(),
                 task.getEstimatedHours(),
+                task.getGradeWeight(),
+                task.getDifficultyLevel(),
+                task.getDeadlineFlexibility(),
+                task.getPersonalImportance(),
                 task.getCreatedAt(),
                 task.getUpdatedAt(),
                 task.getCompletedAt()

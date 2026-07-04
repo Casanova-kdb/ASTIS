@@ -17,7 +17,7 @@ sprint/6-user-story-iteration
 After the MVP release, the project has several possible directions:
 
 - Better recommendation logic
-- Custom recommendation weights
+- Task-specific scoring criteria
 - Richer analytics
 - Module handbook parsing
 - Study plan generation
@@ -69,9 +69,9 @@ User-supplied AI keys are useful, but they create security risks.
 
 For the first version, provider configuration should be handled carefully. If API keys are ever accepted from users, the backend must not return them to the frontend, log them, or store them without a clear security plan.
 
-### Custom Weights
+### Task Scoring Criteria
 
-Custom recommendation weights should be implemented before Redis caching.
+Task-specific scoring criteria should be implemented before Redis caching.
 
 The scoring logic should be stable before the system starts caching recommendation results.
 
