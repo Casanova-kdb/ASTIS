@@ -12,7 +12,7 @@ class RecommendationServiceTests {
     private final RecommendationService recommendationService = new RecommendationService();
 
     @Test
-    void calculatesPriorityScoreFromWeightedFeatures() {
+    void calculatesPriorityScoreFromTaskFeaturesAndTaskCriteria() {
         RecommendationFeatures features = new RecommendationFeatures(
                 10L,
                 1L,
@@ -24,12 +24,41 @@ class RecommendationServiceTests {
                 0.80,
                 0.40,
                 1.00,
+                0.60,
+                0.60,
+                0.60,
+                0.60,
                 0.30
         );
 
         double score = recommendationService.calculatePriorityScore(features);
 
-        assertThat(score).isEqualTo(75.75);
+        assertThat(score).isEqualTo(70.5);
+    }
+
+    @Test
+    void keepsScoreWithinOneHundredWhenAllSignalsAreMaxed() {
+        RecommendationFeatures features = new RecommendationFeatures(
+                10L,
+                1L,
+                0,
+                8.0,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                0.50
+        );
+
+        double score = recommendationService.calculatePriorityScore(features);
+
+        assertThat(score).isEqualTo(100.0);
     }
 
     @Test
@@ -40,7 +69,7 @@ class RecommendationServiceTests {
     }
 
     @Test
-    void createsRecommendationScoreWithExplainableReason() {
+    void createsRecommendationScoreWithTaskCriteriaReasons() {
         RecommendationFeatures features = new RecommendationFeatures(
                 10L,
                 1L,
@@ -52,17 +81,25 @@ class RecommendationServiceTests {
                 0.95,
                 0.80,
                 1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
                 0.40
         );
 
         RecommendationScore score = recommendationService.scoreTask(features);
 
         assertThat(score.taskId()).isEqualTo(10L);
-        assertThat(score.priorityScore()).isEqualTo(83.5);
+        assertThat(score.priorityScore()).isEqualTo(89.5);
         assertThat(score.delayRisk()).isEqualTo(DelayRiskLevel.HIGH);
         assertThat(score.reason())
                 .contains("deadline is coming soon")
                 .contains("high user priority")
+                .contains("high grade impact")
+                .contains("marked as difficult")
+                .contains("deadline is not flexible")
+                .contains("personally important")
                 .contains("high delay risk");
     }
 }

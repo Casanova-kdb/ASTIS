@@ -98,7 +98,7 @@ Because this sprint is documentation-focused, no new backend or frontend test ca
 - Automated frontend tests are not added yet.
 - Deployment is not completed yet.
 - Recommendation scoring is rule-based.
-- User-customised recommendation weights are not implemented yet.
+- Task-specific scoring criteria are not implemented yet.
 - Module handbook upload and AI parsing are not implemented yet.
 - AI provider/API key configuration is backend-level, not user-level.
 - Redis caching is not implemented yet.

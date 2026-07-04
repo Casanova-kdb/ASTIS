@@ -68,6 +68,38 @@
             </label>
           </div>
 
+          <section class="criteria-panel">
+            <div>
+              <h4>Scoring criteria</h4>
+              <p>These values describe this task only and help ASTIS rank it against your other tasks.</p>
+            </div>
+
+            <div
+              v-for="criterion in criteriaControls"
+              :key="criterion.key"
+              class="weight-control"
+            >
+              <div class="weight-heading">
+                <label :for="criterion.key">{{ criterion.label }}</label>
+                <strong>{{ form[criterion.key] }}/5</strong>
+              </div>
+
+              <input
+                :id="criterion.key"
+                v-model.number="form[criterion.key]"
+                type="range"
+                min="1"
+                max="5"
+                step="1"
+              />
+
+              <div class="range-copy">
+                <span>{{ criterion.low }}</span>
+                <span>{{ criterion.high }}</span>
+              </div>
+            </div>
+          </section>
+
           <p v-if="formError" class="form-error">{{ formError }}</p>
           <p v-if="successMessage" class="form-success">{{ successMessage }}</p>
 
@@ -122,6 +154,9 @@
               </span>
               <span>Due {{ formatDateTime(task.deadline) }}</span>
               <span>{{ task.estimatedHours ?? 0 }}h</span>
+              <span>Grade {{ task.gradeWeight ?? 3 }}/5</span>
+              <span>Difficulty {{ task.difficultyLevel ?? 3 }}/5</span>
+              <span>Importance {{ task.personalImportance ?? 3 }}/5</span>
             </div>
 
             <div class="task-actions">
@@ -160,6 +195,32 @@ import {
 
 const priorities = ['LOW', 'MEDIUM', 'HIGH']
 const statuses = ['PENDING', 'IN_PROGRESS', 'COMPLETED']
+const criteriaControls = [
+  {
+    key: 'gradeWeight',
+    label: 'Grade impact',
+    low: 'Small assessment impact',
+    high: 'Major assessment impact'
+  },
+  {
+    key: 'difficultyLevel',
+    label: 'Difficulty',
+    low: 'Easy task',
+    high: 'Difficult task'
+  },
+  {
+    key: 'deadlineFlexibility',
+    label: 'Deadline flexibility',
+    low: 'Strict deadline',
+    high: 'Flexible deadline'
+  },
+  {
+    key: 'personalImportance',
+    label: 'Personal importance',
+    low: 'Less important to me',
+    high: 'Very important to me'
+  }
+]
 
 const tasks = ref([])
 const selectedStatus = ref('')
@@ -178,7 +239,11 @@ const form = reactive({
   taskType: 'Assignment',
   priority: 'MEDIUM',
   deadline: getDefaultDeadline(),
-  estimatedHours: 1
+  estimatedHours: 1,
+  gradeWeight: 3,
+  difficultyLevel: 3,
+  deadlineFlexibility: 3,
+  personalImportance: 3
 })
 
 onMounted(loadTasks)
@@ -277,6 +342,10 @@ function startEdit(task) {
   form.priority = task.priority
   form.deadline = toDateTimeInputValue(task.deadline)
   form.estimatedHours = Number(task.estimatedHours ?? 0)
+  form.gradeWeight = Number(task.gradeWeight ?? 3)
+  form.difficultyLevel = Number(task.difficultyLevel ?? 3)
+  form.deadlineFlexibility = Number(task.deadlineFlexibility ?? 3)
+  form.personalImportance = Number(task.personalImportance ?? 3)
   formError.value = ''
   successMessage.value = ''
 }
@@ -289,6 +358,10 @@ function resetForm(clearSuccess = false) {
   form.priority = 'MEDIUM'
   form.deadline = getDefaultDeadline()
   form.estimatedHours = 1
+  form.gradeWeight = 3
+  form.difficultyLevel = 3
+  form.deadlineFlexibility = 3
+  form.personalImportance = 3
   formError.value = ''
   if (clearSuccess) {
     successMessage.value = ''
@@ -302,7 +375,11 @@ function buildPayload() {
     taskType: form.taskType,
     priority: form.priority,
     deadline: form.deadline,
-    estimatedHours: form.estimatedHours || 0
+    estimatedHours: form.estimatedHours || 0,
+    gradeWeight: form.gradeWeight,
+    difficultyLevel: form.difficultyLevel,
+    deadlineFlexibility: form.deadlineFlexibility,
+    personalImportance: form.personalImportance
   }
 }
 

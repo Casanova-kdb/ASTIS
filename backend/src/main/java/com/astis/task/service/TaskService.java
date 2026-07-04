@@ -48,7 +48,11 @@ public class TaskService {
                 request.taskType(),
                 request.priority(),
                 request.deadline(),
-                request.estimatedHours()
+                request.estimatedHours(),
+                request.gradeWeight(),
+                request.difficultyLevel(),
+                request.deadlineFlexibility(),
+                request.personalImportance()
         );
         Task savedTask = taskRepository.save(task);
         behaviorLogService.recordTaskAction(
@@ -92,7 +96,11 @@ public class TaskService {
                 request.taskType(),
                 request.priority(),
                 request.deadline(),
-                request.estimatedHours()
+                request.estimatedHours(),
+                request.gradeWeight(),
+                request.difficultyLevel(),
+                request.deadlineFlexibility(),
+                request.personalImportance()
         );
         recordTaskDetailChanges(user.getId(), task, before);
 
@@ -202,7 +210,11 @@ public class TaskService {
             String taskType,
             TaskPriority priority,
             LocalDateTime deadline,
-            BigDecimal estimatedHours
+            BigDecimal estimatedHours,
+            int gradeWeight,
+            int difficultyLevel,
+            int deadlineFlexibility,
+            int personalImportance
     ) {
         private static TaskChangeSnapshot from(Task task) {
             return new TaskChangeSnapshot(
@@ -211,13 +223,17 @@ public class TaskService {
                     task.getTaskType(),
                     task.getPriority(),
                     task.getDeadline(),
-                    task.getEstimatedHours()
+                    task.getEstimatedHours(),
+                    task.getGradeWeight(),
+                    task.getDifficultyLevel(),
+                    task.getDeadlineFlexibility(),
+                    task.getPersonalImportance()
             );
         }
 
         private String toLogValue() {
-            return "title=%s,taskType=%s,priority=%s,deadline=%s,estimatedHours=%s"
-                    .formatted(title, taskType, priority, deadline, estimatedHours);
+            return "title=%s,taskType=%s,priority=%s,deadline=%s,estimatedHours=%s,gradeWeight=%s,difficultyLevel=%s,deadlineFlexibility=%s,personalImportance=%s"
+                    .formatted(title, taskType, priority, deadline, estimatedHours, gradeWeight, difficultyLevel, deadlineFlexibility, personalImportance);
         }
     }
 }

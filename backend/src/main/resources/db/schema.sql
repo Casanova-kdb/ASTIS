@@ -28,6 +28,10 @@ CREATE TABLE IF NOT EXISTS tasks (
     status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
     deadline DATETIME NOT NULL,
     estimated_hours DECIMAL(5,2),
+    grade_weight INT NOT NULL DEFAULT 3,
+    difficulty_level INT NOT NULL DEFAULT 3,
+    deadline_flexibility INT NOT NULL DEFAULT 3,
+    personal_importance INT NOT NULL DEFAULT 3,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     completed_at DATETIME,
@@ -40,7 +44,42 @@ CREATE TABLE IF NOT EXISTS tasks (
     CONSTRAINT chk_tasks_status
         CHECK (status IN ('PENDING', 'IN_PROGRESS', 'COMPLETED')),
     CONSTRAINT chk_tasks_estimated_hours
-        CHECK (estimated_hours IS NULL OR estimated_hours >= 0)
+        CHECK (estimated_hours IS NULL OR estimated_hours >= 0),
+    CONSTRAINT chk_tasks_grade_weight
+        CHECK (grade_weight BETWEEN 1 AND 5),
+    CONSTRAINT chk_tasks_difficulty_level
+        CHECK (difficulty_level BETWEEN 1 AND 5),
+    CONSTRAINT chk_tasks_deadline_flexibility
+        CHECK (deadline_flexibility BETWEEN 1 AND 5),
+    CONSTRAINT chk_tasks_personal_importance
+        CHECK (personal_importance BETWEEN 1 AND 5)
+);
+
+CREATE TABLE IF NOT EXISTS user_profiles (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    study_pace VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    deadline_pressure_tolerance VARCHAR(20) NOT NULL DEFAULT 'MEDIUM',
+    daily_study_capacity VARCHAR(20) NOT NULL DEFAULT 'MEDIUM',
+    preferred_study_time VARCHAR(20) NOT NULL DEFAULT 'EVENING',
+    planning_style VARCHAR(20) NOT NULL DEFAULT 'BALANCED',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_user_profiles_user UNIQUE (user_id),
+    CONSTRAINT fk_user_profiles_user
+        FOREIGN KEY (user_id) REFERENCES users (id)
+        ON DELETE CASCADE,
+    CONSTRAINT chk_user_profiles_study_pace
+        CHECK (study_pace IN ('SLOW', 'NORMAL', 'FAST')),
+    CONSTRAINT chk_user_profiles_deadline_pressure
+        CHECK (deadline_pressure_tolerance IN ('LOW', 'MEDIUM', 'HIGH')),
+    CONSTRAINT chk_user_profiles_daily_capacity
+        CHECK (daily_study_capacity IN ('LIGHT', 'MEDIUM', 'HEAVY')),
+    CONSTRAINT chk_user_profiles_preferred_time
+        CHECK (preferred_study_time IN ('MORNING', 'AFTERNOON', 'EVENING', 'NIGHT', 'FLEXIBLE')),
+    CONSTRAINT chk_user_profiles_planning_style
+        CHECK (planning_style IN ('FLEXIBLE', 'BALANCED', 'STRICT'))
 );
 
 CREATE TABLE IF NOT EXISTS behavior_logs (
@@ -100,6 +139,8 @@ CREATE INDEX idx_tasks_user_id ON tasks (user_id);
 CREATE INDEX idx_tasks_status ON tasks (status);
 CREATE INDEX idx_tasks_deadline ON tasks (deadline);
 CREATE INDEX idx_tasks_user_status_deadline ON tasks (user_id, status, deadline);
+
+CREATE INDEX idx_user_profiles_user_id ON user_profiles (user_id);
 
 CREATE INDEX idx_behavior_logs_user_id ON behavior_logs (user_id);
 CREATE INDEX idx_behavior_logs_task_id ON behavior_logs (task_id);

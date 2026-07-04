@@ -12,13 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecommendationService {
 
-    private static final double URGENCY_WEIGHT = 0.35;
-    private static final double COMPLETION_RATE_WEIGHT = 0.15;
-    private static final double USER_PRIORITY_WEIGHT = 0.25;
-    private static final double TIME_DECAY_WEIGHT = 0.10;
-    private static final double DELAY_RISK_WEIGHT = 0.10;
-    private static final double WORKLOAD_WEIGHT = 0.05;
-
     public RecommendationScore scoreTask(RecommendationFeatures features) {
         double priorityScore = calculatePriorityScore(features);
         DelayRiskLevel delayRisk = classifyDelayRisk(features.delayRiskScore());
@@ -31,12 +24,16 @@ public class RecommendationService {
     }
 
     public double calculatePriorityScore(RecommendationFeatures features) {
-        double weightedScore = features.urgencyScore() * URGENCY_WEIGHT
-                + features.completionRateScore() * COMPLETION_RATE_WEIGHT
-                + features.userPriorityScore() * USER_PRIORITY_WEIGHT
-                + features.timeDecayScore() * TIME_DECAY_WEIGHT
-                + features.delayRiskScore() * DELAY_RISK_WEIGHT
-                + features.workloadScore() * WORKLOAD_WEIGHT;
+        double urgencySignal = (features.urgencyScore() + features.timeDecayScore()) / 2.0;
+        double weightedScore = urgencySignal * 0.20
+                + features.userPriorityScore() * 0.15
+                + features.workloadScore() * 0.10
+                + features.delayRiskScore() * 0.10
+                + features.completionRateScore() * 0.10
+                + features.gradeWeightScore() * 0.15
+                + features.difficultyScore() * 0.10
+                + features.deadlineFlexibilityScore() * 0.05
+                + features.personalImportanceScore() * 0.05;
 
         return roundToTwoDecimals(clamp(weightedScore) * 100);
     }
@@ -66,6 +63,22 @@ public class RecommendationService {
 
         if (features.workloadScore() >= 0.9) {
             reasons.add("the estimated workload is high");
+        }
+
+        if (features.gradeWeightScore() >= 0.8) {
+            reasons.add("the task has high grade impact");
+        }
+
+        if (features.difficultyScore() >= 0.8) {
+            reasons.add("the task is marked as difficult");
+        }
+
+        if (features.deadlineFlexibilityScore() >= 0.8) {
+            reasons.add("the deadline is not flexible");
+        }
+
+        if (features.personalImportanceScore() >= 0.8) {
+            reasons.add("the task is personally important");
         }
 
         if (features.overdueTaskRatio() >= 0.3) {

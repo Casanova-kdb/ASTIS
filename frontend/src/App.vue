@@ -14,6 +14,7 @@
         <RouterLink to="/">Dashboard</RouterLink>
         <RouterLink to="/tasks">Tasks</RouterLink>
         <RouterLink to="/recommendations">Recommendations</RouterLink>
+        <RouterLink to="/settings">Settings</RouterLink>
       </nav>
 
       <div class="sidebar-footer">
