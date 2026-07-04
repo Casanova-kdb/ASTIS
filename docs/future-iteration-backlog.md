@@ -16,7 +16,7 @@ The MVP has already proved the core workflow: users can manage study tasks, the 
 | Sprint 9 | Analytics Enhancement | Add richer productivity and delay-pattern analytics |
 | Sprint 10 | AI Handbook Parser | Extract deadlines from uploaded module handbook files |
 | Sprint 11 | Study Plan Generator | Generate a planned study schedule from tasks and recommendations |
-| Sprint 12 | AI Provider Abstraction | Support configurable AI providers more safely |
+| Sprint 12 | AI Provider Abstraction and Frontend Refinement | Support configurable AI providers more safely and polish the MVP UI |
 | Sprint 13 | Redis Caching | Cache recommendation results where useful |
 | Sprint 14 | Docker and Deployment | Prepare local Docker setup and deployment documentation |
 
@@ -38,6 +38,14 @@ Example stories:
 - As a student, I want to adjust recommendation settings, so that task ranking matches my own study style.
 - As a student, I want to upload module information, so that the system can help me create tasks faster.
 - As a student, I want a generated study plan, so that I can turn recommendations into an actual schedule.
+
+Output:
+
+The refined user stories are documented in:
+
+```text
+docs/user-stories.md
+```
 
 ## Sprint 7: Recommendation Improvement
 
@@ -170,6 +178,24 @@ Security concerns:
 Priority:
 
 P2 for public deployment, because it needs careful security design. It can be explored earlier as a local-only feature.
+
+## Sprint 12: Frontend Refinement
+
+Goal:
+
+Improve the MVP frontend so it feels cleaner and easier to demonstrate.
+
+Possible work:
+
+- Improve dashboard visual hierarchy
+- Refine task cards and forms
+- Improve recommendation cards
+- Add clearer empty, loading, success, and error states
+- Check responsive layouts
+
+Priority:
+
+P1. This should happen after the next backend feature work is stable, because the UI can then be polished around the final workflow.
 
 ## Sprint 13: Redis Caching
 

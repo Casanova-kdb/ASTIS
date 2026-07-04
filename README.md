@@ -166,6 +166,7 @@ Sprint records:
 - [Sprint 3: Frontend Prototype and MVP UI](docs/sprints/sprint-3-frontend-prototype.md)
 - [Sprint 4: Full-stack Integration Polish](docs/sprints/sprint-4-integration-polish.md)
 - [Sprint 5: MVP Release Closure](docs/sprints/sprint-5-mvp-release-closure.md)
+- [Sprint 6: User Story Iteration](docs/sprints/sprint-6-user-story-iteration.md)
 
 Design assets:
 

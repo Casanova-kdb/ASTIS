@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This document defines the MVP user stories for ASTIS.
+This document defines the MVP and post-MVP user stories for ASTIS.
 
-The goal is to make sure each MVP feature can be traced from user need to acceptance criteria and development tasks. These stories will later be converted into GitHub Issues and implemented through sprint branches.
+The goal is to make sure each feature can be traced from user need to acceptance criteria and development tasks. These stories can be converted into GitHub Issues and implemented through sprint branches.
 
 ## Estimation Guide
 
@@ -23,7 +23,7 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-001 | User Registration | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
 | US-002 | User Login | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
 | US-003 | Protected Personal Workspace | User Management and Security | P0 | 5 | M | Sprint 2 | Done |
-| US-004 | Manage User Profile | User Management and Security | P1 | 3 | M | Sprint 4 | Backlog |
+| US-004 | Manage User Profile | User Management and Security | P1 | 3 | M | Sprint 8 | Backlog |
 | US-005 | Create Academic Task | Task Management | P0 | 3 | M | Sprint 2 | Done |
 | US-006 | View Task List | Task Management | P0 | 2 | S | Sprint 2 | Done |
 | US-007 | View Task Detail | Task Management | P0 | 2 | S | Sprint 2 | Done |
@@ -35,14 +35,26 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-013 | Extract Recommendation Features | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
 | US-014 | Calculate Task Priority Score and Delay Risk | Intelligent Recommendation | P0 | 8 | L | Sprint 2 | Done |
 | US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
+| US-016 | View AI Study Advice | Intelligent Recommendation | P1 | 3 | M | Sprint 2 | Done |
+| US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 7 | Backlog |
+| US-018 | Customise Recommendation Weights | Personalisation | P1 | 8 | L | Sprint 8 | Backlog |
+| US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 9 | Backlog |
+| US-020 | Upload or Paste Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 10 | Backlog |
+| US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 10 | Backlog |
+| US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 11 | Backlog |
+| US-023 | Configure AI Provider Safely | AI Provider Abstraction | P2 | 8 | L | Sprint 12 | Backlog |
+| US-024 | Improve Frontend Presentation | Frontend Refinement | P1 | 5 | M | Sprint 12 | Backlog |
+| US-025 | Cache Recommendation Results | Performance | P2 | 5 | M | Sprint 13 | Backlog |
+| US-026 | Run Project with Docker | Deployment | P2 | 5 | M | Sprint 14 | Backlog |
+| US-027 | Update Deployment Documentation | Deployment | P2 | 3 | S | Sprint 14 | Backlog |
 
 Suggested GitHub labels:
 
 - `priority: P0`, `priority: P1`, `priority: P2`
 - `size: S`, `size: M`, `size: L`
 - `type: user-story`
-- `epic: user-management`, `epic: task-management`, `epic: analytics`, `epic: recommendation`
-- `sprint-2`, `sprint-4`, `sprint-5`
+- `epic: user-management`, `epic: task-management`, `epic: analytics`, `epic: recommendation`, `epic: ai-parser`, `epic: deployment`
+- `sprint-2`, `sprint-4`, `sprint-5`, `sprint-6`, `sprint-7`, `sprint-8`, `sprint-9`, `sprint-10`, `sprint-11`, `sprint-12`, `sprint-13`, `sprint-14`
 
 ## MVP Coverage Map
 
@@ -50,7 +62,6 @@ Suggested GitHub labels:
 | --- | --- |
 | User registration and login | US-001, US-002 |
 | Authenticated access control | US-003 |
-| User profile personalisation data | US-004 |
 | Task creation | US-005 |
 | Task list and task detail retrieval | US-006, US-007 |
 | Task update and status tracking | US-008, US-009 |
@@ -60,6 +71,23 @@ Suggested GitHub labels:
 | AI feature extraction | US-013 |
 | AI-based task scoring and delay risk | US-014 |
 | Recommended task ordering | US-015 |
+| AI study advice | US-016 |
+
+## Post-MVP Coverage Map
+
+| Post-MVP Capability | Covered By |
+| --- | --- |
+| User profile and study preference editing | US-004 |
+| Better recommendation explanations | US-017 |
+| User-defined recommendation weights | US-018 |
+| Richer analytics and behaviour insight | US-019 |
+| Module handbook upload or paste input | US-020 |
+| AI extraction review before task creation | US-021 |
+| Generated study plan | US-022 |
+| Configurable AI provider/API key design | US-023 |
+| Frontend visual and usability refinement | US-024 |
+| Recommendation caching | US-025 |
+| Docker and deployment preparation | US-026, US-027 |
 
 ## Epic 1: User Management and Security
 
@@ -442,6 +470,31 @@ Development Tasks:
 - Add recommendation response DTO with score, delay risk, and reason.
 - Test recommendation ordering and filtering.
 
+### US-016: View AI Study Advice
+
+Priority: P1
+Estimate: 3 story points
+Size: M
+
+As a student, I want to receive short AI-generated study advice based on my recommended tasks, so that I can understand how to start my study session.
+
+Acceptance Criteria:
+
+- The user can request AI study advice from the recommendation page.
+- The advice is based on the current user's recommended task list.
+- The system does not expose another user's task data to the AI request.
+- If the external AI provider is unavailable or not configured, the system returns local fallback advice.
+- The frontend displays the advice clearly without blocking the recommendation list.
+
+Development Tasks:
+
+- Implement AI advice service.
+- Build a prompt from ranked recommendation results.
+- Add external AI provider client.
+- Add local fallback advice.
+- Add API endpoint for recommendation advice.
+- Display advice in the frontend recommendation page.
+
 ## MVP Definition of Done
 
 The MVP v1.0 is complete when:
@@ -451,22 +504,285 @@ The MVP v1.0 is complete when:
 - Behaviour tracking in US-011 is implemented for core task actions.
 - Basic analytics in US-012 is available.
 - Feature extraction, priority scoring, delay risk, and recommendation ordering from US-013 to US-015 are implemented.
+- AI study advice in US-016 is available with fallback behaviour.
 - The main API behaviour is documented and can be tested through Postman or Swagger.
 
 US-004 profile management is kept as a P1 post-MVP improvement because the first release can already provide the main authenticated task and recommendation workflow without a profile settings page.
 
-## Post-MVP User Story Candidates
+## Post-MVP User Stories
 
-These stories are intentionally excluded from the MVP and can be added after the core system is complete:
+These stories are intentionally excluded from the MVP and can be added after the core system is complete.
 
-- Generate a personalised daily study schedule.
-- Build a dashboard with charts and visual analytics.
-- Add profile management and study preference editing.
-- Add user-customised recommendation weights.
-- Extract deadlines from uploaded or pasted module handbook content.
-- Add safer AI provider abstraction and optional user-supplied API key support.
-- Integrate a Python machine learning service.
-- Predict task completion likelihood using a trained model.
-- Add calendar integration.
-- Add Redis caching for recommendation results.
-- Deploy the system to a cloud platform.
+### US-017: Improve Recommendation Explanation
+
+Priority: P1
+Estimate: 5 story points
+Size: M
+
+As a student, I want each recommendation to explain why a task is ranked highly, so that I can trust the system instead of seeing it as a black box.
+
+Acceptance Criteria:
+
+- Each recommendation includes a short reason.
+- The reason mentions the strongest signals, such as deadline urgency, priority, workload, or delay risk.
+- The explanation is deterministic and can be tested without calling an external AI API.
+- The frontend displays the reason beside each ranked task.
+- Existing recommendation ranking still works after explanation changes.
+
+Development Tasks:
+
+- Refine recommendation reason generation.
+- Add tests for common explanation cases.
+- Update frontend recommendation card copy.
+- Check that explanations match the calculated feature values.
+
+### US-018: Customise Recommendation Weights
+
+Priority: P1
+Estimate: 8 story points
+Size: L
+
+As a student, I want to adjust how much urgency, priority, workload, and history affect recommendation scores, so that the ranking matches my own study style.
+
+Acceptance Criteria:
+
+- The user can view current recommendation weights.
+- The user can update weights within a safe numeric range.
+- New users receive default weights.
+- Weight settings belong only to the authenticated user.
+- Recommendation scores change when weight settings change.
+- Invalid weight values return validation errors.
+- The system can reset weights to default values.
+
+Development Tasks:
+
+- Design recommendation weight entity or user setting fields.
+- Add request and response DTOs.
+- Implement `GET /recommendations/settings`.
+- Implement `PUT /recommendations/settings`.
+- Update scoring service to use user-specific weights.
+- Add backend tests for default, custom, invalid, and reset cases.
+- Add frontend controls for weight editing.
+
+### US-019: View Enhanced Analytics
+
+Priority: P2
+Estimate: 5 story points
+Size: M
+
+As a student, I want to see more detailed study analytics, so that I can understand my delay patterns and productivity trends.
+
+Acceptance Criteria:
+
+- The user can view weekly task completion trend.
+- The user can view overdue task trend.
+- The user can see which task type is most often delayed.
+- Analytics only use the authenticated user's data.
+- The frontend displays the data in a readable dashboard layout.
+
+Development Tasks:
+
+- Extend analytics service queries.
+- Add analytics response DTOs.
+- Add endpoint for trend analytics.
+- Add frontend dashboard sections or charts.
+- Add service tests for analytics calculations.
+
+### US-020: Upload or Paste Module Handbook
+
+Priority: P1
+Estimate: 5 story points
+Size: M
+
+As a student, I want to upload or paste module handbook content, so that ASTIS can help me find possible assessment tasks and deadlines.
+
+Acceptance Criteria:
+
+- The user can provide module handbook content by upload or text input.
+- The system accepts common text-based formats for the first version.
+- The system validates empty or unsupported input.
+- Uploaded or pasted content is only processed for the authenticated user.
+- The raw content is not exposed to other users.
+
+Development Tasks:
+
+- Decide MVP input type: pasted text first, file upload later if needed.
+- Add backend endpoint for handbook parsing input.
+- Add validation for input size and content.
+- Add frontend form for uploading or pasting handbook content.
+- Add error handling for unsupported or empty content.
+
+### US-021: Review AI-extracted Tasks
+
+Priority: P1
+Estimate: 8 story points
+Size: L
+
+As a student, I want to review AI-extracted tasks before they are added to my task list, so that incorrect deadlines are not saved automatically.
+
+Acceptance Criteria:
+
+- The AI parser returns extracted task candidates with title, deadline, task type, and confidence or explanation.
+- Extracted tasks are shown as draft items.
+- The user can edit extracted task details before saving.
+- The user can select which extracted tasks to create.
+- The system does not automatically create final tasks without user confirmation.
+- Failed AI parsing returns a clear error or fallback message.
+
+Development Tasks:
+
+- Design extracted task candidate DTO.
+- Build AI parsing prompt and response format.
+- Add parser service with provider fallback handling.
+- Add review UI for extracted draft tasks.
+- Connect selected draft tasks to existing task creation flow.
+- Add tests for successful parse, invalid AI response, and user-confirmed creation.
+
+### US-022: Generate Study Plan
+
+Priority: P1
+Estimate: 8 story points
+Size: L
+
+As a student, I want ASTIS to turn my recommended tasks into a study plan, so that I know what to work on across the next few days.
+
+Acceptance Criteria:
+
+- The user can request a study plan from active tasks.
+- The plan uses task deadlines, priority scores, estimated hours, and delay risk.
+- The plan groups work into days or study sessions.
+- The plan warns the user when estimated workload is too high before a deadline.
+- The user can regenerate the plan after task changes.
+
+Development Tasks:
+
+- Design study plan response DTO.
+- Implement planning logic based on recommendations and estimated hours.
+- Add optional AI wording for plan explanation.
+- Add frontend study plan view.
+- Add tests for short deadline, high workload, and empty task list cases.
+
+### US-023: Configure AI Provider Safely
+
+Priority: P2
+Estimate: 8 story points
+Size: L
+
+As a student or project owner, I want AI provider settings to be configurable safely, so that the system is not locked to one provider and does not expose API keys.
+
+Acceptance Criteria:
+
+- The backend has an AI provider abstraction instead of provider-specific logic scattered across services.
+- DeepSeek remains supported as one provider.
+- The system can support OpenAI-compatible providers in a controlled way.
+- API keys are never returned to the frontend after submission.
+- API keys are never written to application logs.
+- If API keys are stored, they are encrypted or clearly marked as local-only for development.
+- Invalid provider configuration returns a safe error message.
+
+Development Tasks:
+
+- Create AI provider interface.
+- Move DeepSeek-specific logic behind the provider interface.
+- Add provider configuration validation.
+- Decide whether user API keys are stored, session-only, or environment-only.
+- Add tests for missing key, invalid provider, and fallback behaviour.
+- Document security limitations clearly.
+
+### US-024: Improve Frontend Presentation
+
+Priority: P1
+Estimate: 5 story points
+Size: M
+
+As a student, I want the application interface to feel clearer and more polished, so that the system is easier to use and demonstrate.
+
+Acceptance Criteria:
+
+- Main pages have consistent spacing, typography, and button states.
+- Dashboard information is easy to scan.
+- Task forms remain readable on different screen widths.
+- Recommendation cards do not feel visually crowded.
+- Empty, loading, success, and error states are shown consistently.
+- The app still works with the existing backend APIs.
+
+Development Tasks:
+
+- Review current frontend layout.
+- Refine dashboard, task page, and recommendation page.
+- Improve empty and loading states.
+- Check responsive layouts.
+- Run frontend build after UI changes.
+
+### US-025: Cache Recommendation Results
+
+Priority: P2
+Estimate: 5 story points
+Size: M
+
+As a system, I want to cache recommendation results when task data has not changed, so that repeated recommendation requests are faster.
+
+Acceptance Criteria:
+
+- Recommendation results can be cached per authenticated user.
+- Cache entries are invalidated when the user creates, updates, completes, or deletes a task.
+- Cache does not leak data between users.
+- If Redis is unavailable, the system can still generate recommendations directly.
+- The caching behaviour is documented.
+
+Development Tasks:
+
+- Add Redis dependency and configuration.
+- Add recommendation cache key design.
+- Cache recommendation results after calculation.
+- Invalidate cache from task mutation operations.
+- Add tests or manual verification for cache hit and invalidation behaviour.
+- Update setup documentation.
+
+### US-026: Run Project with Docker
+
+Priority: P2
+Estimate: 5 story points
+Size: M
+
+As a reviewer, I want to run the project with Docker, so that I can start the system without manually configuring every service.
+
+Acceptance Criteria:
+
+- Docker Compose can start backend, frontend, and MySQL locally.
+- Environment variables are documented.
+- The backend can connect to the database container.
+- The frontend can call the backend API.
+- Local secrets are not committed to Git.
+
+Development Tasks:
+
+- Add backend Dockerfile.
+- Add frontend Dockerfile.
+- Add Docker Compose file.
+- Add example environment file.
+- Test local container startup.
+
+### US-027: Update Deployment Documentation
+
+Priority: P2
+Estimate: 3 story points
+Size: S
+
+As a reviewer, I want clear setup and deployment notes, so that I can understand how ASTIS can be run outside the developer's machine.
+
+Acceptance Criteria:
+
+- README explains local setup and Docker setup.
+- Required environment variables are listed.
+- AI provider configuration is explained safely.
+- Database setup is documented.
+- Known deployment limitations are listed.
+
+Development Tasks:
+
+- Update README deployment section.
+- Add Docker setup steps.
+- Add environment variable table.
+- Document local-only limitations.
+- Add troubleshooting notes for common startup issues.
