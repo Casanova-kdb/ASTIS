@@ -2,6 +2,7 @@ package com.astis.recommendation.service;
 
 import com.astis.analytics.repository.BehaviorLogRepository;
 import com.astis.recommendation.model.RecommendationFeatures;
+import com.astis.settings.repository.UserProfileRepository;
 import com.astis.task.entity.Task;
 import com.astis.task.entity.TaskPriority;
 import com.astis.task.entity.TaskStatus;
@@ -34,10 +35,14 @@ class FeatureExtractionServiceIntegrationTests {
     @Autowired
     private AppUserRepository appUserRepository;
 
+    @Autowired
+    private UserProfileRepository userProfileRepository;
+
     @BeforeEach
     void setUp() {
         behaviorLogRepository.deleteAll();
         taskRepository.deleteAll();
+        userProfileRepository.deleteAll();
         appUserRepository.deleteAll();
     }
 

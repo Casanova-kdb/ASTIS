@@ -18,7 +18,7 @@
       </nav>
 
       <div class="sidebar-footer">
-        <p>{{ currentUser?.username || 'Student' }}</p>
+        <p>{{ currentUser?.displayName || currentUser?.username || 'Student' }}</p>
         <button type="button" class="ghost-button" @click="handleLogout">Logout</button>
       </div>
     </aside>

@@ -5,12 +5,71 @@
         <p class="eyebrow">Personal Settings</p>
         <h2>Study Profile</h2>
         <p class="page-copy">
-          Set your long-term study habits. Task-specific scoring criteria are managed inside each task.
+          Manage your account details and long-term study habits.
         </p>
       </div>
     </div>
 
-    <div class="settings-grid settings-grid-single">
+    <div class="settings-grid">
+      <section class="panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Account settings</h3>
+            <p>View your login identity and update display name or password.</p>
+          </div>
+        </div>
+
+        <form class="settings-form" @submit.prevent="saveAccount">
+          <div class="readonly-grid">
+            <label>
+              Username
+              <input :value="accountForm.username" type="text" disabled />
+            </label>
+
+            <label>
+              Email
+              <input :value="accountForm.email" type="email" disabled />
+            </label>
+          </div>
+
+          <label>
+            Display name
+            <input v-model.trim="accountForm.displayName" type="text" maxlength="80" required />
+          </label>
+
+          <p v-if="accountError" class="form-error">{{ accountError }}</p>
+          <p v-if="accountSuccess" class="form-success">{{ accountSuccess }}</p>
+
+          <button type="submit" class="primary-button" :disabled="isSavingAccount">
+            {{ isSavingAccount ? 'Saving...' : 'Save account' }}
+          </button>
+        </form>
+
+        <form class="settings-form password-form" @submit.prevent="savePassword">
+          <div>
+            <h4>Password</h4>
+            <p>Use your current password to set a new one.</p>
+          </div>
+
+          <label>
+            Current password
+            <input v-model="passwordForm.currentPassword" type="password" autocomplete="current-password" required />
+          </label>
+
+          <label>
+            New password
+            <input v-model="passwordForm.newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="72" required />
+          </label>
+
+          <p v-if="passwordError" class="form-error">{{ passwordError }}</p>
+          <p v-if="passwordSuccess" class="form-success">{{ passwordSuccess }}</p>
+
+          <button type="submit" class="secondary-button" :disabled="isSavingPassword">
+            {{ isSavingPassword ? 'Updating...' : 'Update password' }}
+          </button>
+        </form>
+      </section>
+
       <section class="panel">
         <div class="panel-heading">
           <div>
@@ -85,6 +144,18 @@
 import { onMounted, reactive, ref } from 'vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { fetchUserProfile, updateUserProfile } from '../services/settingsService'
+import { changePassword, fetchCurrentUser, updateCurrentUser } from '../services/userService'
+
+const accountForm = reactive({
+  username: '',
+  email: '',
+  displayName: ''
+})
+
+const passwordForm = reactive({
+  currentPassword: '',
+  newPassword: ''
+})
 
 const profileForm = reactive({
   studyPace: 'NORMAL',
@@ -94,11 +165,35 @@ const profileForm = reactive({
   planningStyle: 'BALANCED'
 })
 
+const accountError = ref('')
+const accountSuccess = ref('')
+const passwordError = ref('')
+const passwordSuccess = ref('')
 const profileError = ref('')
 const profileSuccess = ref('')
+const isSavingAccount = ref(false)
+const isSavingPassword = ref(false)
 const isSavingProfile = ref(false)
 
-onMounted(loadProfile)
+onMounted(loadSettings)
+
+async function loadSettings() {
+  await Promise.all([
+    loadAccount(),
+    loadProfile()
+  ])
+}
+
+async function loadAccount() {
+  accountError.value = ''
+
+  try {
+    const response = await fetchCurrentUser()
+    applyAccount(response.data)
+  } catch (error) {
+    accountError.value = getApiErrorMessage(error)
+  }
+}
 
 async function loadProfile() {
   profileError.value = ''
@@ -108,6 +203,41 @@ async function loadProfile() {
     applyProfile(response.data)
   } catch (error) {
     profileError.value = getApiErrorMessage(error)
+  }
+}
+
+async function saveAccount() {
+  isSavingAccount.value = true
+  accountError.value = ''
+  accountSuccess.value = ''
+
+  try {
+    const response = await updateCurrentUser({
+      displayName: accountForm.displayName
+    })
+    applyAccount(response.data)
+    accountSuccess.value = 'Account details saved.'
+  } catch (error) {
+    accountError.value = getApiErrorMessage(error)
+  } finally {
+    isSavingAccount.value = false
+  }
+}
+
+async function savePassword() {
+  isSavingPassword.value = true
+  passwordError.value = ''
+  passwordSuccess.value = ''
+
+  try {
+    await changePassword({ ...passwordForm })
+    passwordForm.currentPassword = ''
+    passwordForm.newPassword = ''
+    passwordSuccess.value = 'Password updated.'
+  } catch (error) {
+    passwordError.value = getApiErrorMessage(error)
+  } finally {
+    isSavingPassword.value = false
   }
 }
 
@@ -125,6 +255,16 @@ async function saveProfile() {
   } finally {
     isSavingProfile.value = false
   }
+}
+
+function applyAccount(user) {
+  if (!user) {
+    return
+  }
+
+  accountForm.username = user.username
+  accountForm.email = user.email
+  accountForm.displayName = user.displayName || user.username
 }
 
 function applyProfile(profile) {
