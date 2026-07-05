@@ -35,6 +35,10 @@ public class RecommendationService {
                 + features.deadlineFlexibilityScore() * 0.05
                 + features.personalImportanceScore() * 0.05;
 
+        if (features.daysUntilDeadline() < 0) {
+            weightedScore *= overdueRecoveryFactor(features.deadlineFlexibilityScore());
+        }
+
         return roundToTwoDecimals(clamp(weightedScore) * 100);
     }
 
@@ -51,8 +55,14 @@ public class RecommendationService {
     private String buildReason(RecommendationFeatures features, double priorityScore, DelayRiskLevel delayRisk) {
         List<String> reasons = new ArrayList<>();
 
-        if (features.daysUntilDeadline() <= 0) {
-            reasons.add("the deadline is overdue or due today");
+        if (features.daysUntilDeadline() < 0) {
+            if (features.deadlineFlexibilityScore() <= 0.4) {
+                reasons.add("the task is overdue but may still be recoverable because the deadline is flexible");
+            } else {
+                reasons.add("the task is overdue, so its ranking is reduced unless late submission is possible");
+            }
+        } else if (features.daysUntilDeadline() == 0) {
+            reasons.add("the deadline is due today");
         } else if (features.daysUntilDeadline() <= 3) {
             reasons.add("the deadline is coming soon");
         }
@@ -99,6 +109,11 @@ public class RecommendationService {
 
     private double clamp(double value) {
         return Math.max(0.0, Math.min(1.0, value));
+    }
+
+    private double overdueRecoveryFactor(double deadlineFlexibilityScore) {
+        double flexibilitySignal = 1.0 - deadlineFlexibilityScore;
+        return 0.35 + (clamp(flexibilitySignal) * 0.45);
     }
 
     private double roundToTwoDecimals(double value) {

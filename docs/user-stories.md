@@ -36,14 +36,14 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-014 | Calculate Task Priority Score and Delay Risk | Intelligent Recommendation | P0 | 8 | L | Sprint 2 | Done |
 | US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
 | US-016 | View AI Study Advice | Intelligent Recommendation | P1 | 3 | M | Sprint 2 | Done |
-| US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 9 | Backlog |
+| US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 10 | Backlog |
 | US-018 | Configure Task Scoring Criteria | Task Recommendation | P1 | 8 | L | Sprint 7 | Done |
-| US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 10 | Backlog |
-| US-020 | Upload or Paste Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 11 | Backlog |
-| US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 11 | Backlog |
-| US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 12 | Backlog |
-| US-023 | Configure AI Provider Safely | AI Provider Abstraction | P2 | 8 | L | Sprint 13 | Backlog |
-| US-024 | Improve Frontend Presentation | Frontend Refinement | P1 | 5 | M | Sprint 13 | Backlog |
+| US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 13 | Backlog |
+| US-020 | Upload Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 9 | Done |
+| US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 9 | Done |
+| US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 11 | Backlog |
+| US-023 | Configure AI Provider Safely | AI Provider Abstraction | P2 | 8 | L | Sprint 12 | Backlog |
+| US-024 | Improve Frontend Presentation | Frontend Refinement | P1 | 5 | M | Sprint 12 | Backlog |
 | US-025 | Cache Recommendation Results | Performance | P2 | 5 | M | Sprint 14 | Backlog |
 | US-026 | Run Project with Docker | Deployment | P2 | 5 | M | Sprint 15 | Backlog |
 | US-027 | Update Deployment Documentation | Deployment | P2 | 3 | S | Sprint 15 | Backlog |
@@ -593,28 +593,29 @@ Development Tasks:
 - Add frontend dashboard sections or charts.
 - Add service tests for analytics calculations.
 
-### US-020: Upload or Paste Module Handbook
+### US-020: Upload Module Handbook
 
 Priority: P1
 Estimate: 5 story points
 Size: M
 
-As a student, I want to upload or paste module handbook content, so that ASTIS can help me find possible assessment tasks and deadlines.
+As a student, I want to upload a module handbook file, so that ASTIS can help me find possible assessment tasks and deadlines.
 
 Acceptance Criteria:
 
-- The user can provide module handbook content by upload or text input.
-- The system accepts common text-based formats for the first version.
+- The user can upload a PDF or DOCX module handbook.
+- The backend extracts readable text from the uploaded file.
 - The system validates empty or unsupported input.
-- Uploaded or pasted content is only processed for the authenticated user.
-- The raw content is not exposed to other users.
+- Uploaded content is only processed temporarily.
+- The raw handbook file is not permanently stored in the MVP version.
+- The raw content is not exposed to other users through the API.
 
 Development Tasks:
 
-- Decide MVP input type: pasted text first, file upload later if needed.
-- Add backend endpoint for handbook parsing input.
-- Add validation for input size and content.
-- Add frontend form for uploading or pasting handbook content.
+- Add PDF and DOCX text extraction support.
+- Add backend endpoint for handbook file parsing.
+- Add validation for file size, empty files, and unsupported extensions.
+- Add frontend form for uploading handbook files.
 - Add error handling for unsupported or empty content.
 
 ### US-021: Review AI-extracted Tasks
@@ -630,8 +631,11 @@ Acceptance Criteria:
 - The AI parser returns extracted task candidates with title, deadline, task type, and confidence or explanation.
 - Extracted tasks are shown as draft items.
 - The user can edit extracted task details before saving.
-- The user can select which extracted tasks to create.
+- Fields that cannot be confidently extracted are left empty for the user to complete.
+- Late-submission or extension information can be used as task deadline flexibility when it is clearly present.
+- The user can create each confirmed draft through the existing task creation flow.
 - The system does not automatically create final tasks without user confirmation.
+- If the parser cannot find a clear deadline, the UI requires the user to add one before creating a task.
 - Failed AI parsing returns a clear error or fallback message.
 
 Development Tasks:
@@ -640,7 +644,7 @@ Development Tasks:
 - Build AI parsing prompt and response format.
 - Add parser service with provider fallback handling.
 - Add review UI for extracted draft tasks.
-- Connect selected draft tasks to existing task creation flow.
+- Connect confirmed draft tasks to existing task creation flow.
 - Add tests for successful parse, invalid AI response, and user-confirmed creation.
 
 ### US-022: Generate Study Plan
