@@ -279,6 +279,13 @@ button {
   grid-template-columns: minmax(280px, 720px);
 }
 
+.handbook-grid {
+  align-items: start;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+}
+
 .metric-grid {
   display: grid;
   gap: 16px;
@@ -639,6 +646,87 @@ button {
   padding: 6px 8px;
 }
 
+.parser-summary {
+  border-top: 1px solid #e6eef5;
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 22px;
+}
+
+.parser-summary div {
+  background: #f7f9fb;
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+}
+
+.parser-summary span {
+  color: #52616f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.parser-summary strong {
+  color: #132238;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.text-preview {
+  border-top: 1px solid #e6eef5;
+  color: #52616f;
+  font-size: 14px;
+  margin-top: 18px;
+  padding-top: 18px;
+}
+
+.text-preview summary {
+  color: #334e68;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.text-preview p {
+  line-height: 1.6;
+  margin: 12px 0 0;
+  max-height: 220px;
+  overflow: auto;
+  white-space: pre-line;
+}
+
+.draft-list {
+  display: grid;
+  gap: 18px;
+}
+
+.draft-item {
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.draft-heading {
+  align-items: start;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.draft-heading h4 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.draft-heading p {
+  color: #52616f;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
 .form-row {
   display: grid;
   gap: 14px;
@@ -839,6 +927,7 @@ h2 {
   }
 
   .dashboard-grid,
+  .handbook-grid,
   .settings-grid,
   .task-grid,
   .readonly-grid,

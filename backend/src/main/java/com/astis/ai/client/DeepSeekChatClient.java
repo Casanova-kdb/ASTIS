@@ -38,6 +38,14 @@ public class DeepSeekChatClient {
     }
 
     public String generateAdvice(String prompt) {
+        return generateCompletion(
+                "You are a study planning assistant. Give concise, practical advice based only on the provided ranked tasks.",
+                prompt,
+                properties.maxTokens()
+        );
+    }
+
+    public String generateCompletion(String systemPrompt, String prompt, int maxTokens) {
         if (!isConfigured()) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "DeepSeek API key is not configured");
         }
@@ -46,11 +54,11 @@ public class DeepSeekChatClient {
             DeepSeekChatRequest requestBody = new DeepSeekChatRequest(
                     properties.model(),
                     List.of(
-                            new ChatMessage("system", "You are a study planning assistant. Give concise, practical advice based only on the provided ranked tasks."),
+                            new ChatMessage("system", systemPrompt),
                             new ChatMessage("user", prompt)
                     ),
                     properties.temperature(),
-                    properties.maxTokens(),
+                    maxTokens,
                     false
             );
 
