@@ -23,7 +23,7 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-001 | User Registration | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
 | US-002 | User Login | User Management and Security | P0 | 3 | M | Sprint 2 | Done |
 | US-003 | Protected Personal Workspace | User Management and Security | P0 | 5 | M | Sprint 2 | Done |
-| US-004 | Manage User Profile | User Management and Security | P1 | 3 | M | Sprint 7 | In Progress |
+| US-004 | Manage User Profile | User Management and Security | P1 | 5 | M | Sprint 8 | Done |
 | US-005 | Create Academic Task | Task Management | P0 | 3 | M | Sprint 2 | Done |
 | US-006 | View Task List | Task Management | P0 | 2 | S | Sprint 2 | Done |
 | US-007 | View Task Detail | Task Management | P0 | 2 | S | Sprint 2 | Done |
@@ -36,17 +36,17 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-014 | Calculate Task Priority Score and Delay Risk | Intelligent Recommendation | P0 | 8 | L | Sprint 2 | Done |
 | US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
 | US-016 | View AI Study Advice | Intelligent Recommendation | P1 | 3 | M | Sprint 2 | Done |
-| US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 7 | Backlog |
-| US-018 | Configure Task Scoring Criteria | Task Recommendation | P1 | 8 | L | Sprint 7 | In Progress |
-| US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 9 | Backlog |
-| US-020 | Upload or Paste Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 10 | Backlog |
-| US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 10 | Backlog |
-| US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 11 | Backlog |
-| US-023 | Configure AI Provider Safely | AI Provider Abstraction | P2 | 8 | L | Sprint 12 | Backlog |
-| US-024 | Improve Frontend Presentation | Frontend Refinement | P1 | 5 | M | Sprint 12 | Backlog |
-| US-025 | Cache Recommendation Results | Performance | P2 | 5 | M | Sprint 13 | Backlog |
-| US-026 | Run Project with Docker | Deployment | P2 | 5 | M | Sprint 14 | Backlog |
-| US-027 | Update Deployment Documentation | Deployment | P2 | 3 | S | Sprint 14 | Backlog |
+| US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 9 | Backlog |
+| US-018 | Configure Task Scoring Criteria | Task Recommendation | P1 | 8 | L | Sprint 7 | Done |
+| US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 10 | Backlog |
+| US-020 | Upload or Paste Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 11 | Backlog |
+| US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 11 | Backlog |
+| US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 12 | Backlog |
+| US-023 | Configure AI Provider Safely | AI Provider Abstraction | P2 | 8 | L | Sprint 13 | Backlog |
+| US-024 | Improve Frontend Presentation | Frontend Refinement | P1 | 5 | M | Sprint 13 | Backlog |
+| US-025 | Cache Recommendation Results | Performance | P2 | 5 | M | Sprint 14 | Backlog |
+| US-026 | Run Project with Docker | Deployment | P2 | 5 | M | Sprint 15 | Backlog |
+| US-027 | Update Deployment Documentation | Deployment | P2 | 3 | S | Sprint 15 | Backlog |
 
 Suggested GitHub labels:
 
@@ -179,6 +179,9 @@ Acceptance Criteria:
 - The user can update basic profile fields such as display name.
 - The user can store optional study preference data, such as preferred study time.
 - Profile data is only accessible to the authenticated user.
+- The user can change their password after providing the current password.
+- Wrong current password returns a clear error.
+- New password is stored as a hash, not plain text.
 - Profile data can be used by the recommendation module when available.
 
 Development Tasks:
@@ -187,8 +190,10 @@ Development Tasks:
 - Implement profile request and response DTOs.
 - Implement `GET /users/me`.
 - Implement `PUT /users/me`.
+- Implement `PUT /users/me/password`.
 - Add ownership protection through authenticated identity.
 - Test profile retrieval and update cases.
+- Test password update with correct and incorrect current password.
 
 ## Epic 2: Task Management
 

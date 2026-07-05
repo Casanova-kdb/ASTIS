@@ -12,13 +12,14 @@ The MVP has already proved the core workflow: users can manage study tasks, the 
 | --- | --- | --- |
 | Sprint 6 | User Story Iteration | Refine backlog and acceptance criteria for post-MVP features |
 | Sprint 7 | User Profile and Task Scoring Criteria | Let users manage study profile settings and task-specific scoring criteria |
-| Sprint 8 | Recommendation Improvement | Improve recommendation explanations and scoring quality |
-| Sprint 9 | Analytics Enhancement | Add richer productivity and delay-pattern analytics |
-| Sprint 10 | AI Handbook Parser | Extract deadlines from uploaded module handbook files |
-| Sprint 11 | Study Plan Generator | Generate a planned study schedule from tasks and recommendations |
-| Sprint 12 | AI Provider Abstraction and Frontend Refinement | Support configurable AI providers more safely and polish the MVP UI |
-| Sprint 13 | Redis Caching | Cache recommendation results where useful |
-| Sprint 14 | Docker and Deployment | Prepare local Docker setup and deployment documentation |
+| Sprint 8 | Account Settings and Profile Management | Let users manage display name and password from Settings |
+| Sprint 9 | Recommendation Improvement | Improve recommendation explanations and scoring quality |
+| Sprint 10 | Analytics Enhancement | Add richer productivity and delay-pattern analytics |
+| Sprint 11 | AI Handbook Parser | Extract deadlines from uploaded module handbook files |
+| Sprint 12 | Study Plan Generator | Generate a planned study schedule from tasks and recommendations |
+| Sprint 13 | AI Provider Abstraction and Frontend Refinement | Support configurable AI providers more safely and polish the MVP UI |
+| Sprint 14 | Redis Caching | Cache recommendation results where useful |
+| Sprint 15 | Docker and Deployment | Prepare local Docker setup and deployment documentation |
 
 ## Sprint 6: User Story Iteration
 
@@ -66,7 +67,30 @@ Priority:
 
 P1. This improves personalisation while keeping user profile data and task data clearly separated.
 
-## Sprint 8: Recommendation Improvement
+## Sprint 8: Account Settings and Profile Management
+
+Goal:
+
+Let users manage their account information and password from the Settings page.
+
+Possible work:
+
+- Current user account API
+- Display name update
+- Password change with current password verification
+- Frontend account settings form
+- Frontend password update form
+- Backend tests for account update and password change
+
+Expected outcome:
+
+The user can manage basic account details without leaving ASTIS.
+
+Priority:
+
+P1. This improves product completeness and strengthens the user management module.
+
+## Sprint 9: Recommendation Improvement
 
 Goal:
 
@@ -87,7 +111,7 @@ Priority:
 
 P1. This improves quality, but the MVP already has a working recommendation module.
 
-## Sprint 9: Analytics Enhancement
+## Sprint 10: Analytics Enhancement
 
 Goal:
 
@@ -105,7 +129,7 @@ Priority:
 
 P2. Useful for presentation and reflection, but less important than core recommendation improvements.
 
-## Sprint 10: AI Handbook Parser
+## Sprint 11: AI Handbook Parser
 
 Goal:
 

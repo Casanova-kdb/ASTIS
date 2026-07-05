@@ -142,6 +142,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 | Module | Example Endpoints |
 | --- | --- |
 | Auth | `POST /api/auth/register`, `POST /api/auth/login` |
+| Users | `GET /api/users/me`, `PUT /api/users/me`, `PUT /api/users/me/password` |
 | Tasks | `GET /api/tasks`, `POST /api/tasks`, `PUT /api/tasks/{taskId}` |
 | Analytics | `GET /api/analytics/summary` |
 | Recommendations | `GET /api/recommendations/tasks` |
@@ -168,6 +169,7 @@ Sprint records:
 - [Sprint 5: MVP Release Closure](docs/sprints/sprint-5-mvp-release-closure.md)
 - [Sprint 6: User Story Iteration](docs/sprints/sprint-6-user-story-iteration.md)
 - [Sprint 7: User Profile and Task Scoring Criteria](docs/sprints/sprint-7-task-scoring-criteria-settings.md)
+- [Sprint 8: Account Settings and Profile Management](docs/sprints/sprint-8-account-settings-profile-management.md)
 
 Design assets:
 

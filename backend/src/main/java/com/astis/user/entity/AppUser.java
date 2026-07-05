@@ -72,4 +72,14 @@ public class AppUser {
     public String getPreferredStudyTime() {
         return preferredStudyTime;
     }
+
+    public void updateProfile(String displayName) {
+        this.displayName = displayName;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updatePasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+        this.updatedAt = LocalDateTime.now();
+    }
 }

@@ -352,6 +352,7 @@ button {
   min-width: 0;
 }
 
+.settings-form input,
 .settings-form select {
   background: #ffffff;
   border: 1px solid #cbd6e2;
@@ -363,10 +364,42 @@ button {
   width: 100%;
 }
 
+.settings-form input:focus,
 .settings-form select:focus,
 .settings-form input[type="range"]:focus {
   outline: 3px solid rgba(42, 157, 143, 0.16);
   outline-offset: 2px;
+}
+
+.settings-form input:disabled {
+  background: #f0f4f8;
+  color: #52616f;
+  cursor: not-allowed;
+}
+
+.readonly-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.password-form {
+  border-top: 1px solid #e6eef5;
+  margin-top: 24px;
+  padding-top: 24px;
+}
+
+.password-form h4 {
+  color: #132238;
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.password-form p {
+  color: #52616f;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .weight-control {
@@ -808,6 +841,7 @@ h2 {
   .dashboard-grid,
   .settings-grid,
   .task-grid,
+  .readonly-grid,
   .form-row {
     grid-template-columns: 1fr;
   }

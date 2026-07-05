@@ -1,6 +1,7 @@
 package com.astis.analytics.controller;
 
 import com.astis.analytics.repository.BehaviorLogRepository;
+import com.astis.settings.repository.UserProfileRepository;
 import com.astis.task.entity.Task;
 import com.astis.task.entity.TaskPriority;
 import com.astis.task.entity.TaskStatus;
@@ -39,6 +40,9 @@ class AnalyticsControllerIntegrationTests {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
     @BeforeEach
     void setUp() {
@@ -123,6 +127,7 @@ class AnalyticsControllerIntegrationTests {
     private void cleanDatabase() {
         behaviorLogRepository.deleteAll();
         taskRepository.deleteAll();
+        userProfileRepository.deleteAll();
         appUserRepository.deleteAll();
     }
 
