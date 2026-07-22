@@ -1,6 +1,7 @@
 package com.astis.user.controller;
 
 import com.astis.settings.repository.UserProfileRepository;
+import com.astis.task.repository.TaskRepository;
 import com.astis.user.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,12 @@ class AuthControllerIntegrationTests {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
+    @Autowired
+    private TaskRepository taskRepository;
+
     @BeforeEach
     void setUp() {
+        taskRepository.deleteAll();
         userProfileRepository.deleteAll();
         appUserRepository.deleteAll();
     }
