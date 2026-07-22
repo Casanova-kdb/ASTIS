@@ -1,6 +1,10 @@
 spring:
   application:
     name: astis-backend
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:astis}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: ${DB_USERNAME:root}
@@ -36,3 +40,5 @@ app:
       model: ${DEEPSEEK_MODEL:deepseek-v4-flash}
       temperature: ${DEEPSEEK_TEMPERATURE:0.3}
       max-tokens: ${DEEPSEEK_MAX_TOKENS:600}
+      handbook-max-tokens: ${DEEPSEEK_HANDBOOK_MAX_TOKENS:6000}
+      request-timeout-seconds: ${DEEPSEEK_REQUEST_TIMEOUT_SECONDS:180}

@@ -12,7 +12,7 @@ class LocalHandbookParserTests {
     private final LocalHandbookParser parser = new LocalHandbookParser();
 
     @Test
-    void parseCreatesDraftAndMovesPastCourseworkDateTo2027() {
+    void parseCreatesDraftAndPreservesPastCourseworkDate() {
         String text = """
                 Web Application Development: Coursework
                 This coursework is worth 100% of the marks for module CHC5054.
@@ -26,7 +26,7 @@ class LocalHandbookParserTests {
         HandbookDraftTaskResponse draft = drafts.get(0);
         assertThat(draft.title()).isEqualTo("Web Application Development: Coursework");
         assertThat(draft.priority()).hasToString("HIGH");
-        assertThat(draft.deadline()).isEqualTo(LocalDateTime.of(2027, 6, 24, 23, 59));
+        assertThat(draft.deadline()).isEqualTo(LocalDateTime.of(2026, 6, 24, 23, 59));
         assertThat(draft.deadlineMissing()).isFalse();
         assertThat(draft.gradeWeight()).isEqualTo(5);
         assertThat(draft.estimatedHours()).isNull();

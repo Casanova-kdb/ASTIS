@@ -44,18 +44,6 @@ public class LocalHandbookParser {
         ));
     }
 
-    public LocalDateTime normalizeDeadline(LocalDateTime deadline) {
-        if (deadline == null) {
-            return null;
-        }
-
-        if (deadline.getYear() < 2027) {
-            return deadline.withYear(2027);
-        }
-
-        return deadline;
-    }
-
     private String findTitle(String text) {
         List<String> lines = text.lines()
                 .map(String::trim)
@@ -89,7 +77,7 @@ public class LocalHandbookParser {
             int year = Integer.parseInt(isoMatcher.group(1));
             int month = Integer.parseInt(isoMatcher.group(2));
             int day = Integer.parseInt(isoMatcher.group(3));
-            return Optional.of(normalizeDeadline(LocalDateTime.of(year, month, day, 23, 59)));
+            return Optional.of(LocalDateTime.of(year, month, day, 23, 59));
         }
 
         Matcher textMatcher = TEXT_DATE_PATTERN.matcher(text);
@@ -102,7 +90,7 @@ public class LocalHandbookParser {
                         23,
                         59
                 );
-                return Optional.of(normalizeDeadline(parsed));
+                return Optional.of(parsed);
             } catch (IllegalArgumentException exception) {
                 return Optional.empty();
             }
