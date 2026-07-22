@@ -279,6 +279,13 @@ button {
   grid-template-columns: minmax(280px, 720px);
 }
 
+.handbook-grid {
+  align-items: start;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+}
+
 .metric-grid {
   display: grid;
   gap: 16px;
@@ -352,6 +359,7 @@ button {
   min-width: 0;
 }
 
+.settings-form input,
 .settings-form select {
   background: #ffffff;
   border: 1px solid #cbd6e2;
@@ -363,10 +371,42 @@ button {
   width: 100%;
 }
 
+.settings-form input:focus,
 .settings-form select:focus,
 .settings-form input[type="range"]:focus {
   outline: 3px solid rgba(42, 157, 143, 0.16);
   outline-offset: 2px;
+}
+
+.settings-form input:disabled {
+  background: #f0f4f8;
+  color: #52616f;
+  cursor: not-allowed;
+}
+
+.readonly-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.password-form {
+  border-top: 1px solid #e6eef5;
+  margin-top: 24px;
+  padding-top: 24px;
+}
+
+.password-form h4 {
+  color: #132238;
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.password-form p {
+  color: #52616f;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .weight-control {
@@ -606,6 +646,98 @@ button {
   padding: 6px 8px;
 }
 
+.parser-summary {
+  border-top: 1px solid #e6eef5;
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 22px;
+}
+
+.parser-summary div {
+  background: #f7f9fb;
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+}
+
+.parser-summary span {
+  color: #52616f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.parser-summary strong {
+  color: #132238;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.form-warning {
+  background: #fff8e6;
+  border: 1px solid #e7c96f;
+  border-radius: 8px;
+  color: #6b5311;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  padding: 12px;
+}
+
+.text-preview {
+  border-top: 1px solid #e6eef5;
+  color: #52616f;
+  font-size: 14px;
+  margin-top: 18px;
+  padding-top: 18px;
+}
+
+.text-preview summary {
+  color: #334e68;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.text-preview p {
+  line-height: 1.6;
+  margin: 12px 0 0;
+  max-height: 220px;
+  overflow: auto;
+  white-space: pre-line;
+}
+
+.draft-list {
+  display: grid;
+  gap: 18px;
+}
+
+.draft-item {
+  border: 1px solid #dbe3ea;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.draft-heading {
+  align-items: start;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.draft-heading h4 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.draft-heading p {
+  color: #52616f;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
 .form-row {
   display: grid;
   gap: 14px;
@@ -806,8 +938,10 @@ h2 {
   }
 
   .dashboard-grid,
+  .handbook-grid,
   .settings-grid,
   .task-grid,
+  .readonly-grid,
   .form-row {
     grid-template-columns: 1fr;
   }

@@ -102,4 +102,56 @@ class RecommendationServiceTests {
                 .contains("personally important")
                 .contains("high delay risk");
     }
+
+    @Test
+    void reducesPriorityScoreForOverdueStrictDeadlineTasks() {
+        RecommendationFeatures features = new RecommendationFeatures(
+                10L,
+                1L,
+                -3,
+                8.0,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                0.40
+        );
+
+        RecommendationScore score = recommendationService.scoreTask(features);
+
+        assertThat(score.priorityScore()).isEqualTo(35.0);
+        assertThat(score.reason()).contains("ranking is reduced unless late submission is possible");
+    }
+
+    @Test
+    void keepsMorePriorityForOverdueFlexibleDeadlineTasks() {
+        RecommendationFeatures features = new RecommendationFeatures(
+                10L,
+                1L,
+                -3,
+                8.0,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                1.00,
+                0.20,
+                1.00,
+                0.40
+        );
+
+        RecommendationScore score = recommendationService.scoreTask(features);
+
+        assertThat(score.priorityScore()).isEqualTo(68.16);
+        assertThat(score.reason()).contains("may still be recoverable because the deadline is flexible");
+    }
 }

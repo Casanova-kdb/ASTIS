@@ -20,6 +20,7 @@ Completed areas:
 - Manual full-stack test report
 - MVP release summary
 - Post-MVP iteration backlog
+- AI handbook parser for PDF/DOCX task draft extraction
 
 ## MVP Features
 
@@ -31,6 +32,7 @@ Completed areas:
 - Dashboard summary for task progress
 - Recommendation ranking based on task data
 - AI study advice based on recommended tasks
+- AI-assisted handbook import with user-confirmed task creation
 - Swagger/OpenAPI backend documentation
 
 ## Tech Stack
@@ -40,7 +42,7 @@ Completed areas:
 | Backend | Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA |
 | Frontend | Vue 3, Vite, Vue Router, Axios |
 | Database | MySQL |
-| AI | DeepSeek API, local fallback advice |
+| AI | DeepSeek API, local fallback advice, handbook parsing fallback |
 | API Docs | Swagger / OpenAPI |
 | Testing | JUnit, Spring Boot Test, manual full-stack testing |
 | Workflow | Lightweight personal Scrum, sprint branches, GitHub PRs |
@@ -142,10 +144,12 @@ VITE_API_BASE_URL=http://localhost:8080/api
 | Module | Example Endpoints |
 | --- | --- |
 | Auth | `POST /api/auth/register`, `POST /api/auth/login` |
+| Users | `GET /api/users/me`, `PUT /api/users/me`, `PUT /api/users/me/password` |
 | Tasks | `GET /api/tasks`, `POST /api/tasks`, `PUT /api/tasks/{taskId}` |
 | Analytics | `GET /api/analytics/summary` |
 | Recommendations | `GET /api/recommendations/tasks` |
 | AI Advice | `GET /api/recommendations/advice` |
+| Handbooks | `POST /api/handbooks/parse` |
 
 ## Documentation
 
@@ -168,6 +172,8 @@ Sprint records:
 - [Sprint 5: MVP Release Closure](docs/sprints/sprint-5-mvp-release-closure.md)
 - [Sprint 6: User Story Iteration](docs/sprints/sprint-6-user-story-iteration.md)
 - [Sprint 7: User Profile and Task Scoring Criteria](docs/sprints/sprint-7-task-scoring-criteria-settings.md)
+- [Sprint 8: Account Settings and Profile Management](docs/sprints/sprint-8-account-settings-profile-management.md)
+- [Sprint 9: AI Handbook Parser](docs/sprints/sprint-9-ai-handbook-parser.md)
 
 Design assets:
 
@@ -216,4 +222,4 @@ This project follows a lightweight personal Scrum workflow:
 
 Local demo seed data is ignored by Git and is not part of the repository.
 
-The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, refine task-specific scoring criteria, explore AI handbook parsing, add Redis caching, and prepare Docker-based deployment.
+The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add richer analytics, introduce study plan generation, add Redis caching, and prepare Docker-based deployment.

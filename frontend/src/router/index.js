@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { isAuthenticated } from '../services/authService'
 import DashboardView from '../views/DashboardView.vue'
+import HandbookImportView from '../views/HandbookImportView.vue'
 import LoginView from '../views/LoginView.vue'
 import TasksView from '../views/TasksView.vue'
 import RecommendationsView from '../views/RecommendationsView.vue'
@@ -38,6 +39,14 @@ const routes = [
     path: '/tasks',
     name: 'tasks',
     component: TasksView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/handbook-import',
+    name: 'handbook-import',
+    component: HandbookImportView,
     meta: {
       requiresAuth: true
     }

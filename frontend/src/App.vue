@@ -13,12 +13,13 @@
       <nav>
         <RouterLink to="/">Dashboard</RouterLink>
         <RouterLink to="/tasks">Tasks</RouterLink>
+        <RouterLink to="/handbook-import">Handbook Import</RouterLink>
         <RouterLink to="/recommendations">Recommendations</RouterLink>
         <RouterLink to="/settings">Settings</RouterLink>
       </nav>
 
       <div class="sidebar-footer">
-        <p>{{ currentUser?.username || 'Student' }}</p>
+        <p>{{ currentUser?.displayName || currentUser?.username || 'Student' }}</p>
         <button type="button" class="ghost-button" @click="handleLogout">Logout</button>
       </div>
     </aside>

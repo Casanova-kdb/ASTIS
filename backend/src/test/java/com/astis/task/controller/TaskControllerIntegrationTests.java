@@ -2,6 +2,7 @@ package com.astis.task.controller;
 
 import com.astis.analytics.entity.BehaviorActionType;
 import com.astis.analytics.repository.BehaviorLogRepository;
+import com.astis.settings.repository.UserProfileRepository;
 import com.astis.task.repository.TaskRepository;
 import com.astis.user.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,10 +42,14 @@ class TaskControllerIntegrationTests {
     @Autowired
     private AppUserRepository appUserRepository;
 
+    @Autowired
+    private UserProfileRepository userProfileRepository;
+
     @BeforeEach
     void setUp() {
         behaviorLogRepository.deleteAll();
         taskRepository.deleteAll();
+        userProfileRepository.deleteAll();
         appUserRepository.deleteAll();
     }
 

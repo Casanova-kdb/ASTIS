@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.time.Duration;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,19 @@ public class DeepSeekChatClient {
         return properties.model();
     }
 
+    public int handbookMaxTokens() {
+        return properties.handbookMaxTokens();
+    }
+
     public String generateAdvice(String prompt) {
+        return generateCompletion(
+                "You are a study planning assistant. Give concise, practical advice based only on the provided ranked tasks.",
+                prompt,
+                properties.maxTokens()
+        );
+    }
+
+    public String generateCompletion(String systemPrompt, String prompt, int maxTokens) {
         if (!isConfigured()) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "DeepSeek API key is not configured");
         }
@@ -46,17 +59,17 @@ public class DeepSeekChatClient {
             DeepSeekChatRequest requestBody = new DeepSeekChatRequest(
                     properties.model(),
                     List.of(
-                            new ChatMessage("system", "You are a study planning assistant. Give concise, practical advice based only on the provided ranked tasks."),
+                            new ChatMessage("system", systemPrompt),
                             new ChatMessage("user", prompt)
                     ),
                     properties.temperature(),
-                    properties.maxTokens(),
+                    maxTokens,
                     false
             );
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(properties.baseUrl() + "/chat/completions"))
-                    .timeout(Duration.ofSeconds(30))
+                    .timeout(Duration.ofSeconds(properties.requestTimeoutSeconds()))
                     .header("Authorization", "Bearer " + properties.apiKey())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(requestBody)))
@@ -64,19 +77,24 @@ public class DeepSeekChatClient {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() < 200 || response.statusCode() >= 300) {
-                throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "DeepSeek request failed");
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_GATEWAY,
+                        "DeepSeek request failed with status " + response.statusCode()
+                );
             }
 
             DeepSeekChatResponse chatResponse = objectMapper.readValue(response.body(), DeepSeekChatResponse.class);
             if (chatResponse.choices() == null || chatResponse.choices().isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "DeepSeek returned no advice");
+                throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "DeepSeek returned no completion");
             }
 
             String content = chatResponse.choices().get(0).message().content();
             if (content == null || content.isBlank()) {
-                throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "DeepSeek returned empty advice");
+                throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "DeepSeek returned empty completion");
             }
             return content.strip();
+        } catch (HttpTimeoutException exception) {
+            throw new ResponseStatusException(HttpStatus.GATEWAY_TIMEOUT, "DeepSeek request timed out");
         } catch (IOException exception) {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "DeepSeek response could not be processed");
         } catch (InterruptedException exception) {
