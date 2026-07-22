@@ -675,6 +675,17 @@ button {
   overflow-wrap: anywhere;
 }
 
+.form-warning {
+  background: #fff8e6;
+  border: 1px solid #e7c96f;
+  border-radius: 8px;
+  color: #6b5311;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  padding: 12px;
+}
+
 .text-preview {
   border-top: 1px solid #e6eef5;
   color: #52616f;

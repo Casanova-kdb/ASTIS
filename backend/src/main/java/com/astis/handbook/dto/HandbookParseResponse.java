@@ -6,6 +6,7 @@ public record HandbookParseResponse(
         String filename,
         String provider,
         boolean fallback,
+        String fallbackReason,
         int extractedCharacterCount,
         String extractedTextPreview,
         List<HandbookDraftTaskResponse> drafts

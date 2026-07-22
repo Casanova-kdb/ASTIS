@@ -13,14 +13,19 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class HandbookParserService {
 
-    private static final int MAX_AI_TEXT_CHARS = 12_000;
+    private static final Logger LOGGER = LoggerFactory.getLogger(HandbookParserService.class);
+    private static final int MAX_AI_TEXT_CHARS = 50_000;
     private static final int MAX_PREVIEW_CHARS = 700;
+    private static final int MAX_DRAFT_TASKS = 20;
 
     private final HandbookTextExtractionService textExtractionService;
     private final LocalHandbookParser localHandbookParser;
@@ -44,12 +49,24 @@ public class HandbookParserService {
         String textForAi = truncate(extracted.text(), MAX_AI_TEXT_CHARS);
 
         boolean fallback = !deepSeekChatClient.isConfigured();
-        List<HandbookDraftTaskResponse> drafts = fallback
-                ? localHandbookParser.parse(extracted.text())
-                : parseWithAi(textForAi);
+        String fallbackReason = fallback
+                ? "DeepSeek is not configured; the local parser was used."
+                : null;
+        List<HandbookDraftTaskResponse> drafts;
+
+        if (fallback) {
+            drafts = localHandbookParser.parse(extracted.text());
+        } else {
+            AiParseResult aiResult = parseWithAi(textForAi);
+            drafts = aiResult.drafts();
+            fallbackReason = aiResult.fallbackReason();
+        }
 
         if (drafts.isEmpty()) {
             fallback = true;
+            if (fallbackReason == null) {
+                fallbackReason = "DeepSeek returned no usable task drafts; the local parser was used.";
+            }
             drafts = localHandbookParser.parse(extracted.text());
         }
 
@@ -57,25 +74,46 @@ public class HandbookParserService {
                 extracted.filename(),
                 fallback ? "local-fallback" : "deepseek",
                 fallback,
+                fallbackReason,
                 extracted.text().length(),
                 truncate(extracted.text(), MAX_PREVIEW_CHARS),
                 drafts
         );
     }
 
-    private List<HandbookDraftTaskResponse> parseWithAi(String text) {
+    private AiParseResult parseWithAi(String text) {
         try {
-            String response = deepSeekChatClient.generateCompletion(buildSystemPrompt(), buildUserPrompt(text), 1200);
+            String response = deepSeekChatClient.generateCompletion(
+                    buildSystemPrompt(),
+                    buildUserPrompt(text),
+                    deepSeekChatClient.handbookMaxTokens()
+            );
             String json = extractJsonArray(response);
             AiDraftTask[] tasks = objectMapper.readValue(json, AiDraftTask[].class);
 
-            return Arrays.stream(tasks)
+            List<HandbookDraftTaskResponse> drafts = Arrays.stream(tasks)
                     .map(this::normalizeAiDraft)
                     .filter(this::hasAnyExtractedValue)
-                    .limit(8)
+                    .limit(MAX_DRAFT_TASKS)
                     .toList();
+
+            if (drafts.isEmpty()) {
+                return AiParseResult.failure("DeepSeek returned no usable task drafts; the local parser was used.");
+            }
+
+            return AiParseResult.success(drafts);
+        } catch (ResponseStatusException exception) {
+            String reason = exception.getReason() == null
+                    ? "DeepSeek request failed"
+                    : exception.getReason();
+            LOGGER.warn("DeepSeek handbook parsing failed; using local fallback. reason={}", reason);
+            return AiParseResult.failure(reason + "; the local parser was used.");
         } catch (RuntimeException | java.io.IOException exception) {
-            return List.of();
+            LOGGER.warn(
+                    "DeepSeek handbook parsing failed; using local fallback. failureType={}",
+                    exception.getClass().getSimpleName()
+            );
+            return AiParseResult.failure("DeepSeek parsing failed; the local parser was used.");
         }
     }
 
@@ -108,7 +146,7 @@ public class HandbookParserService {
                 If a field is not clearly found, return null for that field.
                 Do not invent estimated hours, priority, difficulty, or importance.
                 Only set deadlineFlexibility if the handbook clearly mentions late submission, extension, resubmission, or a strict no-late policy.
-                If a date is before 2027, change only the year to 2027.
+                Preserve dates exactly as stated in the handbook, including dates that are already in the past.
                 If the handbook says the date is to be announced, return null for deadline.
                 """;
     }
@@ -122,7 +160,7 @@ public class HandbookParserService {
                   "description": "string",
                   "taskType": "COURSEWORK|REPORT|EXAM|PRESENTATION|PROJECT|READING|REVISION",
                   "priority": "LOW|MEDIUM|HIGH",
-                  "deadline": "2027-06-24T23:59:00 or null",
+                  "deadline": "YYYY-MM-DDTHH:mm:ss or null",
                   "estimatedHours": 20,
                   "gradeWeight": 1-5,
                   "difficultyLevel": 1-5,
@@ -143,7 +181,7 @@ public class HandbookParserService {
         int end = value.lastIndexOf(']');
 
         if (start < 0 || end <= start) {
-            return "[]";
+            throw new IllegalArgumentException("DeepSeek response did not contain a JSON array");
         }
 
         return value.substring(start, end + 1);
@@ -156,10 +194,10 @@ public class HandbookParserService {
 
         String trimmed = value.strip();
         try {
-            return localHandbookParser.normalizeDeadline(LocalDateTime.parse(trimmed));
+            return LocalDateTime.parse(trimmed);
         } catch (DateTimeParseException exception) {
             try {
-                return localHandbookParser.normalizeDeadline(LocalDateTime.of(LocalDate.parse(trimmed), LocalTime.of(23, 59)));
+                return LocalDateTime.of(LocalDate.parse(trimmed), LocalTime.of(23, 59));
             } catch (DateTimeParseException ignored) {
                 return null;
             }
@@ -223,6 +261,19 @@ public class HandbookParserService {
                 || task.estimatedHours() != null
                 || task.gradeWeight() != null
                 || task.sourceEvidence() != null;
+    }
+
+    private record AiParseResult(
+            List<HandbookDraftTaskResponse> drafts,
+            String fallbackReason
+    ) {
+        private static AiParseResult success(List<HandbookDraftTaskResponse> drafts) {
+            return new AiParseResult(drafts, null);
+        }
+
+        private static AiParseResult failure(String fallbackReason) {
+            return new AiParseResult(List.of(), fallbackReason);
+        }
     }
 
     private record AiDraftTask(

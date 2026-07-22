@@ -5,6 +5,6 @@ export function parseHandbook(file) {
   formData.append('file', file)
 
   return apiClient.post('/handbooks/parse', formData, {
-    timeout: 30000
+    timeout: 210000
   })
 }

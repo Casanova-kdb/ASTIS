@@ -9,7 +9,9 @@ public record DeepSeekProperties(
         String apiKey,
         String model,
         double temperature,
-        int maxTokens
+        int maxTokens,
+        int handbookMaxTokens,
+        int requestTimeoutSeconds
 ) {
     public boolean isConfigured() {
         return enabled && apiKey != null && !apiKey.isBlank();

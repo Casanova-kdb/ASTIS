@@ -33,6 +33,7 @@
           <p v-if="selectedFile" class="muted-text">
             Selected: {{ selectedFile.name }}
           </p>
+          <p class="muted-text">Maximum file size: 10 MB</p>
 
           <p v-if="parseError" class="form-error">{{ parseError }}</p>
           <p v-if="parseSuccess" class="form-success">{{ parseSuccess }}</p>
@@ -58,6 +59,10 @@
             <strong>{{ parseResult.extractedCharacterCount }}</strong>
           </div>
         </div>
+
+        <p v-if="parseResult?.fallbackReason" class="form-warning">
+          {{ parseResult.fallbackReason }}
+        </p>
 
         <details v-if="parseResult?.extractedTextPreview" class="text-preview">
           <summary>Extracted text preview</summary>
@@ -153,6 +158,7 @@ import { parseHandbook } from '../services/handbookService'
 import { createTask } from '../services/taskService'
 
 const priorities = ['LOW', 'MEDIUM', 'HIGH']
+const maxHandbookFileSizeBytes = 10 * 1024 * 1024
 
 const selectedFile = ref(null)
 const isParsing = ref(false)
@@ -162,7 +168,17 @@ const parseResult = ref(null)
 const drafts = ref([])
 
 function handleFileChange(event) {
-  selectedFile.value = event.target.files?.[0] || null
+  const file = event.target.files?.[0] || null
+
+  if (file && file.size > maxHandbookFileSizeBytes) {
+    selectedFile.value = null
+    event.target.value = ''
+    parseError.value = 'Handbook file must be 10MB or smaller.'
+    parseSuccess.value = ''
+    return
+  }
+
+  selectedFile.value = file
   parseError.value = ''
   parseSuccess.value = ''
 }

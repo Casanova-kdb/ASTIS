@@ -239,3 +239,18 @@ The goal is to verify that the frontend, backend APIs, authentication, task mana
 All planned full-stack manual test cases passed in the local environment.
 
 The MVP flow worked from browser login through task management, dashboard analytics, recommendation ranking, and AI study advice. The frontend also displayed an error message when the backend was unavailable.
+
+## Sprint 9 Automated Verification Addendum
+
+This addendum records automated verification added after the original MVP manual test run.
+
+| Item | Result |
+| --- | --- |
+| Test date | 2026/07/22 |
+| Branch | `fix/sprint-9-handbook-parser` |
+| Full backend suite | 49 passed, 0 failed |
+| Handbook-specific tests | 15 passed, 0 failed |
+
+Handbook coverage includes PDF and DOCX extraction, upload validation, authentication, local fallback, invalid AI output, missing fields, date preservation, and confirmed draft creation through the existing task API.
+
+The original 15-case table above remains the MVP browser test record. This addendum is labelled separately because it records automated backend verification rather than another manual browser run.
