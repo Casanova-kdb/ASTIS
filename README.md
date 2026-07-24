@@ -6,7 +6,7 @@ The project is built as a completed full-stack MVP with a Spring Boot backend, M
 
 ## Current Status
 
-ASTIS MVP v1.0 is completed and documented.
+ASTIS v1.1.0 is the current full-stack release. It includes the completed v1.0 MVP, post-MVP account and handbook-import features, and the first CI-based engineering quality gates.
 
 Completed areas:
 
@@ -20,7 +20,10 @@ Completed areas:
 - Manual full-stack test report
 - MVP release summary
 - Post-MVP iteration backlog
+- Account settings and password management
+- Task-specific scoring criteria and study profile settings
 - AI handbook parser for PDF/DOCX task draft extraction
+- GitHub Actions CI and protected `develop` / `main` branches
 
 ## MVP Features
 
@@ -159,6 +162,8 @@ VITE_API_BASE_URL=http://localhost:8080/api
 - [User Stories](docs/user-stories.md)
 - [Database Design](docs/database-design.md)
 - [MVP Release Summary](docs/mvp-release-summary.md)
+- [v1.1.0 Release Notes](docs/releases/v1.1.0.md)
+- [Changelog](CHANGELOG.md)
 - [Future Iteration Backlog](docs/future-iteration-backlog.md)
 - [Manual Full-stack Test Report](docs/testing/manual-test-report.md)
 
@@ -216,6 +221,7 @@ This project follows a lightweight personal Scrum workflow:
 - Each sprint has a focused goal and branch.
 - Features are developed through small commits.
 - PR descriptions are used to explain sprint outputs.
+- Pull requests to protected branches must pass backend tests and a frontend production build.
 - Sprint records and testing notes are kept under `docs/`.
 
 ## Notes
