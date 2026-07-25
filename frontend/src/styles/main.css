@@ -607,6 +607,34 @@ button {
   margin: 0;
 }
 
+.recommendation-explanation {
+  border-top: 1px solid #e3eaf0;
+  display: grid;
+  gap: 12px;
+  padding-top: 14px;
+}
+
+.recommendation-explanation strong {
+  color: #26394d;
+  font-size: 13px;
+}
+
+.recommendation-explanation ul {
+  color: #52616f;
+  display: grid;
+  font-size: 14px;
+  gap: 5px;
+  line-height: 1.45;
+  margin: 8px 0 0;
+  padding-left: 19px;
+}
+
+.recommendation-explanation p {
+  color: #52616f;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .score-row {
   display: grid;
   gap: 12px;

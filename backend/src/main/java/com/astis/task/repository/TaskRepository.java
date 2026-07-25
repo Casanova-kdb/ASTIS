@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
@@ -22,4 +24,19 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     long countByUserIdAndStatus(Long userId, TaskStatus status);
 
     long countByUserIdAndStatusNotAndDeadlineBefore(Long userId, TaskStatus status, LocalDateTime deadline);
+
+    @Query("""
+            select new com.astis.task.repository.UserTaskStatistics(
+                count(task),
+                coalesce(sum(case when task.status = :completedStatus then 1 else 0 end), 0),
+                coalesce(sum(case when task.status <> :completedStatus and task.deadline < :referenceTime then 1 else 0 end), 0)
+            )
+            from Task task
+            where task.user.id = :userId
+            """)
+    UserTaskStatistics findUserTaskStatistics(
+            @Param("userId") Long userId,
+            @Param("completedStatus") TaskStatus completedStatus,
+            @Param("referenceTime") LocalDateTime referenceTime
+    );
 }
