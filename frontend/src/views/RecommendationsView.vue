@@ -94,6 +94,19 @@
               </span>
               <span>{{ formatLabel(task.status) }}</span>
             </div>
+
+            <div class="recommendation-explanation">
+              <div>
+                <strong>Why this task is ranked here</strong>
+                <ul>
+                  <li v-for="factor in explanationFactors(task)" :key="factor">{{ formatFactor(factor) }}</li>
+                </ul>
+              </div>
+              <p>
+                <strong>Delay risk:</strong>
+                {{ task.delayRiskReason || task.reason }}
+              </p>
+            </div>
           </div>
         </article>
       </div>
@@ -191,5 +204,17 @@ function riskTone(risk) {
     MEDIUM: 'tone-medium',
     HIGH: 'tone-high'
   }[risk]
+}
+
+function explanationFactors(task) {
+  return task.explanationFactors?.length ? task.explanationFactors : [task.reason]
+}
+
+function formatFactor(value) {
+  if (!value) {
+    return 'No additional explanation available.'
+  }
+
+  return value.charAt(0).toUpperCase() + value.slice(1)
 }
 </script>

@@ -6,8 +6,10 @@ import com.astis.recommendation.model.RecommendationScore;
 import com.astis.task.entity.Task;
 import com.astis.task.entity.TaskStatus;
 import com.astis.task.repository.TaskRepository;
+import com.astis.task.repository.UserTaskStatistics;
 import com.astis.user.entity.AppUser;
 import com.astis.user.repository.AppUserRepository;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -39,12 +41,23 @@ public class RecommendationQueryService {
     public List<RecommendedTaskResponse> getRecommendedTasks(String userEmail) {
         AppUser user = appUserRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authenticated user not found"));
+        LocalDateTime referenceTime = LocalDateTime.now();
+        UserTaskStatistics taskStatistics = taskRepository.findUserTaskStatistics(
+                user.getId(),
+                TaskStatus.COMPLETED,
+                referenceTime
+        );
 
         List<ScoredTask> scoredTasks = taskRepository
                 .findByUserIdAndStatusNotOrderByDeadlineAsc(user.getId(), TaskStatus.COMPLETED)
                 .stream()
                 .map(task -> {
-                    RecommendationFeatures features = featureExtractionService.extractForTask(userEmail, task.getId());
+                    RecommendationFeatures features = featureExtractionService.extractForTask(
+                            user,
+                            task,
+                            taskStatistics,
+                            referenceTime
+                    );
                     RecommendationScore score = recommendationService.scoreTask(features);
                     return new ScoredTask(task, score);
                 })

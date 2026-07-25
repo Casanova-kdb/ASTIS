@@ -179,6 +179,7 @@ Sprint records:
 - [Sprint 7: User Profile and Task Scoring Criteria](docs/sprints/sprint-7-task-scoring-criteria-settings.md)
 - [Sprint 8: Account Settings and Profile Management](docs/sprints/sprint-8-account-settings-profile-management.md)
 - [Sprint 9: AI Handbook Parser](docs/sprints/sprint-9-ai-handbook-parser.md)
+- [Sprint 10: Recommendation Explainability and Performance](docs/sprints/sprint-10-recommendation-explainability-performance.md)
 
 Design assets:
 

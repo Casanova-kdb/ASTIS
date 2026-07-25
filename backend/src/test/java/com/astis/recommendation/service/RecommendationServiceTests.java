@@ -95,12 +95,17 @@ class RecommendationServiceTests {
         assertThat(score.delayRisk()).isEqualTo(DelayRiskLevel.HIGH);
         assertThat(score.reason())
                 .contains("deadline is coming soon")
-                .contains("high user priority")
-                .contains("high grade impact")
-                .contains("marked as difficult")
-                .contains("deadline is not flexible")
-                .contains("personally important")
-                .contains("high delay risk");
+                .contains("high user priority");
+        assertThat(score.explanationFactors())
+                .contains("the deadline is coming soon")
+                .contains("the task has high user priority")
+                .contains("the task has high grade impact")
+                .contains("the task is marked as difficult")
+                .contains("the deadline is not flexible")
+                .contains("the task is personally important")
+                .contains("the user has overdue tasks in the current workload")
+                .contains("the user's recent completion rate is low");
+        assertThat(score.delayRiskReason()).contains("High delay risk");
     }
 
     @Test

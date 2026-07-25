@@ -15,11 +15,14 @@ public class RecommendationService {
     public RecommendationScore scoreTask(RecommendationFeatures features) {
         double priorityScore = calculatePriorityScore(features);
         DelayRiskLevel delayRisk = classifyDelayRisk(features.delayRiskScore());
+        List<String> explanationFactors = buildExplanationFactors(features);
         return new RecommendationScore(
                 features.taskId(),
                 priorityScore,
                 delayRisk,
-                buildReason(features, priorityScore, delayRisk)
+                buildReason(priorityScore, delayRisk, explanationFactors),
+                explanationFactors,
+                buildDelayRiskReason(features, delayRisk)
         );
     }
 
@@ -52,7 +55,7 @@ public class RecommendationService {
         return DelayRiskLevel.LOW;
     }
 
-    private String buildReason(RecommendationFeatures features, double priorityScore, DelayRiskLevel delayRisk) {
+    private List<String> buildExplanationFactors(RecommendationFeatures features) {
         List<String> reasons = new ArrayList<>();
 
         if (features.daysUntilDeadline() < 0) {
@@ -103,8 +106,32 @@ public class RecommendationService {
             reasons.add("the task has a balanced urgency and workload profile");
         }
 
-        return "Priority score %.2f with %s delay risk because %s."
-                .formatted(priorityScore, delayRisk.name().toLowerCase(), String.join(", ", reasons));
+        return List.copyOf(reasons);
+    }
+
+    private String buildReason(double priorityScore, DelayRiskLevel delayRisk, List<String> explanationFactors) {
+        String keyFactors = explanationFactors.stream()
+                .limit(3)
+                .reduce((first, second) -> first + ", " + second)
+                .orElse("the task has a balanced urgency and workload profile");
+
+        return "Priority score %.2f with %s delay risk. Key factors: %s."
+                .formatted(priorityScore, delayRisk.name().toLowerCase(), keyFactors);
+    }
+
+    private String buildDelayRiskReason(RecommendationFeatures features, DelayRiskLevel delayRisk) {
+        if (features.daysUntilDeadline() < 0) {
+            return features.deadlineFlexibilityScore() <= 0.4
+                    ? "This task is overdue, but its flexible deadline may still allow recovery."
+                    : "This task is overdue, so the ranking is reduced unless late submission remains possible.";
+        }
+        if (delayRisk == DelayRiskLevel.HIGH) {
+            return "High delay risk is driven by the current workload and overdue-task pattern.";
+        }
+        if (delayRisk == DelayRiskLevel.MEDIUM) {
+            return "Moderate delay risk reflects the deadline and current workload pattern.";
+        }
+        return "Low delay risk based on the current deadline and workload pattern.";
     }
 
     private double clamp(double value) {

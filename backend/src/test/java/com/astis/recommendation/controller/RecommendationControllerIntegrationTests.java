@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,6 +23,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.blankOrNullString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -37,7 +42,7 @@ class RecommendationControllerIntegrationTests {
     @Autowired
     private BehaviorLogRepository behaviorLogRepository;
 
-    @Autowired
+    @SpyBean
     private TaskRepository taskRepository;
 
     @Autowired
@@ -125,8 +130,16 @@ class RecommendationControllerIntegrationTests {
                 .andExpect(jsonPath("$.data[0].priorityScore", greaterThan(0.0)))
                 .andExpect(jsonPath("$.data[0].delayRisk").value("LOW"))
                 .andExpect(jsonPath("$.data[0].reason", not(blankOrNullString())))
+                .andExpect(jsonPath("$.data[0].explanationFactors.length()", greaterThan(0)))
+                .andExpect(jsonPath("$.data[0].delayRiskReason", not(blankOrNullString())))
                 .andExpect(jsonPath("$.data[1].rankPosition").value(2))
                 .andExpect(jsonPath("$.data[1].title").value("Read Research Paper"));
+
+        verify(taskRepository, times(1)).findUserTaskStatistics(
+                eq(user.getId()),
+                eq(TaskStatus.COMPLETED),
+                any(LocalDateTime.class)
+        );
     }
 
     @Test
