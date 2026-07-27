@@ -15,11 +15,12 @@ The MVP has already proved the core workflow: users can manage study tasks, the 
 | Sprint 8 | Account Settings and Profile Management | Let users manage display name and password from Settings |
 | Sprint 9 | AI Handbook Parser | Extract task drafts from uploaded module handbook files |
 | Sprint 10 | Recommendation Improvement | Improve recommendation explanations and scoring quality |
-| Sprint 11 | Study Plan Generator | Generate a planned study schedule from tasks and recommendations |
-| Sprint 12 | AI Provider Abstraction and Frontend Refinement | Support configurable AI providers more safely and polish the MVP UI |
+| Sprint 11 | Redis Recommendation Caching | Cache stable recommendation results and invalidate them after task changes |
+| Sprint 12 | Study Plan Generator | Generate a planned study schedule from tasks and recommendations |
 | Sprint 13 | Analytics Enhancement | Add richer productivity and delay-pattern analytics |
-| Sprint 14 | Redis Caching | Cache recommendation results where useful |
-| Sprint 15 | Docker and Deployment | Prepare local Docker setup and deployment documentation |
+| Sprint 14 | Frontend Refinement | Polish the main workflows and responsive states |
+| Sprint 15 | AI Provider Abstraction | Explore safer provider abstraction without exposing API keys |
+| Sprint 16 | Docker and Deployment | Prepare local Docker setup and deployment documentation |
 
 ## Sprint 6: User Story Iteration
 
@@ -133,6 +134,41 @@ Priority:
 
 P1. This improves quality, but the MVP already has a working recommendation module.
 
+## Sprint 11: Redis Recommendation Caching
+
+Goal:
+
+Use Redis where caching has a clear reason.
+
+Good candidate:
+
+- Cache recommendation results for the current user when task data has not changed.
+
+Invalidation rule:
+
+Recommendation cache should be cleared when the user creates, updates, completes, or deletes a task.
+
+Priority:
+
+P2. Redis is useful for engineering demonstration, but it should be added after recommendation behaviour is stable.
+
+## Sprint 12: Study Plan Generator
+
+Goal:
+
+Turn recommended tasks into a practical study schedule.
+
+Possible output:
+
+- Suggested tasks for today
+- Study sessions by date
+- Estimated time blocks
+- Warning when workload is too high before a deadline
+
+Priority:
+
+P1. This makes the product feel more like a study assistant instead of only a ranked task list.
+
 ## Sprint 13: Analytics Enhancement
 
 Goal:
@@ -151,24 +187,25 @@ Priority:
 
 P2. Useful for presentation and reflection, but less important than core recommendation improvements.
 
-## Sprint 11: Study Plan Generator
+## Sprint 14: Frontend Refinement
 
 Goal:
 
-Turn recommended tasks into a practical study schedule.
+Improve the MVP frontend so it feels cleaner and easier to demonstrate.
 
-Possible output:
+Possible work:
 
-- Suggested tasks for today
-- Study sessions by date
-- Estimated time blocks
-- Warning when workload is too high before a deadline
+- Improve dashboard visual hierarchy
+- Refine task cards and forms
+- Improve recommendation cards
+- Add clearer empty, loading, success, and error states
+- Check responsive layouts
 
 Priority:
 
-P1. This makes the product feel more like a study assistant instead of only a ranked task list.
+P1. This should happen after the next backend feature work is stable, because the UI can then be polished around the final workflow.
 
-## Sprint 12: AI Provider Abstraction
+## Sprint 15: AI Provider Abstraction
 
 Goal:
 
@@ -198,43 +235,7 @@ Priority:
 
 P2 for public deployment, because it needs careful security design. It can be explored earlier as a local-only feature.
 
-## Sprint 12: Frontend Refinement
-
-Goal:
-
-Improve the MVP frontend so it feels cleaner and easier to demonstrate.
-
-Possible work:
-
-- Improve dashboard visual hierarchy
-- Refine task cards and forms
-- Improve recommendation cards
-- Add clearer empty, loading, success, and error states
-- Check responsive layouts
-
-Priority:
-
-P1. This should happen after the next backend feature work is stable, because the UI can then be polished around the final workflow.
-
-## Sprint 13: Redis Caching
-
-Goal:
-
-Use Redis where caching has a clear reason.
-
-Good candidate:
-
-- Cache recommendation results for the current user when task data has not changed.
-
-Invalidation rule:
-
-Recommendation cache should be cleared when the user creates, updates, completes, or deletes a task.
-
-Priority:
-
-P2. Redis is useful for engineering demonstration, but it should be added after recommendation behaviour is stable.
-
-## Sprint 14: Docker and Deployment
+## Sprint 16: Docker and Deployment
 
 Goal:
 

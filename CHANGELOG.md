@@ -2,6 +2,18 @@
 
 All notable changes to ASTIS are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Redis-backed recommendation caching with a configurable 10-minute TTL.
+- Per-user cache invalidation after task creation, update, status change, or deletion.
+- Graceful database calculation when Redis operations are unavailable.
+
+### Testing
+
+- Automated coverage for cache hits, task-change invalidation, and recommendation JSON serialization.
+
 ## [v1.1.0] - 2026-07-24
 
 ### Added

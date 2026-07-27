@@ -9,6 +9,7 @@ import com.astis.task.dto.UpdateTaskStatusRequest;
 import com.astis.task.entity.Task;
 import com.astis.task.entity.TaskPriority;
 import com.astis.task.entity.TaskStatus;
+import com.astis.task.event.TaskChangedEvent;
 import com.astis.task.repository.TaskRepository;
 import com.astis.user.entity.AppUser;
 import com.astis.user.repository.AppUserRepository;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,15 +29,18 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final AppUserRepository appUserRepository;
     private final BehaviorLogService behaviorLogService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public TaskService(
             TaskRepository taskRepository,
             AppUserRepository appUserRepository,
-            BehaviorLogService behaviorLogService
+            BehaviorLogService behaviorLogService,
+            ApplicationEventPublisher eventPublisher
     ) {
         this.taskRepository = taskRepository;
         this.appUserRepository = appUserRepository;
         this.behaviorLogService = behaviorLogService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -62,6 +67,7 @@ public class TaskService {
                 null,
                 taskSummary(savedTask)
         );
+        publishTaskChanged(user.getId());
 
         return TaskResponse.from(savedTask);
     }
@@ -103,6 +109,7 @@ public class TaskService {
                 request.personalImportance()
         );
         recordTaskDetailChanges(user.getId(), task, before);
+        publishTaskChanged(user.getId());
 
         return TaskResponse.from(task);
     }
@@ -114,6 +121,7 @@ public class TaskService {
         TaskStatus previousStatus = task.getStatus();
         task.updateStatus(request.status());
         recordStatusChange(user.getId(), task, previousStatus);
+        publishTaskChanged(user.getId());
         return TaskResponse.from(task);
     }
 
@@ -129,6 +137,7 @@ public class TaskService {
                 null
         );
         taskRepository.delete(task);
+        publishTaskChanged(user.getId());
     }
 
     private AppUser findUserByEmail(String email) {
@@ -139,6 +148,10 @@ public class TaskService {
     private Task findTaskForUser(Long taskId, Long userId) {
         return taskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
+    }
+
+    private void publishTaskChanged(Long userId) {
+        eventPublisher.publishEvent(new TaskChangedEvent(userId));
     }
 
     private void recordTaskDetailChanges(Long userId, Task task, TaskChangeSnapshot before) {
