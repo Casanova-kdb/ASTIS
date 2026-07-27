@@ -48,12 +48,12 @@ Instead of implementing these randomly, this sprint turns them into user stories
 | US-019 | View Enhanced Analytics | Sprint 9 |
 | US-020 | Upload or Paste Module Handbook | Sprint 10 |
 | US-021 | Review AI-extracted Tasks | Sprint 10 |
-| US-022 | Generate Study Plan | Sprint 11 |
-| US-023 | Configure AI Provider Safely | Sprint 12 |
-| US-024 | Improve Frontend Presentation | Sprint 12 |
-| US-025 | Cache Recommendation Results | Sprint 13 |
-| US-026 | Run Project with Docker | Sprint 14 |
-| US-027 | Update Deployment Documentation | Sprint 14 |
+| US-022 | Generate Study Plan | Sprint 12 |
+| US-023 | Configure AI Provider Safely | Sprint 15 |
+| US-024 | Improve Frontend Presentation | Sprint 14 |
+| US-025 | Cache Recommendation Results | Sprint 11 |
+| US-026 | Run Project with Docker | Sprint 16 |
+| US-027 | Update Deployment Documentation | Sprint 16 |
 
 ## Important Design Decisions
 

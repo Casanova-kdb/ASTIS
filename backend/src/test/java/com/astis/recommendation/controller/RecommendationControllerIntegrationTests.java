@@ -1,6 +1,7 @@
 package com.astis.recommendation.controller;
 
 import com.astis.analytics.repository.BehaviorLogRepository;
+import com.astis.config.CacheNames;
 import com.astis.settings.repository.UserProfileRepository;
 import com.astis.task.entity.Task;
 import com.astis.task.entity.TaskPriority;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -51,8 +53,12 @@ class RecommendationControllerIntegrationTests {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
+    @Autowired
+    private CacheManager cacheManager;
+
     @BeforeEach
     void setUp() {
+        cacheManager.getCache(CacheNames.USER_RECOMMENDATIONS).clear();
         behaviorLogRepository.deleteAll();
         taskRepository.deleteAll();
         userProfileRepository.deleteAll();
@@ -135,7 +141,50 @@ class RecommendationControllerIntegrationTests {
                 .andExpect(jsonPath("$.data[1].rankPosition").value(2))
                 .andExpect(jsonPath("$.data[1].title").value("Read Research Paper"));
 
+        mockMvc.perform(get("/recommendations/tasks")
+                        .header("Authorization", bearer(token)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(2));
+
         verify(taskRepository, times(1)).findUserTaskStatistics(
+                eq(user.getId()),
+                eq(TaskStatus.COMPLETED),
+                any(LocalDateTime.class)
+        );
+    }
+
+    @Test
+    void taskCreationEvictsCachedRecommendations() throws Exception {
+        String token = registerAndToken("student", "student@example.com");
+        AppUser user = appUserRepository.findByEmail("student@example.com").orElseThrow();
+
+        mockMvc.perform(get("/recommendations/tasks")
+                        .header("Authorization", bearer(token)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(0));
+
+        mockMvc.perform(post("/tasks")
+                        .header("Authorization", bearer(token))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "title": "New Cached Task",
+                                  "description": "Verify recommendation cache invalidation",
+                                  "taskType": "COURSEWORK",
+                                  "priority": "HIGH",
+                                  "deadline": "2099-07-30T18:00:00",
+                                  "estimatedHours": 4.0
+                                }
+                                """))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/recommendations/tasks")
+                        .header("Authorization", bearer(token)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(1))
+                .andExpect(jsonPath("$.data[0].title").value("New Cached Task"));
+
+        verify(taskRepository, times(2)).findUserTaskStatistics(
                 eq(user.getId()),
                 eq(TaskStatus.COMPLETED),
                 any(LocalDateTime.class)

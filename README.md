@@ -23,6 +23,7 @@ Completed areas:
 - Account settings and password management
 - Task-specific scoring criteria and study profile settings
 - AI handbook parser for PDF/DOCX task draft extraction
+- Redis-backed recommendation caching with task-change invalidation
 - GitHub Actions CI and protected `develop` / `main` branches
 
 ## MVP Features
@@ -44,7 +45,7 @@ Completed areas:
 | --- | --- |
 | Backend | Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA |
 | Frontend | Vue 3, Vite, Vue Router, Axios |
-| Database | MySQL |
+| Data | MySQL, Redis recommendation cache |
 | AI | DeepSeek API, local fallback advice, handbook parsing fallback |
 | API Docs | Swagger / OpenAPI |
 | Testing | JUnit, Spring Boot Test, manual full-stack testing |
@@ -104,6 +105,13 @@ DEEPSEEK_API_KEY
 DEEPSEEK_MODEL
 DEEPSEEK_TEMPERATURE
 DEEPSEEK_MAX_TOKENS
+REDIS_ENABLED
+REDIS_HOST
+REDIS_PORT
+REDIS_PASSWORD
+REDIS_CONNECT_TIMEOUT
+REDIS_COMMAND_TIMEOUT
+REDIS_RECOMMENDATION_TTL
 ```
 
 For local development, use a long JWT secret, for example:
@@ -113,6 +121,10 @@ JWT_SECRET=astis-local-development-jwt-secret-that-is-long-enough-for-hmac-sha38
 ```
 
 If `DEEPSEEK_API_KEY` is not configured, ASTIS returns local fallback study advice.
+
+Recommendation results are cached in Redis at `localhost:6379` for 10 minutes by
+default. The cache is cleared after task changes, and recommendation requests
+continue with database calculation if Redis is unavailable.
 
 ## Frontend Setup
 
@@ -180,6 +192,7 @@ Sprint records:
 - [Sprint 8: Account Settings and Profile Management](docs/sprints/sprint-8-account-settings-profile-management.md)
 - [Sprint 9: AI Handbook Parser](docs/sprints/sprint-9-ai-handbook-parser.md)
 - [Sprint 10: Recommendation Explainability and Performance](docs/sprints/sprint-10-recommendation-explainability-performance.md)
+- [Sprint 11: Redis Recommendation Caching](docs/sprints/sprint-11-redis-recommendation-caching.md)
 
 Design assets:
 
@@ -229,4 +242,4 @@ This project follows a lightweight personal Scrum workflow:
 
 Local demo seed data is ignored by Git and is not part of the repository.
 
-The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add richer analytics, introduce study plan generation, add Redis caching, and prepare Docker-based deployment.
+The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add richer analytics, introduce study plan generation, and prepare Docker-based deployment.

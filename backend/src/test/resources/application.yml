@@ -8,8 +8,16 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: false
+  data:
+    redis:
+      repositories:
+        enabled: false
 
 app:
+  cache:
+    redis:
+      enabled: false
+      recommendation-ttl: 10m
   security:
     jwt:
       secret: astis-test-secret-key-change-before-production-2026
