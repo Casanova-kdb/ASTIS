@@ -153,6 +153,10 @@ If no user profile exists, the generator uses the existing default profile:
 Sessions are separated by a 30-minute break. The frontend will display the
 generated blocks but will not allow editing during this sprint.
 
+The listed start time is the preferred target. If a `HEAVY` day would otherwise
+finish after 23:30, the generator may move the first session earlier while
+keeping the same study period preference.
+
 ### Session Allocation
 
 1. Read the current recommendation list and profile.
