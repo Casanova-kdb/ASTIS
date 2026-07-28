@@ -9,10 +9,17 @@ All notable changes to ASTIS are documented in this file.
 - Redis-backed recommendation caching with a configurable 10-minute TTL.
 - Per-user cache invalidation after task creation, update, status change, or deletion.
 - Graceful database calculation when Redis operations are unavailable.
+- Deterministic study plan generation for configurable 1-to-14-day windows.
+- Daily study sessions based on recommendation order, deadlines, estimated effort, user capacity, and preferred study time.
+- Explicit warnings and unscheduled-work output for overdue tasks, missing estimates, and insufficient capacity.
+- A responsive Vue Study Plan page with regeneration controls and daily schedule output.
 
 ### Testing
 
 - Automated coverage for cache hits, task-change invalidation, and recommendation JSON serialization.
+- Study Plan unit and API integration coverage for session splitting, capacity limits, deadlines, user isolation, empty workloads, and overload warnings.
+- Complete backend suite: 71 tests passed locally.
+- Frontend production build and responsive Study Plan browser checks passed locally.
 
 ## [v1.1.0] - 2026-07-24
 

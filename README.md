@@ -24,6 +24,7 @@ Completed areas:
 - Task-specific scoring criteria and study profile settings
 - AI handbook parser for PDF/DOCX task draft extraction
 - Redis-backed recommendation caching with task-change invalidation
+- Deterministic study plan generation from recommendations, deadlines, estimated effort, and study preferences
 - GitHub Actions CI and protected `develop` / `main` branches
 
 ## MVP Features
@@ -165,6 +166,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 | Recommendations | `GET /api/recommendations/tasks` |
 | AI Advice | `GET /api/recommendations/advice` |
 | Handbooks | `POST /api/handbooks/parse` |
+| Study Plans | `GET /api/study-plans?days=7` |
 
 ## Documentation
 

@@ -1,5 +1,7 @@
 # Sprint 12: Study Plan Generator
 
+Status: Implementation complete, ready for pull request review
+
 ## Goal
 
 Turn the existing ranked task recommendations into a practical seven-day study
@@ -29,7 +31,7 @@ followed.
 
 Sprint 12 is split into five reviewable increments on one sprint branch:
 
-| Increment | Output | Planned Commit |
+| Increment | Output | Commit |
 | --- | --- | --- |
 | 12.1 | Planning rules and API contract | `docs: define Sprint 12 study plan design` |
 | 12.2 | Deterministic scheduling engine and unit tests | `feat: implement study plan scheduling engine` |
@@ -222,15 +224,44 @@ The view will provide loading, empty, error, overloaded, and populated states.
 It will also provide a control for selecting the planning window and
 regenerating the plan.
 
+## Sprint Results
+
+All five planned increments were implemented on
+`sprint/12-study-plan-generator`.
+
+- The backend generates deterministic plans for configurable 1-to-14-day
+  windows.
+- Active tasks are scheduled in recommendation order and split into sessions
+  of no more than two hours.
+- Daily capacity and preferred study time come from the authenticated user's
+  study profile.
+- Overdue work, insufficient capacity, missing estimates, and work beyond the
+  selected window are returned as explicit warnings.
+- The authenticated endpoint is documented in Swagger/OpenAPI.
+- The Vue frontend provides planning-window controls, summary metrics, daily
+  sessions, warnings, empty states, and unscheduled work.
+- Desktop and mobile layouts were checked against real API data without
+  horizontal overflow or browser console errors.
+
+## Verification Results
+
+| Verification | Result |
+| --- | --- |
+| Study Plan unit and integration tests | 17 passed, 0 failed |
+| Complete backend test suite | 71 passed, 0 failed |
+| Frontend production build | Passed with Vite 8.1.0 |
+| Authenticated browser flow | Passed for 3-day and 7-day regeneration |
+| Responsive UI check | Passed on desktop and 390px mobile viewport |
+
 ## Acceptance Criteria Mapping
 
-| US-022 Acceptance Criterion | Planned Evidence |
+| US-022 Acceptance Criterion | Implementation Evidence |
 | --- | --- |
-| The user can request a study plan from active tasks. | Authenticated REST endpoint and frontend page |
-| The plan uses deadlines, scores, estimated hours, and delay risk. | Generator input and unit tests |
-| The plan groups work into days or study sessions. | Daily and session response DTOs |
-| The plan warns when workload is too high before a deadline. | Unscheduled output and overload tests |
-| The user can regenerate the plan after task changes. | Non-persisted request-time generation |
+| The user can request a study plan from active tasks. | Authenticated `GET /api/study-plans` endpoint and Study Plan page |
+| The plan uses deadlines, scores, estimated hours, and delay risk. | Generator inputs, response DTOs, and scheduling unit tests |
+| The plan groups work into days or study sessions. | Daily response groups with time-bounded sessions |
+| The plan warns when workload is too high before a deadline. | API integration test for `INSUFFICIENT_CAPACITY` |
+| The user can regenerate the plan after task changes. | Task-change integration test and frontend Regenerate control |
 
 ## Test Plan
 
@@ -249,10 +280,11 @@ regenerating the plan.
 
 ## Definition of Done
 
-- All five increments are committed separately.
-- US-022 acceptance criteria are covered by implementation or automated tests.
-- The endpoint is visible and testable in Swagger.
-- The Vue page handles all expected UI states.
-- Backend tests and the frontend production build pass in CI.
-- README, user stories, Sprint 12 results, and changelog are updated.
-- The sprint branch is merged into `develop` through a pull request.
+- [x] All five increments are committed separately.
+- [x] US-022 acceptance criteria are covered by implementation or automated tests.
+- [x] The endpoint is visible and testable in Swagger.
+- [x] The Vue page handles the expected loading, error, empty, populated, and warning states.
+- [x] The complete backend test suite and frontend production build pass locally.
+- [x] README, user stories, Sprint 12 results, and changelog are updated.
+- [ ] GitHub Actions passes on the Sprint 12 pull request.
+- [ ] The sprint branch is merged into `develop` through a pull request.

@@ -72,6 +72,22 @@ class StudyPlanControllerIntegrationTests {
     }
 
     @Test
+    void emptyTaskListReturnsAnEmptyPlan() throws Exception {
+        String token = registerAndToken("student", "student@example.com");
+
+        mockMvc.perform(get("/study-plans")
+                        .header("Authorization", bearer(token)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.planningDays").value(7))
+                .andExpect(jsonPath("$.data.totalScheduledHours").value(0.0))
+                .andExpect(jsonPath("$.data.totalUnscheduledHours").value(0.0))
+                .andExpect(jsonPath("$.data.overloaded").value(false))
+                .andExpect(jsonPath("$.data.warnings").isEmpty())
+                .andExpect(jsonPath("$.data.unscheduledTasks").isEmpty())
+                .andExpect(jsonPath("$.data.days.length()").value(7));
+    }
+
+    @Test
     void userCanGenerateDefaultSevenDayPlanFromOwnActiveTasks() throws Exception {
         String token = registerAndToken("student", "student@example.com");
         AppUser user = appUserRepository.findByEmail("student@example.com").orElseThrow();
@@ -164,6 +180,40 @@ class StudyPlanControllerIntegrationTests {
                 .andExpect(jsonPath("$.data.dailyCapacityHours").value(5.0))
                 .andExpect(jsonPath("$.data.totalAvailableHours").value(15.0))
                 .andExpect(jsonPath("$.data.totalScheduledHours").value(8.0));
+    }
+
+    @Test
+    void workloadThatCannotFitBeforeDeadlineReturnsAnOverloadWarning() throws Exception {
+        String token = registerAndToken("student", "student@example.com");
+        AppUser user = appUserRepository.findByEmail("student@example.com").orElseThrow();
+
+        taskRepository.save(new Task(
+                user,
+                "Large urgent coursework",
+                null,
+                "COURSEWORK",
+                TaskPriority.HIGH,
+                LocalDateTime.now().plusDays(1).withHour(23).withMinute(0),
+                new BigDecimal("10.00")
+        ));
+
+        mockMvc.perform(get("/study-plans")
+                        .queryParam("days", "2")
+                        .header("Authorization", bearer(token)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.overloaded").value(true))
+                .andExpect(jsonPath(
+                        "$.data.warnings[*].code",
+                        hasItem("INSUFFICIENT_CAPACITY")
+                ))
+                .andExpect(jsonPath(
+                        "$.data.unscheduledTasks[*].title",
+                        hasItem("Large urgent coursework")
+                ))
+                .andExpect(jsonPath(
+                        "$.data.unscheduledTasks[*].reason",
+                        hasItem("INSUFFICIENT_CAPACITY")
+                ));
     }
 
     @Test
