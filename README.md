@@ -193,6 +193,7 @@ Sprint records:
 - [Sprint 9: AI Handbook Parser](docs/sprints/sprint-9-ai-handbook-parser.md)
 - [Sprint 10: Recommendation Explainability and Performance](docs/sprints/sprint-10-recommendation-explainability-performance.md)
 - [Sprint 11: Redis Recommendation Caching](docs/sprints/sprint-11-redis-recommendation-caching.md)
+- [Sprint 12: Study Plan Generator](docs/sprints/sprint-12-study-plan-generator.md)
 
 Design assets:
 
