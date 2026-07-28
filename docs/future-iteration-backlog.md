@@ -154,6 +154,8 @@ P2. Redis is useful for engineering demonstration, but it should be added after 
 
 ## Sprint 12: Study Plan Generator
 
+Implementation status: Completed on `sprint/12-study-plan-generator`.
+
 Goal:
 
 Turn recommended tasks into a practical study schedule.

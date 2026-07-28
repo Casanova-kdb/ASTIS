@@ -24,6 +24,7 @@ Completed areas:
 - Task-specific scoring criteria and study profile settings
 - AI handbook parser for PDF/DOCX task draft extraction
 - Redis-backed recommendation caching with task-change invalidation
+- Deterministic study plan generation from recommendations, deadlines, estimated effort, and study preferences
 - GitHub Actions CI and protected `develop` / `main` branches
 
 ## MVP Features
@@ -165,6 +166,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 | Recommendations | `GET /api/recommendations/tasks` |
 | AI Advice | `GET /api/recommendations/advice` |
 | Handbooks | `POST /api/handbooks/parse` |
+| Study Plans | `GET /api/study-plans?days=7` |
 
 ## Documentation
 
@@ -193,6 +195,7 @@ Sprint records:
 - [Sprint 9: AI Handbook Parser](docs/sprints/sprint-9-ai-handbook-parser.md)
 - [Sprint 10: Recommendation Explainability and Performance](docs/sprints/sprint-10-recommendation-explainability-performance.md)
 - [Sprint 11: Redis Recommendation Caching](docs/sprints/sprint-11-redis-recommendation-caching.md)
+- [Sprint 12: Study Plan Generator](docs/sprints/sprint-12-study-plan-generator.md)
 
 Design assets:
 
