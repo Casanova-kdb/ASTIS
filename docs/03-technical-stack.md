@@ -136,11 +136,11 @@ Planned engineering workflow tools:
 - GitHub Issues
 - GitHub Projects
 - VS Code
+- Redis and RedisInsight
 
 Optional tools:
 
 - Docker
-- Redis
 - Cloud deployment platform
 
 ## Documentation

@@ -62,3 +62,17 @@ Both endpoints return a bearer token that can be used as:
 ```text
 Authorization: Bearer <accessToken>
 ```
+
+## Redis Recommendation Cache
+
+Recommendation lists use Redis by default:
+
+```text
+Host: localhost
+Port: 6379
+TTL: 10 minutes
+```
+
+The cache is stored per internal user ID and cleared after task creation,
+updates, status changes, or deletion. Set `REDIS_ENABLED=false` to use the
+local in-memory cache during tests or development without Redis.

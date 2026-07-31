@@ -17,6 +17,15 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      connect-timeout: ${REDIS_CONNECT_TIMEOUT:2s}
+      timeout: ${REDIS_COMMAND_TIMEOUT:2s}
+      repositories:
+        enabled: false
 
 server:
   port: 8080
@@ -28,6 +37,10 @@ springdoc:
     path: /swagger-ui.html
 
 app:
+  cache:
+    redis:
+      enabled: ${REDIS_ENABLED:true}
+      recommendation-ttl: ${REDIS_RECOMMENDATION_TTL:10m}
   security:
     jwt:
       secret: ${JWT_SECRET:astis-development-secret-key-change-before-production-2026}

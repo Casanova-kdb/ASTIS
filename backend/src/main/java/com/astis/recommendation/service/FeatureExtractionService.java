@@ -5,6 +5,7 @@ import com.astis.task.entity.Task;
 import com.astis.task.entity.TaskPriority;
 import com.astis.task.entity.TaskStatus;
 import com.astis.task.repository.TaskRepository;
+import com.astis.task.repository.UserTaskStatistics;
 import com.astis.user.entity.AppUser;
 import com.astis.user.repository.AppUserRepository;
 import java.math.BigDecimal;
@@ -34,16 +35,27 @@ public class FeatureExtractionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authenticated user not found"));
         Task task = taskRepository.findByIdAndUserId(taskId, user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
-
-        long totalTaskCount = taskRepository.countByUserId(user.getId());
-        long completedTaskCount = taskRepository.countByUserIdAndStatus(user.getId(), TaskStatus.COMPLETED);
-        long overdueTaskCount = taskRepository.countByUserIdAndStatusNotAndDeadlineBefore(
+        LocalDateTime referenceTime = LocalDateTime.now();
+        UserTaskStatistics taskStatistics = taskRepository.findUserTaskStatistics(
                 user.getId(),
                 TaskStatus.COMPLETED,
-                LocalDateTime.now()
+                referenceTime
         );
 
-        long daysUntilDeadline = daysUntilDeadline(task.getDeadline());
+        return extractForTask(user, task, taskStatistics, referenceTime);
+    }
+
+    RecommendationFeatures extractForTask(
+            AppUser user,
+            Task task,
+            UserTaskStatistics taskStatistics,
+            LocalDateTime referenceTime
+    ) {
+        long totalTaskCount = taskStatistics.totalTaskCount();
+        long completedTaskCount = taskStatistics.completedTaskCount();
+        long overdueTaskCount = taskStatistics.overdueTaskCount();
+
+        long daysUntilDeadline = daysUntilDeadline(task.getDeadline(), referenceTime);
         double estimatedHours = estimatedHours(task.getEstimatedHours());
         double completionRate = totalTaskCount == 0
                 ? DEFAULT_COMPLETION_RATE
@@ -61,7 +73,7 @@ public class FeatureExtractionService {
                 completionRate,
                 priorityScore(task.getPriority()),
                 timeDecayScore(daysUntilDeadline),
-                delayRiskScore(task, overdueTaskRatio),
+                delayRiskScore(task, overdueTaskRatio, referenceTime),
                 workloadScore(estimatedHours),
                 criteriaScore(task.getGradeWeight()),
                 criteriaScore(task.getDifficultyLevel()),
@@ -91,8 +103,8 @@ public class FeatureExtractionService {
         );
     }
 
-    private long daysUntilDeadline(LocalDateTime deadline) {
-        return ChronoUnit.DAYS.between(LocalDateTime.now(), deadline);
+    private long daysUntilDeadline(LocalDateTime deadline, LocalDateTime referenceTime) {
+        return ChronoUnit.DAYS.between(referenceTime, deadline);
     }
 
     private double estimatedHours(BigDecimal estimatedHours) {
@@ -133,8 +145,8 @@ public class FeatureExtractionService {
         return Math.max(0.0, 1.0 - (daysUntilDeadline / 14.0));
     }
 
-    private double delayRiskScore(Task task, double overdueTaskRatio) {
-        double currentTaskRisk = task.getDeadline().isBefore(LocalDateTime.now())
+    private double delayRiskScore(Task task, double overdueTaskRatio, LocalDateTime referenceTime) {
+        double currentTaskRisk = task.getDeadline().isBefore(referenceTime)
                 && task.getStatus() != TaskStatus.COMPLETED ? 1.0 : 0.0;
         return Math.min(1.0, (currentTaskRisk * 0.6) + (overdueTaskRatio * 0.4));
     }

@@ -36,17 +36,17 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-014 | Calculate Task Priority Score and Delay Risk | Intelligent Recommendation | P0 | 8 | L | Sprint 2 | Done |
 | US-015 | View Recommended Task Order | Intelligent Recommendation | P0 | 5 | M | Sprint 2 | Done |
 | US-016 | View AI Study Advice | Intelligent Recommendation | P1 | 3 | M | Sprint 2 | Done |
-| US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 10 | Backlog |
+| US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 10 | Done |
 | US-018 | Configure Task Scoring Criteria | Task Recommendation | P1 | 8 | L | Sprint 7 | Done |
 | US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 13 | Backlog |
 | US-020 | Upload Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 9 | Done |
 | US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 9 | Done |
-| US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 11 | Backlog |
-| US-023 | Configure AI Provider Safely | AI Provider Abstraction | P2 | 8 | L | Sprint 12 | Backlog |
-| US-024 | Improve Frontend Presentation | Frontend Refinement | P1 | 5 | M | Sprint 12 | Backlog |
-| US-025 | Cache Recommendation Results | Performance | P2 | 5 | M | Sprint 14 | Backlog |
-| US-026 | Run Project with Docker | Deployment | P2 | 5 | M | Sprint 15 | Backlog |
-| US-027 | Update Deployment Documentation | Deployment | P2 | 3 | S | Sprint 15 | Backlog |
+| US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 12 | Done |
+| US-023 | Configure AI Provider Safely | AI Provider Abstraction | P2 | 8 | L | Sprint 15 | Backlog |
+| US-024 | Improve Frontend Presentation | Frontend Refinement | P1 | 5 | M | Sprint 14 | Backlog |
+| US-025 | Cache Recommendation Results | Performance | P2 | 5 | M | Sprint 11 | Done |
+| US-026 | Run Project with Docker | Deployment | P2 | 5 | M | Sprint 16 | Backlog |
+| US-027 | Update Deployment Documentation | Deployment | P2 | 3 | S | Sprint 16 | Backlog |
 
 Suggested GitHub labels:
 

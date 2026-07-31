@@ -6,7 +6,7 @@ The project is built as a completed full-stack MVP with a Spring Boot backend, M
 
 ## Current Status
 
-ASTIS v1.1.0 is the current full-stack release. It includes the completed v1.0 MVP, post-MVP account and handbook-import features, and the first CI-based engineering quality gates.
+ASTIS v1.2.0 is the current full-stack release. It adds explainable recommendations, Redis-backed recommendation caching, and deterministic study-plan generation to the completed v1.1.0 engineering foundation.
 
 Completed areas:
 
@@ -23,6 +23,8 @@ Completed areas:
 - Account settings and password management
 - Task-specific scoring criteria and study profile settings
 - AI handbook parser for PDF/DOCX task draft extraction
+- Redis-backed recommendation caching with task-change invalidation
+- Deterministic study plan generation from recommendations, deadlines, estimated effort, and study preferences
 - GitHub Actions CI and protected `develop` / `main` branches
 
 ## MVP Features
@@ -44,7 +46,7 @@ Completed areas:
 | --- | --- |
 | Backend | Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA |
 | Frontend | Vue 3, Vite, Vue Router, Axios |
-| Database | MySQL |
+| Data | MySQL, Redis recommendation cache |
 | AI | DeepSeek API, local fallback advice, handbook parsing fallback |
 | API Docs | Swagger / OpenAPI |
 | Testing | JUnit, Spring Boot Test, manual full-stack testing |
@@ -104,6 +106,13 @@ DEEPSEEK_API_KEY
 DEEPSEEK_MODEL
 DEEPSEEK_TEMPERATURE
 DEEPSEEK_MAX_TOKENS
+REDIS_ENABLED
+REDIS_HOST
+REDIS_PORT
+REDIS_PASSWORD
+REDIS_CONNECT_TIMEOUT
+REDIS_COMMAND_TIMEOUT
+REDIS_RECOMMENDATION_TTL
 ```
 
 For local development, use a long JWT secret, for example:
@@ -113,6 +122,10 @@ JWT_SECRET=astis-local-development-jwt-secret-that-is-long-enough-for-hmac-sha38
 ```
 
 If `DEEPSEEK_API_KEY` is not configured, ASTIS returns local fallback study advice.
+
+Recommendation results are cached in Redis at `localhost:6379` for 10 minutes by
+default. The cache is cleared after task changes, and recommendation requests
+continue with database calculation if Redis is unavailable.
 
 ## Frontend Setup
 
@@ -153,6 +166,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 | Recommendations | `GET /api/recommendations/tasks` |
 | AI Advice | `GET /api/recommendations/advice` |
 | Handbooks | `POST /api/handbooks/parse` |
+| Study Plans | `GET /api/study-plans?days=7` |
 
 ## Documentation
 
@@ -163,6 +177,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 - [Database Design](docs/database-design.md)
 - [MVP Release Summary](docs/mvp-release-summary.md)
 - [v1.1.0 Release Notes](docs/releases/v1.1.0.md)
+- [v1.2.0 Release Notes](docs/releases/v1.2.0.md)
 - [Changelog](CHANGELOG.md)
 - [Future Iteration Backlog](docs/future-iteration-backlog.md)
 - [Manual Full-stack Test Report](docs/testing/manual-test-report.md)
@@ -179,6 +194,9 @@ Sprint records:
 - [Sprint 7: User Profile and Task Scoring Criteria](docs/sprints/sprint-7-task-scoring-criteria-settings.md)
 - [Sprint 8: Account Settings and Profile Management](docs/sprints/sprint-8-account-settings-profile-management.md)
 - [Sprint 9: AI Handbook Parser](docs/sprints/sprint-9-ai-handbook-parser.md)
+- [Sprint 10: Recommendation Explainability and Performance](docs/sprints/sprint-10-recommendation-explainability-performance.md)
+- [Sprint 11: Redis Recommendation Caching](docs/sprints/sprint-11-redis-recommendation-caching.md)
+- [Sprint 12: Study Plan Generator](docs/sprints/sprint-12-study-plan-generator.md)
 
 Design assets:
 
@@ -228,4 +246,4 @@ This project follows a lightweight personal Scrum workflow:
 
 Local demo seed data is ignored by Git and is not part of the repository.
 
-The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add richer analytics, introduce study plan generation, add Redis caching, and prepare Docker-based deployment.
+The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add richer analytics, introduce study plan generation, and prepare Docker-based deployment.
