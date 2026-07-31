@@ -6,7 +6,7 @@ The project is built as a completed full-stack MVP with a Spring Boot backend, M
 
 ## Current Status
 
-ASTIS v1.1.0 is the current full-stack release. It includes the completed v1.0 MVP, post-MVP account and handbook-import features, and the first CI-based engineering quality gates.
+ASTIS v1.2.0 is the current full-stack release. It adds explainable recommendations, Redis-backed recommendation caching, and deterministic study-plan generation to the completed v1.1.0 engineering foundation.
 
 Completed areas:
 
@@ -177,6 +177,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 - [Database Design](docs/database-design.md)
 - [MVP Release Summary](docs/mvp-release-summary.md)
 - [v1.1.0 Release Notes](docs/releases/v1.1.0.md)
+- [v1.2.0 Release Notes](docs/releases/v1.2.0.md)
 - [Changelog](CHANGELOG.md)
 - [Future Iteration Backlog](docs/future-iteration-backlog.md)
 - [Manual Full-stack Test Report](docs/testing/manual-test-report.md)

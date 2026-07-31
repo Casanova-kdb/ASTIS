@@ -4,8 +4,11 @@ All notable changes to ASTIS are documented in this file.
 
 ## [Unreleased]
 
+## [v1.2.0] - 2026-07-31
+
 ### Added
 
+- Readable recommendation factors and a separate delay-risk explanation for every ranked task.
 - Redis-backed recommendation caching with a configurable 10-minute TTL.
 - Per-user cache invalidation after task creation, update, status change, or deletion.
 - Graceful database calculation when Redis operations are unavailable.
@@ -13,6 +16,11 @@ All notable changes to ASTIS are documented in this file.
 - Daily study sessions based on recommendation order, deadlines, estimated effort, user capacity, and preferred study time.
 - Explicit warnings and unscheduled-work output for overdue tasks, missing estimates, and insufficient capacity.
 - A responsive Vue Study Plan page with regeneration controls and daily schedule output.
+
+### Changed
+
+- Recommendation requests now load user task statistics once and reuse them across all active tasks.
+- Recommendation ranking is isolated behind a cacheable service without changing the scoring formula.
 
 ### Testing
 
@@ -51,4 +59,6 @@ All notable changes to ASTIS are documented in this file.
 - Behaviour logging, dashboard analytics, recommendation ranking, delay risk, and AI study advice with fallback behaviour.
 - Vue frontend MVP, Swagger/OpenAPI documentation, and manual full-stack test evidence.
 
+[Unreleased]: https://github.com/Casanova-kdb/ASTIS/compare/v1.2.0...HEAD
+[v1.2.0]: https://github.com/Casanova-kdb/ASTIS/releases/tag/v1.2.0
 [v1.1.0]: https://github.com/Casanova-kdb/ASTIS/releases/tag/v1.1.0
