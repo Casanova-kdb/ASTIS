@@ -173,6 +173,8 @@ P1. This makes the product feel more like a study assistant instead of only a ra
 
 ## Sprint 13: Analytics Enhancement
 
+Implementation status: In progress on `sprint/13-analytics-enhancement`.
+
 Goal:
 
 Make behaviour logs more visible and useful.

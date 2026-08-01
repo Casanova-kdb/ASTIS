@@ -197,6 +197,7 @@ Sprint records:
 - [Sprint 10: Recommendation Explainability and Performance](docs/sprints/sprint-10-recommendation-explainability-performance.md)
 - [Sprint 11: Redis Recommendation Caching](docs/sprints/sprint-11-redis-recommendation-caching.md)
 - [Sprint 12: Study Plan Generator](docs/sprints/sprint-12-study-plan-generator.md)
+- [Sprint 13: Analytics Enhancement](docs/sprints/sprint-13-analytics-enhancement.md)
 
 Design assets:
 
