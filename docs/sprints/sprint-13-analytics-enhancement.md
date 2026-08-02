@@ -1,6 +1,6 @@
 # Sprint 13: Analytics Enhancement
 
-Status: Planning complete, implementation not started
+Status: Analytics calculations implemented, API and frontend work pending
 
 ## Goal
 
@@ -295,7 +295,7 @@ refinement belongs to Sprint 14.
 - [x] The API request and response contract are documented.
 - [x] Query boundaries and index requirements are documented.
 - [x] US-019 acceptance criteria map to planned implementation evidence.
-- [ ] Trend calculation and repository queries are implemented.
+- [x] Trend calculation and repository queries are implemented.
 - [ ] The authenticated endpoint and automated tests are implemented.
 - [ ] Dashboard visualizations and expected UI states are implemented.
 - [ ] Complete backend tests and the frontend production build pass.

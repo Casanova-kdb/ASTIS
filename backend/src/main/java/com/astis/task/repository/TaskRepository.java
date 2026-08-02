@@ -19,6 +19,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Optional<Task> findByIdAndUserId(Long id, Long userId);
 
+    List<Task> findByUserIdAndDeadlineGreaterThanEqualAndDeadlineLessThan(
+            Long userId,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    );
+
     long countByUserId(Long userId);
 
     long countByUserIdAndStatus(Long userId, TaskStatus status);
@@ -39,4 +45,13 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             @Param("completedStatus") TaskStatus completedStatus,
             @Param("referenceTime") LocalDateTime referenceTime
     );
+
+    @Query("""
+            select avg(task.estimatedHours)
+            from Task task
+            where task.user.id = :userId
+              and task.estimatedHours is not null
+              and task.estimatedHours > 0
+            """)
+    Double findAverageEstimatedHoursByUserId(@Param("userId") Long userId);
 }
