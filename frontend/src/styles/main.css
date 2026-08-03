@@ -519,6 +519,112 @@ button {
   margin: 10px 0 8px;
 }
 
+.analytics-trend-section {
+  border-top: 1px solid #dbe3ea;
+  display: grid;
+  gap: 20px;
+  padding-top: 28px;
+}
+
+.trend-section-heading {
+  align-items: end;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.trend-section-heading h3 {
+  color: #132238;
+  font-size: 24px;
+  margin: 0 0 6px;
+}
+
+.trend-section-heading p:last-child {
+  color: #52616f;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.trend-window-control {
+  background: #e6eef5;
+  border-radius: 6px;
+  display: grid;
+  flex: 0 0 auto;
+  gap: 2px;
+  grid-template-columns: repeat(3, minmax(76px, 1fr));
+  padding: 3px;
+}
+
+.trend-window-button {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: #52616f;
+  font-size: 13px;
+  font-weight: 800;
+  min-height: 36px;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
+.trend-window-button.active {
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(19, 34, 56, 0.12);
+  color: #132238;
+}
+
+.trend-window-button:focus-visible {
+  outline: 3px solid rgba(42, 157, 143, 0.25);
+  outline-offset: 1px;
+}
+
+.trend-window-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.trend-summary-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.trend-summary-card strong {
+  font-size: 24px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.trend-chart-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.trend-panel {
+  min-width: 0;
+}
+
+.trend-chart {
+  height: 280px;
+  min-width: 0;
+  position: relative;
+  width: 100%;
+}
+
+.trend-chart canvas {
+  display: block;
+  height: 100% !important;
+  max-width: 100%;
+  width: 100% !important;
+}
+
+.trend-empty-state {
+  align-content: center;
+  min-height: 280px;
+}
+
 .focus-card p {
   color: #52616f;
   font-size: 14px;
@@ -1173,6 +1279,7 @@ h2 {
   }
 
   .page-header,
+  .trend-section-heading,
   .task-item-main {
     display: grid;
   }
@@ -1193,9 +1300,14 @@ h2 {
   .handbook-grid,
   .settings-grid,
   .task-grid,
+  .trend-chart-grid,
   .readonly-grid,
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .trend-window-control {
+    width: 100%;
   }
 
   .metric-grid {
@@ -1246,7 +1358,8 @@ h2 {
 
 @media (max-width: 520px) {
   .metric-grid,
-  .plan-summary-grid {
+  .plan-summary-grid,
+  .trend-summary-grid {
     grid-template-columns: 1fr;
   }
 
