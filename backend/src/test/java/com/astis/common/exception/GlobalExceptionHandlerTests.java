@@ -22,4 +22,15 @@ class GlobalExceptionHandlerTests {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().message()).isEqualTo("Handbook file must be 10MB or smaller");
     }
+
+    @Test
+    void illegalArgumentReturnsBadRequestWithOriginalMessage() {
+        ResponseEntity<ApiResponse<Void>> response = handler.handleIllegalArgumentException(
+                new IllegalArgumentException("Analytics weeks must be between 4 and 12")
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().message()).isEqualTo("Analytics weeks must be between 4 and 12");
+    }
 }
