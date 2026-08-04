@@ -173,7 +173,7 @@ P1. This makes the product feel more like a study assistant instead of only a ra
 
 ## Sprint 13: Analytics Enhancement
 
-Implementation status: In progress on `sprint/13-analytics-enhancement`.
+Implementation status: Completed on `sprint/13-analytics-enhancement`.
 
 Goal:
 
@@ -181,11 +181,11 @@ Make behaviour logs more visible and useful.
 
 Possible work:
 
-- Weekly completion trend
-- Overdue task trend
-- Most delayed task type
-- Average estimated hours
-- Behaviour log list or timeline
+- Weekly completion trend (completed)
+- Overdue task trend (completed)
+- Most delayed task type (completed)
+- Average estimated hours (completed)
+- Behaviour log list or timeline (kept as a future option)
 
 Priority:
 
