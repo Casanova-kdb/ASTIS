@@ -25,6 +25,7 @@ Completed areas:
 - AI handbook parser for PDF/DOCX task draft extraction
 - Redis-backed recommendation caching with task-change invalidation
 - Deterministic study plan generation from recommendations, deadlines, estimated effort, and study preferences
+- Enhanced analytics with weekly completion and overdue trends, delayed task types, and workload estimates
 - GitHub Actions CI and protected `develop` / `main` branches
 
 ## MVP Features
@@ -45,7 +46,7 @@ Completed areas:
 | Area | Tools |
 | --- | --- |
 | Backend | Java, Spring Boot, Spring Web, Spring Security, Spring Data JPA |
-| Frontend | Vue 3, Vite, Vue Router, Axios |
+| Frontend | Vue 3, Vite, Vue Router, Axios, Chart.js |
 | Data | MySQL, Redis recommendation cache |
 | AI | DeepSeek API, local fallback advice, handbook parsing fallback |
 | API Docs | Swagger / OpenAPI |
@@ -162,7 +163,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 | Auth | `POST /api/auth/register`, `POST /api/auth/login` |
 | Users | `GET /api/users/me`, `PUT /api/users/me`, `PUT /api/users/me/password` |
 | Tasks | `GET /api/tasks`, `POST /api/tasks`, `PUT /api/tasks/{taskId}` |
-| Analytics | `GET /api/analytics/summary` |
+| Analytics | `GET /api/analytics/summary`, `GET /api/analytics/trends?weeks=8` |
 | Recommendations | `GET /api/recommendations/tasks` |
 | AI Advice | `GET /api/recommendations/advice` |
 | Handbooks | `POST /api/handbooks/parse` |
@@ -197,6 +198,7 @@ Sprint records:
 - [Sprint 10: Recommendation Explainability and Performance](docs/sprints/sprint-10-recommendation-explainability-performance.md)
 - [Sprint 11: Redis Recommendation Caching](docs/sprints/sprint-11-redis-recommendation-caching.md)
 - [Sprint 12: Study Plan Generator](docs/sprints/sprint-12-study-plan-generator.md)
+- [Sprint 13: Analytics Enhancement](docs/sprints/sprint-13-analytics-enhancement.md)
 
 Design assets:
 
@@ -246,4 +248,4 @@ This project follows a lightweight personal Scrum workflow:
 
 Local demo seed data is ignored by Git and is not part of the repository.
 
-The current UI is an MVP prototype. Later work can improve visual polish, add automated frontend tests, add richer analytics, introduce study plan generation, and prepare Docker-based deployment.
+The current UI is an MVP prototype with study planning and enhanced analytics. Later work can improve visual polish, add automated frontend tests, and prepare Docker-based deployment.

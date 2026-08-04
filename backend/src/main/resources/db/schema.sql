@@ -139,6 +139,7 @@ CREATE INDEX idx_tasks_user_id ON tasks (user_id);
 CREATE INDEX idx_tasks_status ON tasks (status);
 CREATE INDEX idx_tasks_deadline ON tasks (deadline);
 CREATE INDEX idx_tasks_user_status_deadline ON tasks (user_id, status, deadline);
+CREATE INDEX idx_tasks_user_deadline_completed_at ON tasks (user_id, deadline, completed_at);
 
 CREATE INDEX idx_user_profiles_user_id ON user_profiles (user_id);
 
@@ -146,6 +147,7 @@ CREATE INDEX idx_behavior_logs_user_id ON behavior_logs (user_id);
 CREATE INDEX idx_behavior_logs_task_id ON behavior_logs (task_id);
 CREATE INDEX idx_behavior_logs_action_type ON behavior_logs (action_type);
 CREATE INDEX idx_behavior_logs_created_at ON behavior_logs (created_at);
+CREATE INDEX idx_behavior_logs_user_action_created_at ON behavior_logs (user_id, action_type, created_at);
 
 CREATE INDEX idx_recommendation_results_user_id ON recommendation_results (user_id);
 CREATE INDEX idx_recommendation_results_task_id ON recommendation_results (task_id);

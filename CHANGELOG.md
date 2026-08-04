@@ -4,6 +4,24 @@ All notable changes to ASTIS are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Configurable 4, 8, and 12-week completion and overdue trend analytics.
+- Most-delayed task type and average estimated-hours analytics.
+- Dashboard charts with independent loading, empty, and error states.
+- Authenticated `GET /api/analytics/trends` endpoint with stable zero-filled weekly data.
+
+### Changed
+
+- Analytics queries are bounded by user and reporting window to avoid repeated per-task statistics queries.
+- Dashboard completion rate now displays the stored decimal value as the correct percentage.
+
+### Testing
+
+- Analytics service, repository, and controller coverage for grouping, overdue rules, validation, empty data, and user isolation.
+- Complete backend suite: 83 tests passed locally.
+- Frontend production build and dependency audit passed with 0 vulnerabilities.
+
 ## [v1.2.0] - 2026-07-31
 
 ### Added

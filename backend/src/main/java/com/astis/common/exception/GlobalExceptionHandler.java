@@ -37,6 +37,13 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(exception.getName() + ": must be a valid value"));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException exception) {
+        return ResponseEntity
+                .badRequest()
+                .body(ApiResponse.failure(exception.getMessage()));
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse<Void>> handleBadCredentialsException(BadCredentialsException exception) {
         return ResponseEntity

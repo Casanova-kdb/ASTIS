@@ -38,7 +38,7 @@ This table can be used as the starting backlog for a GitHub Projects Kanban boar
 | US-016 | View AI Study Advice | Intelligent Recommendation | P1 | 3 | M | Sprint 2 | Done |
 | US-017 | Improve Recommendation Explanation | Intelligent Recommendation | P1 | 5 | M | Sprint 10 | Done |
 | US-018 | Configure Task Scoring Criteria | Task Recommendation | P1 | 8 | L | Sprint 7 | Done |
-| US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 13 | Backlog |
+| US-019 | View Enhanced Analytics | Analytics Enhancement | P2 | 5 | M | Sprint 13 | Done |
 | US-020 | Upload Module Handbook | AI Handbook Parser | P1 | 5 | M | Sprint 9 | Done |
 | US-021 | Review AI-extracted Tasks | AI Handbook Parser | P1 | 8 | L | Sprint 9 | Done |
 | US-022 | Generate Study Plan | Study Planning | P1 | 8 | L | Sprint 12 | Done |
@@ -592,6 +592,15 @@ Development Tasks:
 - Add endpoint for trend analytics.
 - Add frontend dashboard sections or charts.
 - Add service tests for analytics calculations.
+
+Implementation Evidence:
+
+- `GET /api/analytics/trends` returns a configurable 4-to-12-week reporting window.
+- Repository queries are bounded by the authenticated user and reporting dates.
+- Weekly completion and overdue trends include zero-value weeks.
+- The response includes the most delayed task type and average estimated hours.
+- The Dashboard displays completion and overdue charts with 4, 8, and 12-week controls.
+- Backend unit, repository, and controller tests cover calculation rules, validation, and user isolation.
 
 ### US-020: Upload Module Handbook
 
