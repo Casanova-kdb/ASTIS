@@ -193,6 +193,8 @@ P2. Useful for presentation and reflection, but less important than core recomme
 
 ## Sprint 14: Frontend Refinement
 
+Implementation status: In progress on `sprint/14-frontend-refinement`.
+
 Goal:
 
 Improve the MVP frontend so it feels cleaner and easier to demonstrate.
