@@ -447,7 +447,7 @@
   margin: 0;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1120px) {
   .task-grid {
     grid-template-columns: 1fr;
   }

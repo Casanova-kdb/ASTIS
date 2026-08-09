@@ -1,6 +1,6 @@
 # Sprint 14: Frontend Refinement
 
-Status: All application pages refined, final validation and documentation pending
+Status: Complete
 
 ## Goal
 
@@ -207,14 +207,14 @@ should remain close to the action or data that failed.
 
 ## Acceptance Criteria Mapping
 
-| US-024 Acceptance Criterion | Planned Evidence |
+| US-024 Acceptance Criterion | Validation Evidence |
 | --- | --- |
-| Main pages have consistent spacing, typography, and button states. | Shared design tokens, shell components, and browser comparison |
-| Dashboard information is easy to scan. | Metric, focus, and analytics hierarchy review |
-| Task forms remain readable on different screen widths. | Desktop, tablet, and mobile task-form checks |
-| Recommendation cards do not feel visually crowded. | Revised recommendation structure and responsive screenshots |
-| Empty, loading, success, and error states are shown consistently. | Shared state patterns and page-level interaction checks |
-| The app still works with the existing backend APIs. | Existing full-stack workflows and frontend production build |
+| Main pages have consistent spacing, typography, and button states. | Shared tokens and layout components applied across every view |
+| Dashboard information is easy to scan. | Metric strip, focus hierarchy, and analytics review passed |
+| Task forms remain readable on different screen widths. | Browser checks passed at 1440 px, 1024 px, and 390 px |
+| Recommendation cards do not feel visually crowded. | Primary ranking data is separated from collapsible explanation details |
+| Empty, loading, success, and error states are shown consistently. | Structural loading states and page-level status checks passed |
+| The app still works with the existing backend APIs. | Registration, task creation, recommendation output, build, and 83 backend tests passed |
 
 ## Test Plan
 
@@ -239,6 +239,45 @@ should remain close to the action or data that failed.
 - [x] Shared application shell and design foundation are implemented.
 - [x] Core productivity pages are refined.
 - [x] Planning, import, account, and authentication pages are refined.
-- [ ] Desktop, tablet, mobile, accessibility, and build checks pass.
-- [ ] README, user stories, backlog, changelog, and Sprint results are updated.
+- [x] Desktop, tablet, mobile, accessibility, and build checks pass.
+- [x] README, user stories, backlog, changelog, and Sprint results are updated.
 - [ ] The sprint branch is merged into `develop` through a pull request.
+
+## Sprint Results
+
+Sprint 14 refined the complete Vue application without changing backend API
+contracts or route behaviour. The work was delivered through five reviewable
+increments covering the initial audit, shared design foundation, core
+productivity workflows, planning and account workflows, and final validation.
+
+Completed outputs:
+
+- Replaced the prototype shell with responsive desktop and mobile navigation.
+- Added shared typography, colour, spacing, focus, and state foundations.
+- Refined Dashboard, Tasks, Recommendations, Study Plan, Handbook Import,
+  Settings, Login, and Register.
+- Added structural loading states and clearer empty, success, error, disabled,
+  and refresh states.
+- Added accessible icon controls, labelled form fields, keyboard focus return,
+  and reduced-motion support.
+- Corrected task-page overflow at 1024 px and handbook file-input overflow at
+  390 px during final browser testing.
+
+## Validation Results
+
+Validation completed locally on 2026-08-10:
+
+| Check | Result |
+| --- | --- |
+| Backend Maven test suite | 83 passed, 0 failed, 0 errors, 0 skipped |
+| Frontend production build | Passed with Vite 8.1.0 |
+| Frontend dependency audit | 0 vulnerabilities |
+| Desktop browser review | All authenticated pages passed at 1440 px |
+| Tablet browser review | All authenticated pages passed at 1024 px |
+| Mobile browser review | Authenticated and authentication pages passed at 390 px |
+| Full-stack smoke flow | Registration, authenticated navigation, task creation, and recommendation output passed |
+| Accessibility review | No unnamed buttons, unlabelled form controls, or duplicate IDs remained |
+| Browser console | No frontend warnings or errors during the final review |
+
+The remaining workflow step is to merge the sprint branch into `develop`
+through a pull request after CI passes.

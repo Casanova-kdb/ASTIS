@@ -193,23 +193,23 @@ P2. Useful for presentation and reflection, but less important than core recomme
 
 ## Sprint 14: Frontend Refinement
 
-Implementation status: In progress on `sprint/14-frontend-refinement`.
+Implementation status: Complete on `sprint/14-frontend-refinement`.
 
 Goal:
 
 Improve the MVP frontend so it feels cleaner and easier to demonstrate.
 
-Possible work:
+Completed work:
 
-- Improve dashboard visual hierarchy
-- Refine task cards and forms
-- Improve recommendation cards
-- Add clearer empty, loading, success, and error states
-- Check responsive layouts
+- Improved visual hierarchy across all existing frontend views.
+- Refined task forms, task cards, recommendations, planning, import, settings, and authentication.
+- Added clearer loading, empty, success, error, disabled, and refresh states.
+- Added responsive desktop and mobile navigation.
+- Completed desktop, tablet, mobile, accessibility, build, and dependency checks.
 
 Priority:
 
-P1. This should happen after the next backend feature work is stable, because the UI can then be polished around the final workflow.
+P1. Completed after the recommendation, study-plan, and analytics workflows were stable.
 
 ## Sprint 15: AI Provider Abstraction
 

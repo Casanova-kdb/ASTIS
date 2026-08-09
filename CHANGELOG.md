@@ -10,17 +10,23 @@ All notable changes to ASTIS are documented in this file.
 - Most-delayed task type and average estimated-hours analytics.
 - Dashboard charts with independent loading, empty, and error states.
 - Authenticated `GET /api/analytics/trends` endpoint with stable zero-filled weekly data.
+- Responsive desktop and mobile application navigation with accessible icon controls.
+- Shared frontend design tokens, page headers, authentication framing, and structural loading states.
 
 ### Changed
 
 - Analytics queries are bounded by user and reporting window to avoid repeated per-task statistics queries.
 - Dashboard completion rate now displays the stored decimal value as the correct percentage.
+- Dashboard, Tasks, Recommendations, Study Plan, Handbook Import, Settings, Login, and Register now use a consistent task-focused visual hierarchy.
+- Detailed scoring and recommendation evidence remains available without crowding the primary workflow.
 
 ### Testing
 
 - Analytics service, repository, and controller coverage for grouping, overdue rules, validation, empty data, and user isolation.
 - Complete backend suite: 83 tests passed locally.
 - Frontend production build and dependency audit passed with 0 vulnerabilities.
+- Full-stack registration, task creation, authenticated navigation, and recommendation smoke flow passed locally.
+- Browser checks passed at 1440 px, 1024 px, and 390 px with no remaining page overflow, unnamed buttons, unlabelled controls, duplicate IDs, or console errors.
 
 ## [v1.2.0] - 2026-07-31
 

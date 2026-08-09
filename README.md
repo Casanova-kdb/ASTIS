@@ -2,7 +2,7 @@
 
 ASTIS is an AI-enhanced study task management system for academic task planning, behaviour tracking, task prioritisation, and personalised study advice.
 
-The project is built as a completed full-stack MVP with a Spring Boot backend, MySQL database, Vue frontend, and an AI recommendation/advice module.
+The project is built as a completed full-stack application with a Spring Boot backend, MySQL database, responsive Vue frontend, and an AI recommendation/advice module.
 
 ## Current Status
 
@@ -16,7 +16,7 @@ Completed areas:
 - Priority scoring and delay risk calculation
 - Recommended task ordering
 - DeepSeek-based AI study advice with local fallback
-- Vue frontend prototype
+- Responsive Vue study workspace
 - Manual full-stack test report
 - MVP release summary
 - Post-MVP iteration backlog
@@ -58,7 +58,7 @@ Completed areas:
 ```text
 ASTIS/
   backend/      Spring Boot REST API and recommendation module
-  frontend/     Vue 3 frontend MVP prototype
+  frontend/     Responsive Vue 3 frontend application
   docs/         Requirements, design, user stories, diagrams, sprints, tests
 ```
 
@@ -249,4 +249,4 @@ This project follows a lightweight personal Scrum workflow:
 
 Local demo seed data is ignored by Git and is not part of the repository.
 
-The current UI is an MVP prototype with study planning and enhanced analytics. Later work can improve visual polish, add automated frontend tests, and prepare Docker-based deployment.
+The current UI provides responsive task management, recommendations, study planning, handbook import, analytics, and account workflows. Automated frontend interaction tests and Docker-based deployment remain future engineering work.

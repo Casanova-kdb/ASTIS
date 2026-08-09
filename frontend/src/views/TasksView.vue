@@ -181,6 +181,7 @@
             <div class="task-actions">
               <select
                 :value="task.status"
+                :aria-label="`Update status for ${task.title}`"
                 :disabled="updatingTaskId === task.id"
                 @change="handleStatusChange(task, $event.target.value)"
               >
