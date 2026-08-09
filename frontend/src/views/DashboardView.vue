@@ -1,49 +1,56 @@
 <template>
   <section class="page-stack">
-    <div class="page-header">
-      <div>
-        <p class="eyebrow">Planning Prototype</p>
-        <h2>Study Dashboard</h2>
-        <p class="page-copy">
-          Review your study workload, completion progress, and current recommended focus.
-        </p>
-      </div>
+    <PageHeader
+      title="Dashboard"
+      description="Review your workload, completion progress, and current study focus."
+    >
+      <template #actions>
+        <button
+          type="button"
+          class="icon-button"
+          aria-label="Refresh dashboard"
+          title="Refresh dashboard"
+          :disabled="isLoading || isTrendLoading"
+          @click="loadDashboard"
+        >
+          <RefreshCw :size="18" :class="{ spinning: isLoading || isTrendLoading }" aria-hidden="true" />
+        </button>
+      </template>
+    </PageHeader>
 
-      <button
-        type="button"
-        class="secondary-button"
-        :disabled="isLoading || isTrendLoading"
-        @click="loadDashboard"
-      >
-        Refresh
-      </button>
+    <p v-if="errorMessage" class="form-error" role="alert">{{ errorMessage }}</p>
+
+    <div v-if="isLoading" class="dashboard-loading" aria-label="Loading dashboard" aria-live="polite">
+      <div class="metric-strip skeleton-strip">
+        <span v-for="index in 4" :key="index" class="skeleton-block"></span>
+      </div>
+      <div class="dashboard-grid">
+        <span class="skeleton-block skeleton-panel"></span>
+        <span class="skeleton-block skeleton-panel"></span>
+      </div>
     </div>
 
-    <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
-
-    <div v-if="isLoading" class="empty-state">Loading dashboard...</div>
-
     <template v-else>
-      <section class="metric-grid">
-        <article class="metric-card">
+      <section class="metric-strip" aria-label="Task overview">
+        <div class="metric-item">
           <span>Total tasks</span>
           <strong>{{ summary.totalTaskCount }}</strong>
-        </article>
+        </div>
 
-        <article class="metric-card">
+        <div class="metric-item metric-item-success">
           <span>Completed</span>
           <strong>{{ summary.completedTaskCount }}</strong>
-        </article>
+        </div>
 
-        <article class="metric-card">
+        <div class="metric-item">
           <span>Pending</span>
           <strong>{{ pendingTaskCount }}</strong>
-        </article>
+        </div>
 
-        <article class="metric-card">
+        <div class="metric-item metric-item-danger">
           <span>Overdue</span>
           <strong>{{ summary.overdueTaskCount }}</strong>
-        </article>
+        </div>
       </section>
 
       <section class="dashboard-grid">
@@ -69,10 +76,10 @@
             </div>
           </div>
 
-          <div v-if="topRecommendation" class="focus-card">
+          <div v-if="topRecommendation" class="focus-detail">
             <div class="task-item-main">
               <div>
-                <span class="rank-badge">#{{ topRecommendation.rankPosition }}</span>
+                <span class="focus-rank">Rank {{ topRecommendation.rankPosition }}</span>
                 <h4>{{ topRecommendation.title }}</h4>
                 <p>{{ topRecommendation.reason }}</p>
               </div>
@@ -100,7 +107,6 @@
       <section class="analytics-trend-section">
         <div class="section-heading trend-section-heading">
           <div>
-            <p class="eyebrow">Study Analytics</p>
             <h3>Weekly trends</h3>
             <p>Compare completion activity and missed deadlines across recent weeks.</p>
           </div>
@@ -156,7 +162,7 @@
                 :values="completionValues"
                 dataset-label="Completed tasks"
                 chart-type="line"
-                color="#2a9d8f"
+                color="#1f766d"
                 aria-label="Weekly completed task trend"
               />
               <div v-else class="empty-state trend-empty-state">
@@ -178,7 +184,7 @@
                 :values="overdueValues"
                 dataset-label="Overdue tasks"
                 chart-type="bar"
-                color="#e76f51"
+                color="#a44338"
                 aria-label="Weekly overdue task trend"
               />
               <div v-else class="empty-state trend-empty-state">
@@ -193,8 +199,10 @@
 </template>
 
 <script setup>
+import { RefreshCw } from '@lucide/vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import WeeklyTrendChart from '../components/analytics/WeeklyTrendChart.vue'
+import PageHeader from '../components/layout/PageHeader.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { fetchAnalyticsSummary, fetchAnalyticsTrends } from '../services/analyticsService'
 import { fetchRecommendedTasks } from '../services/recommendationService'

@@ -7,6 +7,7 @@ import './styles/tokens.css'
 import './styles/base.css'
 import './styles/shell.css'
 import './styles/main.css'
+import './styles/core-pages.css'
 
 setUnauthorizedHandler(() => {
   if (router.currentRoute.value.name !== 'login') {

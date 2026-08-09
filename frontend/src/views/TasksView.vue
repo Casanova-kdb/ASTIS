@@ -1,27 +1,21 @@
 <template>
   <section class="page-stack">
-    <div class="page-header">
-      <div>
-        <p class="eyebrow">Task Management</p>
-        <h2>Academic Tasks</h2>
-        <p class="page-copy">
-          Create study tasks, track deadlines, and update progress from one workspace.
-        </p>
-      </div>
-
-      <label class="filter-control">
-        Status
-        <select v-model="selectedStatus" @change="loadTasks">
-          <option value="">All</option>
-          <option v-for="status in statuses" :key="status" :value="status">
-            {{ formatLabel(status) }}
-          </option>
-        </select>
-      </label>
-    </div>
+    <PageHeader title="Tasks" description="Create academic work, manage deadlines, and update progress.">
+      <template #actions>
+        <label class="filter-control compact-filter">
+          Status
+          <select v-model="selectedStatus" @change="loadTasks">
+            <option value="">All tasks</option>
+            <option v-for="status in statuses" :key="status" :value="status">
+              {{ formatLabel(status) }}
+            </option>
+          </select>
+        </label>
+      </template>
+    </PageHeader>
 
     <div class="task-grid">
-      <section class="panel">
+      <section class="panel task-editor-panel">
         <div class="panel-heading">
           <div>
             <h3>{{ editingTaskId ? 'Edit task' : 'Create task' }}</h3>
@@ -114,20 +108,29 @@
         </form>
       </section>
 
-      <section class="panel">
+      <section class="task-list-section">
         <div class="panel-heading">
           <div>
             <h3>Task list</h3>
             <p>{{ tasks.length }} task{{ tasks.length === 1 ? '' : 's' }} shown</p>
           </div>
-          <button type="button" class="secondary-button" :disabled="isLoading" @click="loadTasks">
-            Refresh
+          <button
+            type="button"
+            class="icon-button"
+            aria-label="Refresh task list"
+            title="Refresh task list"
+            :disabled="isLoading"
+            @click="loadTasks"
+          >
+            <RefreshCw :size="18" :class="{ spinning: isLoading }" aria-hidden="true" />
           </button>
         </div>
 
-        <p v-if="listError" class="form-error">{{ listError }}</p>
+        <p v-if="listError" class="form-error" role="alert">{{ listError }}</p>
 
-        <div v-if="isLoading" class="empty-state">Loading tasks...</div>
+        <div v-if="isLoading" class="task-list task-list-loading" aria-label="Loading tasks" aria-live="polite">
+          <span v-for="index in 3" :key="index" class="skeleton-block skeleton-task"></span>
+        </div>
 
         <div v-else-if="tasks.length === 0" class="empty-state">
           No tasks yet. Create your first study task to start planning.
@@ -147,17 +150,33 @@
               </span>
             </div>
 
-            <div class="task-meta">
-              <span>{{ task.taskType }}</span>
+            <div class="task-facts">
+              <div>
+                <span>Type</span>
+                <strong>{{ task.taskType }}</strong>
+              </div>
+              <div>
+                <span>Deadline</span>
+                <strong>{{ formatDateTime(task.deadline) }}</strong>
+              </div>
+              <div>
+                <span>Effort</span>
+                <strong>{{ task.estimatedHours ?? 0 }}h</strong>
+              </div>
               <span :class="['priority-pill', priorityTone(task.priority)]">
-                {{ formatLabel(task.priority) }}
+                {{ formatLabel(task.priority) }} priority
               </span>
-              <span>Due {{ formatDateTime(task.deadline) }}</span>
-              <span>{{ task.estimatedHours ?? 0 }}h</span>
-              <span>Grade {{ task.gradeWeight ?? 3 }}/5</span>
-              <span>Difficulty {{ task.difficultyLevel ?? 3 }}/5</span>
-              <span>Importance {{ task.personalImportance ?? 3 }}/5</span>
             </div>
+
+            <details class="task-criteria-details">
+              <summary>Scoring criteria</summary>
+              <dl>
+                <div><dt>Grade impact</dt><dd>{{ task.gradeWeight ?? 3 }}/5</dd></div>
+                <div><dt>Difficulty</dt><dd>{{ task.difficultyLevel ?? 3 }}/5</dd></div>
+                <div><dt>Flexibility</dt><dd>{{ task.deadlineFlexibility ?? 3 }}/5</dd></div>
+                <div><dt>Importance</dt><dd>{{ task.personalImportance ?? 3 }}/5</dd></div>
+              </dl>
+            </details>
 
             <div class="task-actions">
               <select
@@ -170,9 +189,25 @@
                 </option>
               </select>
 
-              <button type="button" class="secondary-button" @click="startEdit(task)">Edit</button>
-              <button type="button" class="danger-button" :disabled="deletingTaskId === task.id" @click="handleDelete(task)">
-                {{ deletingTaskId === task.id ? 'Deleting...' : 'Delete' }}
+              <button
+                type="button"
+                class="icon-button task-action-button"
+                :aria-label="`Edit ${task.title}`"
+                title="Edit task"
+                @click="startEdit(task)"
+              >
+                <Pencil :size="17" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                class="icon-button task-action-button danger-icon"
+                :aria-label="`Delete ${task.title}`"
+                title="Delete task"
+                :disabled="deletingTaskId === task.id"
+                @click="handleDelete(task)"
+              >
+                <LoaderCircle v-if="deletingTaskId === task.id" :size="17" class="spinning" aria-hidden="true" />
+                <Trash2 v-else :size="17" aria-hidden="true" />
               </button>
             </div>
           </article>
@@ -183,7 +218,9 @@
 </template>
 
 <script setup>
+import { LoaderCircle, Pencil, RefreshCw, Trash2 } from '@lucide/vue'
 import { onMounted, reactive, ref } from 'vue'
+import PageHeader from '../components/layout/PageHeader.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import {
   createTask,

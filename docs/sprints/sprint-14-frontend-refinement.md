@@ -1,6 +1,6 @@
 # Sprint 14: Frontend Refinement
 
-Status: Shared application shell and design foundation completed, core page refinement pending
+Status: Core productivity pages refined, planning and account pages pending
 
 ## Goal
 
@@ -237,7 +237,7 @@ should remain close to the action or data that failed.
 - [x] Visual direction and anti-template constraints are documented.
 - [x] Sprint increments and US-024 acceptance evidence are defined.
 - [x] Shared application shell and design foundation are implemented.
-- [ ] Core productivity pages are refined.
+- [x] Core productivity pages are refined.
 - [ ] Planning, import, account, and authentication pages are refined.
 - [ ] Desktop, tablet, mobile, accessibility, and build checks pass.
 - [ ] README, user stories, backlog, changelog, and Sprint results are updated.
