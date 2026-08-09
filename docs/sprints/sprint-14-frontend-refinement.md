@@ -241,7 +241,7 @@ should remain close to the action or data that failed.
 - [x] Planning, import, account, and authentication pages are refined.
 - [x] Desktop, tablet, mobile, accessibility, and build checks pass.
 - [x] README, user stories, backlog, changelog, and Sprint results are updated.
-- [ ] The sprint branch is merged into `develop` through a pull request.
+- [x] The sprint branch is merged into `develop` through a pull request.
 
 ## Sprint Results
 
@@ -279,5 +279,6 @@ Validation completed locally on 2026-08-10:
 | Accessibility review | No unnamed buttons, unlabelled form controls, or duplicate IDs remained |
 | Browser console | No frontend warnings or errors during the final review |
 
-The remaining workflow step is to merge the sprint branch into `develop`
-through a pull request after CI passes.
+Pull request [#78](https://github.com/Casanova-kdb/ASTIS/pull/78) passed the
+backend and frontend CI checks and was merged into `develop` as `7b415c8` on
+2026-08-10.
