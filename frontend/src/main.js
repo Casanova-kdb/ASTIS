@@ -8,6 +8,7 @@ import './styles/base.css'
 import './styles/shell.css'
 import './styles/main.css'
 import './styles/core-pages.css'
+import './styles/workflow-pages.css'
 
 setUnauthorizedHandler(() => {
   if (router.currentRoute.value.name !== 'login') {

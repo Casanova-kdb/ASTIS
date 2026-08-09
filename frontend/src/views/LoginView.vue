@@ -1,8 +1,9 @@
 <template>
-  <section class="auth-card">
-    <p class="eyebrow">Welcome back</p>
-    <h2>Log in to ASTIS</h2>
-
+  <AuthFrame
+    kicker="Welcome back"
+    title="Log in"
+    description="Continue to your tasks, recommendations, and study plan."
+  >
     <form class="auth-form" @submit.prevent="handleSubmit">
       <label>
         Email
@@ -14,23 +15,24 @@
         <input v-model="form.password" type="password" autocomplete="current-password" required />
       </label>
 
-      <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="form-error" role="alert">{{ errorMessage }}</p>
 
-      <button type="submit" class="primary-button" :disabled="isSubmitting">
+      <button type="submit" class="primary-button auth-submit" :disabled="isSubmitting">
         {{ isSubmitting ? 'Logging in...' : 'Login' }}
       </button>
     </form>
 
-    <p class="auth-switch">
+    <template #footer>
       New to ASTIS?
       <RouterLink to="/register">Create an account</RouterLink>
-    </p>
-  </section>
+    </template>
+  </AuthFrame>
 </template>
 
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import AuthFrame from '../components/layout/AuthFrame.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { login } from '../services/authService'
 

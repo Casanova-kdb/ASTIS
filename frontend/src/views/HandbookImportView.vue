@@ -1,17 +1,12 @@
 <template>
   <section class="page-stack">
-    <div class="page-header">
-      <div>
-        <p class="eyebrow">AI Import</p>
-        <h2>Handbook Parser</h2>
-        <p class="page-copy">
-          Upload a module handbook and turn assessment details into editable task drafts.
-        </p>
-      </div>
-    </div>
+    <PageHeader
+      title="Handbook import"
+      description="Upload a module handbook, review extracted assessment details, and confirm task drafts."
+    />
 
     <div class="handbook-grid">
-      <section class="panel">
+      <section class="panel handbook-upload-panel">
         <div class="panel-heading">
           <div>
             <h3>Upload handbook</h3>
@@ -20,45 +15,47 @@
         </div>
 
         <form class="task-form" @submit.prevent="handleParse">
-          <label>
-            Module handbook
+          <label class="file-upload-control">
             <input
+              class="visually-hidden"
               type="file"
               accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               required
               @change="handleFileChange"
             />
+            <FileUp :size="24" aria-hidden="true" />
+            <span>
+              <strong>{{ selectedFile ? selectedFile.name : 'Choose a PDF or DOCX file' }}</strong>
+              <small>Maximum file size: 10 MB</small>
+            </span>
           </label>
 
-          <p v-if="selectedFile" class="muted-text">
-            Selected: {{ selectedFile.name }}
-          </p>
-          <p class="muted-text">Maximum file size: 10 MB</p>
-
-          <p v-if="parseError" class="form-error">{{ parseError }}</p>
-          <p v-if="parseSuccess" class="form-success">{{ parseSuccess }}</p>
+          <p v-if="parseError" class="form-error" role="alert">{{ parseError }}</p>
+          <p v-if="parseSuccess" class="form-success" role="status">{{ parseSuccess }}</p>
 
           <div class="form-actions">
-            <button type="submit" class="primary-button" :disabled="isParsing || !selectedFile">
-              {{ isParsing ? 'Parsing...' : 'Parse handbook' }}
+            <button type="submit" class="primary-button button-with-icon" :disabled="isParsing || !selectedFile">
+              <LoaderCircle v-if="isParsing" :size="17" class="spinning" aria-hidden="true" />
+              <FileSearch v-else :size="17" aria-hidden="true" />
+              {{ isParsing ? 'Parsing' : 'Parse handbook' }}
             </button>
           </div>
         </form>
 
-        <div v-if="parseResult" class="parser-summary">
+        <dl v-if="parseResult" class="parser-summary">
           <div>
-            <span>Provider</span>
-            <strong>{{ parseResult.provider }}</strong>
+            <dt>Provider</dt>
+            <dd>{{ parseResult.provider }}</dd>
           </div>
           <div>
-            <span>File</span>
-            <strong>{{ parseResult.filename }}</strong>
+            <dt>File</dt>
+            <dd>{{ parseResult.filename }}</dd>
           </div>
           <div>
-            <span>Characters</span>
-            <strong>{{ parseResult.extractedCharacterCount }}</strong>
+            <dt>Characters</dt>
+            <dd>{{ parseResult.extractedCharacterCount }}</dd>
           </div>
-        </div>
+        </dl>
 
         <p v-if="parseResult?.fallbackReason" class="form-warning">
           {{ parseResult.fallbackReason }}
@@ -70,7 +67,7 @@
         </details>
       </section>
 
-      <section class="panel">
+      <section class="handbook-drafts-section">
         <div class="panel-heading">
           <div>
             <h3>Task drafts</h3>
@@ -86,7 +83,7 @@
           <article v-for="draft in drafts" :key="draft.localId" class="draft-item">
             <form class="task-form" @submit.prevent="handleCreateDraft(draft)">
               <div class="draft-heading">
-                <span class="rank-badge">{{ draft.confidenceScore }}%</span>
+                <span class="confidence-score">{{ draft.confidenceScore }}%</span>
                 <div>
                   <h4>{{ draft.title || 'Untitled draft' }}</h4>
                   <p>{{ draft.sourceEvidence }}</p>
@@ -132,14 +129,16 @@
                 </label>
               </div>
 
-              <p v-if="draft.deadlineMissing" class="form-error">
+              <p v-if="draft.deadlineMissing" class="form-error" role="alert">
                 The parser could not find a clear deadline. Please add one before creating this task.
               </p>
-              <p v-if="draft.error" class="form-error">{{ draft.error }}</p>
-              <p v-if="draft.created" class="form-success">Task created successfully.</p>
+              <p v-if="draft.error" class="form-error" role="alert">{{ draft.error }}</p>
+              <p v-if="draft.created" class="form-success" role="status">Task created successfully.</p>
 
               <div class="form-actions">
-                <button type="submit" class="primary-button" :disabled="draft.isSaving || draft.created">
+                <button type="submit" class="primary-button button-with-icon" :disabled="draft.isSaving || draft.created">
+                  <LoaderCircle v-if="draft.isSaving" :size="17" class="spinning" aria-hidden="true" />
+                  <CheckCircle2 v-else :size="17" aria-hidden="true" />
                   {{ draft.isSaving ? 'Creating...' : draft.created ? 'Created' : 'Create task' }}
                 </button>
               </div>
@@ -152,7 +151,9 @@
 </template>
 
 <script setup>
+import { CheckCircle2, FileSearch, FileUp, LoaderCircle } from '@lucide/vue'
 import { ref } from 'vue'
+import PageHeader from '../components/layout/PageHeader.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { parseHandbook } from '../services/handbookService'
 import { createTask } from '../services/taskService'

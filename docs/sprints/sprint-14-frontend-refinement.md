@@ -1,6 +1,6 @@
 # Sprint 14: Frontend Refinement
 
-Status: Core productivity pages refined, planning and account pages pending
+Status: All application pages refined, final validation and documentation pending
 
 ## Goal
 
@@ -238,7 +238,7 @@ should remain close to the action or data that failed.
 - [x] Sprint increments and US-024 acceptance evidence are defined.
 - [x] Shared application shell and design foundation are implemented.
 - [x] Core productivity pages are refined.
-- [ ] Planning, import, account, and authentication pages are refined.
+- [x] Planning, import, account, and authentication pages are refined.
 - [ ] Desktop, tablet, mobile, accessibility, and build checks pass.
 - [ ] README, user stories, backlog, changelog, and Sprint results are updated.
 - [ ] The sprint branch is merged into `develop` through a pull request.

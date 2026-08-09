@@ -1,8 +1,9 @@
 <template>
-  <section class="auth-card">
-    <p class="eyebrow">Start planning</p>
-    <h2>Create your ASTIS account</h2>
-
+  <AuthFrame
+    kicker="New workspace"
+    title="Create an account"
+    description="Set up your account before adding academic tasks and study preferences."
+  >
     <form class="auth-form" @submit.prevent="handleSubmit">
       <label>
         Username
@@ -25,23 +26,24 @@
         />
       </label>
 
-      <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="form-error" role="alert">{{ errorMessage }}</p>
 
-      <button type="submit" class="primary-button" :disabled="isSubmitting">
+      <button type="submit" class="primary-button auth-submit" :disabled="isSubmitting">
         {{ isSubmitting ? 'Creating account...' : 'Register' }}
       </button>
     </form>
 
-    <p class="auth-switch">
+    <template #footer>
       Already have an account?
       <RouterLink to="/login">Login</RouterLink>
-    </p>
-  </section>
+    </template>
+  </AuthFrame>
 </template>
 
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import AuthFrame from '../components/layout/AuthFrame.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { register } from '../services/authService'
 
