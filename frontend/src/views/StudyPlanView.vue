@@ -1,56 +1,57 @@
 <template>
   <section class="page-stack">
-    <div class="page-header">
-      <div>
-        <p class="eyebrow">Personal Schedule</p>
-        <h2>Study Plan</h2>
-        <p class="page-copy">
-          Your scheduled sessions, remaining workload, and deadline warnings.
-        </p>
-      </div>
+    <PageHeader
+      title="Study plan"
+      description="Review scheduled sessions, remaining workload, and deadline warnings."
+    >
+      <template #actions>
+        <div class="study-plan-controls">
+          <label class="filter-control compact-filter">
+            Planning window
+            <select v-model.number="planningDays" :disabled="isLoading">
+              <option :value="3">3 days</option>
+              <option :value="7">7 days</option>
+              <option :value="14">14 days</option>
+            </select>
+          </label>
 
-      <div class="study-plan-controls">
-        <label class="filter-control">
-          Planning window
-          <select v-model.number="planningDays" :disabled="isLoading">
-            <option :value="3">3 days</option>
-            <option :value="7">7 days</option>
-            <option :value="14">14 days</option>
-          </select>
-        </label>
-
-        <button type="button" class="secondary-button" :disabled="isLoading" @click="loadStudyPlan">
-          {{ isLoading ? 'Generating...' : 'Regenerate' }}
-        </button>
-      </div>
-    </div>
+          <button type="button" class="secondary-button button-with-icon" :disabled="isLoading" @click="loadStudyPlan">
+            <RefreshCw :size="17" :class="{ spinning: isLoading }" aria-hidden="true" />
+            {{ isLoading ? 'Generating' : 'Regenerate' }}
+          </button>
+        </div>
+      </template>
+    </PageHeader>
 
     <p v-if="errorMessage" class="form-error" role="alert">{{ errorMessage }}</p>
-    <div v-if="isLoading && !plan" class="empty-state" aria-live="polite">
-      Generating study plan...
+    <div v-if="isLoading && !plan" class="study-plan-loading" aria-label="Generating study plan" aria-live="polite">
+      <div class="metric-strip skeleton-strip">
+        <span v-for="index in 4" :key="index" class="skeleton-block"></span>
+      </div>
+      <span class="skeleton-block study-plan-skeleton"></span>
     </div>
 
     <template v-else-if="plan">
-      <section class="plan-summary-grid">
-        <article class="metric-card">
+      <section class="metric-strip plan-metric-strip" aria-label="Study plan capacity summary">
+        <div class="metric-item">
           <span>Scheduled</span>
           <strong>{{ formatHours(plan.totalScheduledHours) }}</strong>
-        </article>
+        </div>
 
-        <article class="metric-card">
+        <div class="metric-item">
           <span>Available</span>
           <strong>{{ formatHours(plan.totalAvailableHours) }}</strong>
-        </article>
+        </div>
 
-        <article class="metric-card">
+        <div :class="['metric-item', { 'metric-item-danger': Number(plan.totalUnscheduledHours || 0) > 0 }]">
           <span>Unscheduled</span>
           <strong>{{ formatHours(plan.totalUnscheduledHours) }}</strong>
-        </article>
+        </div>
 
-        <article class="metric-card">
+        <div class="metric-item">
           <span>Daily capacity</span>
           <strong>{{ formatHours(plan.dailyCapacityHours) }}</strong>
-        </article>
+        </div>
       </section>
 
       <section v-if="plan.warnings?.length" class="plan-warning-panel" aria-live="polite">
@@ -83,7 +84,7 @@
             </p>
           </div>
 
-          <span class="provider-pill">{{ formatGeneratedAt(plan.generatedAt) }}</span>
+          <span class="generated-at">{{ formatGeneratedAt(plan.generatedAt) }}</span>
         </div>
 
         <div v-if="isPlanEmpty" class="empty-state">
@@ -133,7 +134,7 @@
         </div>
       </section>
 
-      <section v-if="plan.unscheduledTasks?.length" class="panel">
+      <section v-if="plan.unscheduledTasks?.length" class="panel unscheduled-panel">
         <div class="panel-heading">
           <div>
             <h3>Unscheduled work</h3>
@@ -160,7 +161,9 @@
 </template>
 
 <script setup>
+import { RefreshCw } from '@lucide/vue'
 import { computed, onMounted, ref } from 'vue'
+import PageHeader from '../components/layout/PageHeader.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { fetchStudyPlan } from '../services/studyPlanService'
 

@@ -1,18 +1,22 @@
 <template>
   <section class="page-stack">
-    <div class="page-header">
-      <div>
-        <p class="eyebrow">AI Recommendation</p>
-        <h2>Recommended Task Order</h2>
-        <p class="page-copy">
-          Review ranked tasks, delay risk, recommendation reasons, and AI-generated study advice.
-        </p>
-      </div>
-
-      <button type="button" class="secondary-button" :disabled="isLoading" @click="loadRecommendations">
-        Refresh
-      </button>
-    </div>
+    <PageHeader
+      title="Recommendations"
+      description="Review task order, delay risk, ranking reasons, and study advice."
+    >
+      <template #actions>
+        <button
+          type="button"
+          class="icon-button"
+          aria-label="Refresh recommendations"
+          title="Refresh recommendations"
+          :disabled="isLoading"
+          @click="loadRecommendations"
+        >
+          <RefreshCw :size="18" :class="{ spinning: isLoading }" aria-hidden="true" />
+        </button>
+      </template>
+    </PageHeader>
 
     <section class="panel advice-panel">
       <div class="panel-heading">
@@ -26,8 +30,12 @@
         </span>
       </div>
 
-      <p v-if="adviceError" class="form-error">{{ adviceError }}</p>
-      <div v-else-if="isLoadingAdvice" class="empty-state">Loading AI advice...</div>
+      <p v-if="adviceError" class="form-error" role="alert">{{ adviceError }}</p>
+      <div v-else-if="isLoadingAdvice" class="advice-skeleton" aria-label="Loading study advice" aria-live="polite">
+        <span class="skeleton-block"></span>
+        <span class="skeleton-block"></span>
+        <span class="skeleton-block skeleton-short"></span>
+      </div>
       <div v-else-if="advice" class="advice-content">
         <p>{{ advice.advice }}</p>
         <div class="advice-meta">
@@ -41,7 +49,7 @@
       </div>
     </section>
 
-    <section class="panel">
+    <section class="recommendation-section">
       <div class="panel-heading">
         <div>
           <h3>Ranked tasks</h3>
@@ -49,8 +57,10 @@
         </div>
       </div>
 
-      <p v-if="recommendationError" class="form-error">{{ recommendationError }}</p>
-      <div v-if="isLoadingRecommendations" class="empty-state">Loading recommendations...</div>
+      <p v-if="recommendationError" class="form-error" role="alert">{{ recommendationError }}</p>
+      <div v-if="isLoadingRecommendations" class="recommendation-list" aria-label="Loading recommendations" aria-live="polite">
+        <span v-for="index in 3" :key="index" class="skeleton-block skeleton-recommendation"></span>
+      </div>
 
       <div v-else-if="recommendations.length === 0" class="empty-state">
         No recommendation result yet. Add tasks with deadlines to generate ranking.
@@ -72,7 +82,7 @@
               </span>
             </div>
 
-            <div class="score-row">
+            <div class="recommendation-facts">
               <div>
                 <span>Priority score</span>
                 <strong>{{ formatScore(task.priorityScore) }}</strong>
@@ -87,7 +97,7 @@
               </div>
             </div>
 
-            <div class="task-meta">
+            <div class="recommendation-labels">
               <span>{{ task.taskType }}</span>
               <span :class="['priority-pill', priorityTone(task.priority)]">
                 {{ formatLabel(task.priority) }}
@@ -95,18 +105,21 @@
               <span>{{ formatLabel(task.status) }}</span>
             </div>
 
-            <div class="recommendation-explanation">
-              <div>
+            <details class="recommendation-explanation">
+              <summary>Why this task is ranked here</summary>
+              <div class="recommendation-explanation-content">
+                <div>
                 <strong>Why this task is ranked here</strong>
                 <ul>
                   <li v-for="factor in explanationFactors(task)" :key="factor">{{ formatFactor(factor) }}</li>
                 </ul>
+                </div>
+                <p>
+                  <strong>Delay risk:</strong>
+                  {{ task.delayRiskReason || task.reason }}
+                </p>
               </div>
-              <p>
-                <strong>Delay risk:</strong>
-                {{ task.delayRiskReason || task.reason }}
-              </p>
-            </div>
+            </details>
           </div>
         </article>
       </div>
@@ -115,7 +128,9 @@
 </template>
 
 <script setup>
+import { RefreshCw } from '@lucide/vue'
 import { computed, onMounted, ref } from 'vue'
+import PageHeader from '../components/layout/PageHeader.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { fetchRecommendedTasks, fetchStudyAdvice } from '../services/recommendationService'
 

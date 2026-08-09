@@ -1,26 +1,29 @@
 <template>
   <section class="page-stack">
-    <div class="page-header">
-      <div>
-        <p class="eyebrow">Personal Settings</p>
-        <h2>Study Profile</h2>
-        <p class="page-copy">
-          Manage your account details and long-term study habits.
-        </p>
-      </div>
+    <PageHeader
+      title="Settings"
+      description="Manage account details, password security, and long-term study preferences."
+    />
+
+    <div v-if="isLoadingSettings" class="settings-loading" aria-label="Loading settings" aria-live="polite">
+      <span class="skeleton-block settings-skeleton"></span>
+      <span class="skeleton-block settings-skeleton"></span>
     </div>
 
-    <div class="settings-grid">
-      <section class="panel">
-        <div class="panel-heading">
-          <div>
-            <h3>Account settings</h3>
-            <p>View your login identity and update display name or password.</p>
+    <div v-else class="settings-layout">
+      <div class="settings-account-stack">
+        <section class="panel settings-section">
+          <div class="panel-heading settings-section-heading">
+            <div class="section-heading-with-icon">
+              <UserRound :size="19" aria-hidden="true" />
+              <div>
+                <h3>Account details</h3>
+                <p>Review your login identity and update your display name.</p>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <form class="settings-form" @submit.prevent="saveAccount">
-          <div class="readonly-grid">
+          <form class="settings-form" @submit.prevent="saveAccount">
             <label>
               Username
               <input :value="accountForm.username" type="text" disabled />
@@ -30,51 +33,65 @@
               Email
               <input :value="accountForm.email" type="email" disabled />
             </label>
+
+            <label>
+              Display name
+              <input v-model.trim="accountForm.displayName" type="text" maxlength="80" required />
+            </label>
+
+            <p v-if="accountError" class="form-error" role="alert">{{ accountError }}</p>
+            <p v-if="accountSuccess" class="form-success" role="status">{{ accountSuccess }}</p>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-button" :disabled="isSavingAccount">
+                {{ isSavingAccount ? 'Saving...' : 'Save account' }}
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel settings-section password-section">
+          <div class="panel-heading settings-section-heading">
+            <div class="section-heading-with-icon">
+              <LockKeyhole :size="19" aria-hidden="true" />
+              <div>
+                <h3>Password</h3>
+                <p>Use your current password to set a new one.</p>
+              </div>
+            </div>
           </div>
 
-          <label>
-            Display name
-            <input v-model.trim="accountForm.displayName" type="text" maxlength="80" required />
-          </label>
+          <form class="settings-form" @submit.prevent="savePassword">
+            <label>
+              Current password
+              <input v-model="passwordForm.currentPassword" type="password" autocomplete="current-password" required />
+            </label>
 
-          <p v-if="accountError" class="form-error">{{ accountError }}</p>
-          <p v-if="accountSuccess" class="form-success">{{ accountSuccess }}</p>
+            <label>
+              New password
+              <input v-model="passwordForm.newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="72" required />
+            </label>
 
-          <button type="submit" class="primary-button" :disabled="isSavingAccount">
-            {{ isSavingAccount ? 'Saving...' : 'Save account' }}
-          </button>
-        </form>
+            <p v-if="passwordError" class="form-error" role="alert">{{ passwordError }}</p>
+            <p v-if="passwordSuccess" class="form-success" role="status">{{ passwordSuccess }}</p>
 
-        <form class="settings-form password-form" @submit.prevent="savePassword">
-          <div>
-            <h4>Password</h4>
-            <p>Use your current password to set a new one.</p>
-          </div>
+            <div class="form-actions">
+              <button type="submit" class="secondary-button" :disabled="isSavingPassword">
+                {{ isSavingPassword ? 'Updating...' : 'Update password' }}
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
 
-          <label>
-            Current password
-            <input v-model="passwordForm.currentPassword" type="password" autocomplete="current-password" required />
-          </label>
-
-          <label>
-            New password
-            <input v-model="passwordForm.newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="72" required />
-          </label>
-
-          <p v-if="passwordError" class="form-error">{{ passwordError }}</p>
-          <p v-if="passwordSuccess" class="form-success">{{ passwordSuccess }}</p>
-
-          <button type="submit" class="secondary-button" :disabled="isSavingPassword">
-            {{ isSavingPassword ? 'Updating...' : 'Update password' }}
-          </button>
-        </form>
-      </section>
-
-      <section class="panel">
-        <div class="panel-heading">
-          <div>
-            <h3>Study profile</h3>
-            <p>These settings describe your study habits and are kept separate from task data.</p>
+      <section class="panel settings-section study-profile-section">
+        <div class="panel-heading settings-section-heading">
+          <div class="section-heading-with-icon">
+            <SlidersHorizontal :size="19" aria-hidden="true" />
+            <div>
+              <h3>Study profile</h3>
+              <p>Describe your working habits separately from task-specific scoring criteria.</p>
+            </div>
           </div>
         </div>
 
@@ -128,12 +145,14 @@
             </label>
           </div>
 
-          <p v-if="profileError" class="form-error">{{ profileError }}</p>
-          <p v-if="profileSuccess" class="form-success">{{ profileSuccess }}</p>
+          <p v-if="profileError" class="form-error" role="alert">{{ profileError }}</p>
+          <p v-if="profileSuccess" class="form-success" role="status">{{ profileSuccess }}</p>
 
-          <button type="submit" class="primary-button" :disabled="isSavingProfile">
-            {{ isSavingProfile ? 'Saving...' : 'Save profile' }}
-          </button>
+          <div class="form-actions">
+            <button type="submit" class="primary-button" :disabled="isSavingProfile">
+              {{ isSavingProfile ? 'Saving...' : 'Save profile' }}
+            </button>
+          </div>
         </form>
       </section>
     </div>
@@ -141,7 +160,9 @@
 </template>
 
 <script setup>
+import { LockKeyhole, SlidersHorizontal, UserRound } from '@lucide/vue'
 import { onMounted, reactive, ref } from 'vue'
+import PageHeader from '../components/layout/PageHeader.vue'
 import { getApiErrorMessage } from '../services/apiClient'
 import { fetchUserProfile, updateUserProfile } from '../services/settingsService'
 import { changePassword, fetchCurrentUser, updateCurrentUser } from '../services/userService'
@@ -174,14 +195,21 @@ const profileSuccess = ref('')
 const isSavingAccount = ref(false)
 const isSavingPassword = ref(false)
 const isSavingProfile = ref(false)
+const isLoadingSettings = ref(true)
 
 onMounted(loadSettings)
 
 async function loadSettings() {
-  await Promise.all([
-    loadAccount(),
-    loadProfile()
-  ])
+  isLoadingSettings.value = true
+
+  try {
+    await Promise.all([
+      loadAccount(),
+      loadProfile()
+    ])
+  } finally {
+    isLoadingSettings.value = false
+  }
 }
 
 async function loadAccount() {
